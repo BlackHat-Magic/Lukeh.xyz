@@ -1,0 +1,47 @@
+{% extends "master.html" %}
+
+{% block head %}
+<title>Home | Luke Henderson</title>
+{% endblock %}
+
+{% block body %}
+<!--navbar soon (TM)-->
+<ul class="nav">
+	<li><a class="nav-item" href="/">Home</a></li>
+	<li class="dropdown">
+		<a class="nav-item">Math</a>
+		<div class="dropdown-content">
+			<a href="/Math/VectorCalc/Magnitude">Vector Magnitude Calculator</a>
+			<a>Test</a>
+		</div>
+	</li>
+	<li><a class="nav-item">D&D</a></li>
+	<li class="nav-right"><a class="nav-item" href="mailto:henderson.luket@gmail.com">Contact</a></li>
+</ul>
+
+<div class="flex">
+	<div class="flex vertical">
+		<img src="https://cdn.discordapp.com/avatars/272197511769227264/66da13e8dfc5477899498a14c3c56dcc.png?size=1024" style="max-width: 512px; width: 100%; border-radius: 50%; margin: 50px 150px 50px 150px;">
+
+		<h1>Luke Henderson</h1>
+
+		<div id="splash" class="flex-container" style="background-color: var(--nord-canvas); width: 100%">
+			<p style="text-align: center;">Hi.</p>
+		</div>
+		<div id="blurb">
+			<p>I'm Luke Henderson, a Computer Science student at UC Merced. This website is where I intend to put programming projects that I'm working on. I don't really have much else to say. Now, you might be thinking: "Hey, Luke, this page is feeling kind of devoid of content. Shouldn't there be more stuff here to fill it out?"</p>
+			<br>
+			<p>And I'd say you're right. But that's work, and my attention span hasn't really improved since </p>
+			<br>
+			<p>So if you want to access some of my projects, you can see them in the navbar. That is, only if</p>
+			<ul>
+				<li>I have gotten around to actually putting the navbar there</li>
+				<li>I haven't forgotten to push that change to production</li>
+				<li>I haven't broken it since doing that</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}
