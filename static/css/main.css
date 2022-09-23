@@ -305,3 +305,19 @@ footer a:hover {
 .active:hover, .active a:hover {
     background-color: var(--nord3);
 }
+
+button.circle {
+    height: var(--size);
+    width: var(--size);
+    border-radius: 50%;
+}
+
+button.circle * {
+    position:  relative;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    margin: auto;
+}
