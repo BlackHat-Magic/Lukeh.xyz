@@ -1,0 +1,43 @@
+{% extends "master.html" %}
+
+{% block head %}
+<title>Under Construction | Luke Henderson</title>
+{% endblock %}
+
+{% block body %}
+<ul class="nav">
+	<li class="nav-item"><a href="/">Home</a></li>
+	<li class="dropdown nav-item active">
+		<a href="/Math" class="dropbtn">Math</a>
+		<div class="dropdown-content">
+			<a href="/Vector-Addition">Vector Addition Calculator</a>
+			<a href="/Scalar-Multiplication">Scalar Multiplication Calculator</a>
+			<a href="/Magnitude">Vector Magnitude Calculator</a>
+			<a href="/Unit-Vector">Unit Vector Finder</a>
+			<a href="/Dot-Product">Dot Product Calculator</a>
+			<a href="/Cross-Product">Cross Product Calculator</a>
+			<a href="/TSP">Triple Scalar Product Calculator</a>
+			<a href="/Vector-Projection">Vector Projection Calculator</a>
+		</div>
+	</li>
+	<li class="nav-item"><a href="#">D&D</a></li>
+	<li class="nav-right"><a href="mailto:henderson.luket@gmail.com">Contact</a></li>
+</ul>
+
+<div class="flex">
+	<div class="flex vertical">
+		<h1>Vector Addition and Subtraction Calculator</h1>
+		
+		<p>To use the calculator, select the number of dimensions each vector should have. Then add vectors to the calculator and input their components. Once finished, click "calculate"</p>
+		<div class="flex horizontal">
+			<p style="font-size: 36px">Number of Dimensions:</p>
+			<div class="flex horizontal">
+				<button style="width: auto; padding: 16px"><p style="width: 34px; font-size: 24px; margin: 0; padding: 0; text-align: center">–</p></button>
+				<p>1</p>
+				<button style="width: auto; padding: 16px"><p style="width: 34px; font-size: 24px; margin: 0; padding: 0; text-align: center;">+</p></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
