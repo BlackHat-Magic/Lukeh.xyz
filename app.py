@@ -34,14 +34,17 @@ def scalarMultiplication():
 def scalarMultiplicationRedirect():
     return(redirect("/Math/Vector-Calc/Scalar-Multiplication"))
 
-@app.route("/Math/Vector-Calculus/Vector-Magnitude")
+@app.route("/Math/Vector-Calc/Vector-Magnitude")
 def vectorMagnitude():
     return(render_template("under-construction.html"))
 @app.route("/Vector-Calc/Vector-Magnitude")
 @app.route("/Math/Vector-Magnitude")
 @app.route("/Vector-Magnitude")
+@app.route("/Vector-Calc/Magnitude")
+@app.route("/Math/Magnitude")
+@app.route("/Magnitude")
 def vectorMagnitudeRedirect():
-    return(redirect("/Math/Vector-Calc/Scalar-Multiplication"))
+    return(redirect("/Math/Vector-Calc/Vector-Magnitude"))
 
 @app.route("/Math/Vector-Calc/Unit-Vector")
 def unitVector():
@@ -50,7 +53,7 @@ def unitVector():
 @app.route("/Math/Unit-Vector")
 @app.route("/Unit-Vector")
 def unitVectorRedirect():
-    return(redirrect("/Math/Vector-Calc/Unit-Vector"))
+    return(redirect("/Math/Vector-Calc/Unit-Vector"))
 
 @app.route("/Math/Vector-Calc/Dot-Product")
 def dotProduct():

@@ -2,6 +2,8 @@
 
 {% block head %}
 <title>Under Construction | Luke Henderson</title>
+
+<script src="{{ url_for('static', filename='js/vector-addition.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -25,18 +27,57 @@
 </ul>
 
 <div class="flex">
-	<div class="flex vertical">
+	<div class="flex vertical start">
 		<h1>Vector Addition and Subtraction Calculator</h1>
 		
-		<p>To use the calculator, select the number of dimensions each vector should have. Then add vectors to the calculator and input their components. Once finished, click "calculate"</p>
-		<div>
-			<div>
-				<p>help</p>
-				<button class="circle" style="--size: 80px"><h6>–</h6></button>
-				<!--<p style="width: auto">1</p>-->
-				1
-				<button class="circle" style="--size: 80px"><h6>+</h6></button>
+		<p>To use the calculator, add vectors to the calculator until you reach the desired number. Then set the number of dimensions the vectors should have. Or do it in the other order. I can't stop you. I'm a set of instructions, not a cop.</p>
+		<p>Once you're done doing that, click "Calculate" to get the resultant vector.</p>
+		<div class="flex horizontal center">
+			<div class="interior flex vertical space-around" style="height: 260px">
+				<h6 class="inline"># of Vectors: </h6>
+				<h6 class="inline">Dimensions: </h6>
 			</div>
+			<div class="interior flex vertical space-around">
+				<div x-data="vecNumber">
+					<button class="inline circle" style="--size: 80px" @click="numsub()">
+						<h6>–</h6>
+					</button>
+					<h6 class="inline" x-text="value"></h6>
+					<button class="inline circle" style="--size: 80px" @click="numadd()">
+						<h6>+</h6>
+					</button>
+				</div>
+				<div x-data="dimensions">
+					<button class="inline circle" style="--size: 80px" @click="numsub()">
+						<h6>–</h6>
+					</button>
+					<h6 class="inline" x-text="value"></h6>
+					<button class="inline circle" style="--size: 80px" @click="numadd()">
+						<h6>+</h6>
+					</button>
+				</div>
+			</div>
+		</div>
+		<h5>Vectors: </h5>
+		<div class="flex vertical start">
+			<form class="inline">
+				<div class="interior flex horizontal space-between">
+					<h6 class="inline">1: </h6>
+					<input class="inline" type="text" style="width: 24px">
+					<input class="inline" type="text" style="width: 24px">
+					<input class="inline" type="text" style="width: 24px">
+					<input class="inline" type="text" style="width: 24px">
+					<input class="inline" type="text" style="width: 24px">
+					<input class="inline" type="text" style="width: 24px">
+					<input class="inline" type="text" style="width: 24px">
+					<input class="inline" type="text" style="width: 24px">
+					<input class="inline" type="text" style="width: 24px">
+					<input class="inline" type="text" style="width: 24px">
+					<input class="inline" type="text" style="width: 24px">
+					<input class="inline" type="text" style="width: 24px">
+					<input class="inline" type="text" style="width: 24px">
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
