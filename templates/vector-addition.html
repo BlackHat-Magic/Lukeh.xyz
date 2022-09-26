@@ -27,57 +27,59 @@
 </ul>
 
 <div class="flex">
-	<div class="flex vertical start">
+	<div class="flex vertical start" x-data="main">
 		<h1>Vector Addition and Subtraction Calculator</h1>
 		
 		<p>To use the calculator, add vectors to the calculator until you reach the desired number. Then set the number of dimensions the vectors should have. Or do it in the other order. I can't stop you. I'm a set of instructions, not a cop.</p>
-		<p>Once you're done doing that, click "Calculate" to get the resultant vector.</p>
+		<p>The resultant vector is listed at the bottom.</p>
 		<div class="flex horizontal center">
 			<div class="interior flex vertical space-around" style="height: 260px">
 				<h6 class="inline"># of Vectors: </h6>
 				<h6 class="inline">Dimensions: </h6>
 			</div>
 			<div class="interior flex vertical space-around">
-				<div x-data="vecNumber">
-					<button class="inline circle" style="--size: 80px" @click="numsub()">
+				<div>
+					<button class="inline circle" style="--size: 80px" @click="vecsub()">
 						<h6>–</h6>
 					</button>
-					<h6 class="inline" x-text="value"></h6>
-					<button class="inline circle" style="--size: 80px" @click="numadd()">
+					<h6 class="inline" x-text="values.length"></h6>
+					<button class="inline circle" style="--size: 80px" @click="vecadd()">
 						<h6>+</h6>
 					</button>
 				</div>
-				<div x-data="dimensions">
-					<button class="inline circle" style="--size: 80px" @click="numsub()">
+				<div>
+					<button class="inline circle" style="--size: 80px" @click="dimsub()">
 						<h6>–</h6>
 					</button>
-					<h6 class="inline" x-text="value"></h6>
-					<button class="inline circle" style="--size: 80px" @click="numadd()">
+					<h6 class="inline" x-text="values[0].length" id="stupid"></h6>
+					<button class="inline circle" style="--size: 80px" @click="dimadd()">
 						<h6>+</h6>
 					</button>
 				</div>
 			</div>
 		</div>
-		<h5>Vectors: </h5>
-		<div class="flex vertical start">
-			<form class="inline">
-				<div class="interior flex horizontal space-between">
-					<h6 class="inline">1: </h6>
-					<input class="inline" type="text" style="width: 24px">
-					<input class="inline" type="text" style="width: 24px">
-					<input class="inline" type="text" style="width: 24px">
-					<input class="inline" type="text" style="width: 24px">
-					<input class="inline" type="text" style="width: 24px">
-					<input class="inline" type="text" style="width: 24px">
-					<input class="inline" type="text" style="width: 24px">
-					<input class="inline" type="text" style="width: 24px">
-					<input class="inline" type="text" style="width: 24px">
-					<input class="inline" type="text" style="width: 24px">
-					<input class="inline" type="text" style="width: 24px">
-					<input class="inline" type="text" style="width: 24px">
-					<input class="inline" type="text" style="width: 24px">
-				</div>
-			</form>
+		<h5>Input Vectors: </h5>
+		<div class="interior flex horizontal start">
+			<div>
+				<template x-for="(vector, index) in values">
+					<h6 x-text="index + 1" style="margin: 68.5px 0px"></h6>
+				</template>
+			</div>
+			<div>
+				<template x-for="(vector, index) in values">
+					<form class="flex horizontal space-between">
+						<template x-for="(dimension, index2) in values[index]">
+							<input type="text" style="width: 24px; margin: 0px" :value="values[index][index2]">
+						</template>
+					</form>
+				</template>
+			</div>
+		</div>
+		<h5>Resultant Vector: </h5>
+		<div class="interior flex horizontal center" x-data="{ result: result() }">
+			<template x-for="(dimension, index) in result">
+				<h6 x-text="result[index]"></h6>
+			</template>
 		</div>
 	</div>
 </div>
