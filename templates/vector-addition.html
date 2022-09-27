@@ -32,6 +32,7 @@
 		
 		<p>To use the calculator, add vectors to the calculator until you reach the desired number. Then set the number of dimensions the vectors should have. Or do it in the other order. I can't stop you. I'm a set of instructions, not a cop.</p>
 		<p>The resultant vector is listed at the bottom.</p>
+		<p>Presently, only cartesian coordinates are supported as inputs; however, inputting vectors as a magnitude and a direction may be added in the future.</p>
 		<div class="flex horizontal center">
 			<div class="interior flex vertical space-around" style="height: 260px">
 				<h6 class="inline"># of Vectors: </h6>
@@ -87,9 +88,11 @@
 		</div>
 		<h5>Resultant Vector: </h5>
 		<div class="interior flex horizontal center">
+			<h6><</h6>
 			<template x-for="(dimension, index) in result">
 				<h6 x-text="result()[index]"></h6>
 			</template>
+			<h6>></h6>
 		</div>
 	</div>
 </div>
