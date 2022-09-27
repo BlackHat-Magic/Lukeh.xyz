@@ -2,8 +2,8 @@ document.addEventListener ('alpine:init', () => {
     Alpine.data('main', () => ({
 
         values: [
-         [0, 0, 0],
-         [0, 0, 0]
+            [0, 0, 0],
+            [0, 0, 0]
         ],
 
         vecsub () {
@@ -38,12 +38,11 @@ document.addEventListener ('alpine:init', () => {
         result () {
             result = [];
             for(let i = 0; i < this.values[0].length; i++) {
+                x = 0;
                 for (let j = 0; j < this.values.length; j++) {
-                    x = 0;
-                    x += this.values[j][i];
-                    result.push(x);
-                    console.log(result);
+                    x += parseInt(this.values[j][i]);
                 }
+                result.push(x);
             }
             return result;
         }

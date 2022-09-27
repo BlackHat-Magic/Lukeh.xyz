@@ -51,7 +51,7 @@
 					<button class="inline circle" style="--size: 80px" @click="dimsub()">
 						<h6>–</h6>
 					</button>
-					<h6 class="inline" x-text="values[0].length" id="stupid"></h6>
+					<h6 class="inline" x-text="result().length"></h6>
 					<button class="inline circle" style="--size: 80px" @click="dimadd()">
 						<h6>+</h6>
 					</button>
@@ -66,19 +66,19 @@
 				</template>
 			</div>
 			<div>
-				<template x-for="(vector, index) in values">
+				<template x-for="(vector, index1) in values">
 					<form class="flex horizontal space-between">
-						<template x-for="(dimension, index2) in values[index]">
-							<input type="text" style="width: 24px; margin: 0px" :value="values[index][index2]">
+						<template x-for="(dimension, index2) in values[index1]">
+							<input type="number" style="width: 24px; margin: 0px" x-model="values[index1][index2]">
 						</template>
 					</form>
 				</template>
 			</div>
 		</div>
 		<h5>Resultant Vector: </h5>
-		<div class="interior flex horizontal center" x-data="{ result: result() }">
+		<div class="interior flex horizontal center">
 			<template x-for="(dimension, index) in result">
-				<h6 x-text="result[index]"></h6>
+				<h6 x-text="result()[index]"></h6>
 			</template>
 		</div>
 	</div>

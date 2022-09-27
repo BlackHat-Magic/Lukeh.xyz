@@ -136,6 +136,17 @@ input[type=text] {
     color: var(--nord-important);
 }
 
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    margin: 0;
+}
+
+input[type=number]::-webkit-inner-spin-buttton, input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 table {
     margin: 24px;
     padding:24px;
