@@ -27,7 +27,7 @@ def vectorAdditionRedirect():
 
 @app.route("/Math/Vector-Calc/Scalar-Multiplication")
 def scalarMultiplication():
-    return(render_template("under-construction.html"))
+    return(render_template("scalar-multiplication.html"))
 @app.route("/Vector-Calc/Scalar-Multiplication")
 @app.route("/Math/Scalar-Multiplication")
 @app.route("/Scalar-Multiplication")
