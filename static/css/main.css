@@ -125,7 +125,7 @@ button:hover, input[type=submit]:hover {
     cursor: pointer;
 }
 
-input[type=text] {
+input[type=text], select {
     border-style: none;
     padding: 16px 32px;
     text-decoration: inline-block;

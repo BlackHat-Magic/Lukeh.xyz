@@ -6,6 +6,8 @@ document.addEventListener ('alpine:init', () => {
             [0, 0, 0]
         ],
 
+        signs: [1, 1],
+
         vecsub () {
             if ( Object.keys(this.values).length <= 1 ) {
                 alert("Stop that.");
@@ -18,6 +20,7 @@ document.addEventListener ('alpine:init', () => {
             for (let i = 0; i < this.values[0].length; i++) {
                 this.values[this.values.length - 1].push(0);
             }
+            this.signs.push(1);
         },
 
         dimsub () {
@@ -40,7 +43,7 @@ document.addEventListener ('alpine:init', () => {
             for(let i = 0; i < this.values[0].length; i++) {
                 x = 0;
                 for (let j = 0; j < this.values.length; j++) {
-                    x += parseInt(this.values[j][i]);
+                    x += parseInt(this.values[j][i]) * this.signs[j];
                 }
                 result.push(x);
             }

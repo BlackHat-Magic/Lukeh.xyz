@@ -62,7 +62,17 @@
 		<div class="interior flex horizontal start">
 			<div>
 				<template x-for="(vector, index) in values">
-					<h6 x-text="index + 1" style="margin: 68.5px 0px"></h6>
+					<h6 x-text="index + 1" style="margin: 68.5px 50px"></h6>
+				</template>
+			</div>
+			<div>
+				<template x-for="(vector, index) in values">
+					<form class="flex horizontal space-between" style="margin: 68.5px 0px">
+						<select style="margin: 0" x-model="signs[index]">
+							<option value="1">+</option>
+							<option value="-1">–</option>
+						</select>
+					</form>
 				</template>
 			</div>
 			<div>
