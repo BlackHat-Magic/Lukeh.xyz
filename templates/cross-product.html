@@ -1,0 +1,57 @@
+{% extends "master.html" %}
+
+{% block head %}
+<title>Cross Product Calculator | Luke Henderson</title>
+
+<script src="{{ url_for('static', filename='js/cross-product.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<ul class="nav">
+	<li class="nav-item"><a href="/">Home</a></li>
+	<li class="dropdown nav-item active">
+		<a href="/Math" class="dropbtn">Math</a>
+		<div class="dropdown-content">
+			<a href="/Vector-Addition">Vector Addition Calculator</a>
+			<a href="/Scalar-Multiplication">Scalar Multiplication Calculator</a>
+			<a href="/Magnitude">Vector Magnitude Calculator</a>
+			<a href="/Unit-Vector">Unit Vector Finder</a>
+			<a href="/Dot-Product">Dot Product Calculator</a>
+			<a href="/Cross-Product">Cross Product Calculator</a>
+			<a href="/TSP">Triple Scalar Product Calculator</a>
+			<a href="/Vector-Projection">Vector Projection Calculator</a>
+		</div>
+	</li>
+	<li class="nav-item"><a href="#">D&D</a></li>
+	<li class="nav-right"><a href="mailto:henderson.luket@gmail.com">Contact</a></li>
+</ul>
+
+<div class="flex">
+	<div class="flex vertical start" x-data="main">
+		<h1>Cross Product Calculator</h1>
+		
+		<p>To use the calculator, input the components of the vectors to be crossed. The resultant vector is listed at the bottom. Remember that the cross product is not commutative; which vector you enter first will influence the resultant vector.</p>
+		<p>Presently, only cartesian coordinates are supported as inputs; however, inputting vectors as a magnitude and a direction may be added in the future. The calculator only works in three dimensions. Support for seven-dimensional cross products is not planned.</p>
+		<h5>Input Vectors: </h5>
+		<form class="flex horizontal center">
+			<input type="number" style="width: 36px;" x-model="vecu[0]">
+			<input type="number" style="width: 36px;" x-model="vecu[1]">
+			<input type="number" style="width: 36px;" x-model="vecu[2]">
+		</form>
+		<form class="flex horizontal center">
+			<input type="number" style="width: 36px;" x-model="vecv[0]">
+			<input type="number" style="width: 36px;" x-model="vecv[1]">
+			<input type="number" style="width: 36px;" x-model="vecv[2]">
+		</form>
+		<div>
+			<h5 class="inline">Cross Product: </h5>
+			<h5 class="inline">< </h5>
+			<h5 class="inline" x-text="crossProduct(vecu, vecv)[0] + ', '"></h5>
+			<h5 class="inline" x-text="crossProduct(vecu, vecv)[1] + ', '"></h5>
+			<h5 class="inline" x-text="crossProduct(vecu, vecv)[2]"></h5>
+			<h5 class="inline"> ></h5>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

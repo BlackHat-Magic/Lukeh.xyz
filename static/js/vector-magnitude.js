@@ -2,19 +2,18 @@ document.addEventListener ('alpine:init', () => {
     Alpine.data ('main', () => ({
        values: [0, 0, 0],
 
-       scalar: 1,
-
        result () {
-            result = [];
+            result = 0;
             for (let i = 0; i < this.values.length; i++) {
-                result.push(this.values[i] * this.scalar);
+                result += this.values[i] * this.values[i];
             }
+            result = Math.round(Math.sqrt(result) * 100000) / 100000;
             return(result);
         },
 
         decrement () {
             if(this.values.length <= 1) {
-                alert("Stop.");
+                alert("Oh my god");
             } else {
                 this.values.pop();
             }

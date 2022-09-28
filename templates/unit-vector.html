@@ -1,9 +1,9 @@
 {% extends "master.html" %}
 
 {% block head %}
-<title>Scalar Multiplication Calculator | Luke Henderson</title>
+<title>Unit Vector Calculator | Luke Henderson</title>
 
-<script src="{{ url_for('static', filename='js/scalar-multiplication.js') }}"></script>
+<script src="{{ url_for('static', filename='js/unit-vector.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -28,22 +28,22 @@
 
 <div class="flex">
 	<div class="flex vertical start" x-data="main">
-		<h1>Scalar Multiplication Calculator</h1>
+		<h1>Unit Vector/Vector Direction Calculator</h1>
 		
-		<p>To use the calculator, input the value of the vector to be multiplied and the value it is to be multiplied by.</p>
+		<p>To use the calculator, input the components of the vetor whose direction you would like to find. Its unit vector is displayed below.</p>
+		<p>Presently, the calculator returns an approximate decimal value. Precide values expressed as square roots may be added in the future.</p>
 		<p>The resultant vector is listed at the bottom.</p>
-		<p>Presently, only cartesian coordinates are supported as inputs; however, inputting vectors as a magnitude and a direction may be added in the future.</p>
 		<div class="flex horizontal center">
 			<div class="interior flex vertical space-around">
 				<h6 class="inline">Dimensions: </h6>
 			</div>
 			<div class="interior flex vertical space-around">
 				<div>
-					<button class="inline circle" style="--size: 80px" @click="decrement()">
+					<button class="inline circle" style="--size: 80px" @click="values.pop()">
 						<h6>–</h6>
 					</button>
 					<h6 class="inline" x-text="values.length"></h6>
-					<button class="inline circle" style="--size: 80px" @click="increment()">
+					<button class="inline circle" style="--size: 80px" @click="values.push(0)">
 						<h6>+</h6>
 					</button>
 				</div>
@@ -55,11 +55,7 @@
 				<input type="number" style="width: 24px; margin: 25px;" x-model="values[index]">
 			</template>
 		</form>
-		<h5>Scalar: </h5>
-		<form class="flex horizontal center">
-			<input type="number" x-model="scalar">
-		</form>
-		<h5>Resultant Vector: </h5>
+		<h5>Unit Vector: </h5>
 		<div class="interior flex horizontal center">
 			<h6><</h6>
 			<template x-for="(dimension, index) in result()">

@@ -105,7 +105,7 @@ body {
     margin: 0;
 }
 
-button, input[type=submit], input[type=number] {
+button, input {
     border-style: solid;
     padding: 16px 32px;
     text-align: center;
@@ -115,7 +115,7 @@ button, input[type=submit], input[type=number] {
     border-radius: 52px;
     background-color: var(--nord-inactive);
     color: var(--nord-important);
-    border-color: var(--nord-primary1);
+    border-color: var(--nord3);
     width: 100%;
 }
 

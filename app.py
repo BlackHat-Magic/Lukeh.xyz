@@ -36,7 +36,7 @@ def scalarMultiplicationRedirect():
 
 @app.route("/Math/Vector-Calc/Vector-Magnitude")
 def vectorMagnitude():
-    return(render_template("under-construction.html"))
+    return(render_template("vector-magnitude.html"))
 @app.route("/Vector-Calc/Vector-Magnitude")
 @app.route("/Math/Vector-Magnitude")
 @app.route("/Vector-Magnitude")
@@ -48,7 +48,7 @@ def vectorMagnitudeRedirect():
 
 @app.route("/Math/Vector-Calc/Unit-Vector")
 def unitVector():
-    return(render_template("under-construction.html"))
+    return(render_template("unit-vector.html"))
 @app.route("/Vector-Calc/Unit-Vector")
 @app.route("/Math/Unit-Vector")
 @app.route("/Unit-Vector")
@@ -57,7 +57,7 @@ def unitVectorRedirect():
 
 @app.route("/Math/Vector-Calc/Dot-Product")
 def dotProduct():
-    return(render_template("under-construction.html"))
+    return(render_template("dot-product.html"))
 @app.route("/Vector-Calc/Dot-Product")
 @app.route("/Math/Dot-Product")
 @app.route("/Dot-Product")
@@ -66,7 +66,7 @@ def dotProductRedirect():
 
 @app.route("/Math/Vector-Calc/Cross-Product")
 def crossProduct():
-    return(render_template("under-construction.html"))
+    return(render_template("cross-product.html"))
 @app.route("/Vector-Calc/Cross-Product")
 @app.route("/Math/Cross-Product")
 @app.route("/Cross-Product")
@@ -75,7 +75,7 @@ def crossProductRedirect():
 
 @app.route("/Math/Vector-Calc/TSP")
 def TSP():
-    return(render_template("under-construction.html"))
+    return(render_template("tsp.html"))
 @app.route("/Math/Vector-Calculus/Triple-Scalar-Product")
 @app.route("/Vector-Calc/Triple-Scalar-Product")
 @app.route("/Math/Triple-ScalarProduct")

@@ -1,9 +1,9 @@
 {% extends "master.html" %}
 
 {% block head %}
-<title>Scalar Multiplication Calculator | Luke Henderson</title>
+<title>Dot Product Calculator | Luke Henderson</title>
 
-<script src="{{ url_for('static', filename='js/scalar-multiplication.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dot-product.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -28,10 +28,9 @@
 
 <div class="flex">
 	<div class="flex vertical start" x-data="main">
-		<h1>Scalar Multiplication Calculator</h1>
+		<h1>Dot Product Calculator</h1>
 		
-		<p>To use the calculator, input the value of the vector to be multiplied and the value it is to be multiplied by.</p>
-		<p>The resultant vector is listed at the bottom.</p>
+		<p>To use the calculator, input the components of the vectors to be dotted. The resultant vector is listed at the bottom.</p>
 		<p>Presently, only cartesian coordinates are supported as inputs; however, inputting vectors as a magnitude and a direction may be added in the future.</p>
 		<div class="flex horizontal center">
 			<div class="interior flex vertical space-around">
@@ -42,31 +41,25 @@
 					<button class="inline circle" style="--size: 80px" @click="decrement()">
 						<h6>–</h6>
 					</button>
-					<h6 class="inline" x-text="values.length"></h6>
+					<h6 class="inline" x-text="vecu.length"></h6>
 					<button class="inline circle" style="--size: 80px" @click="increment()">
 						<h6>+</h6>
 					</button>
 				</div>
 			</div>
 		</div>
-		<h5>Input Vector: </h5>
+		<h5>Input Vectors: </h5>
 		<form class="flex horizontal center">
-			<template x-for="(dimension, index) in values">
-				<input type="number" style="width: 24px; margin: 25px;" x-model="values[index]">
+			<template x-for="(dimension, index) in vecu">
+				<input type="number" style="width: 24px; margin: 25px;" x-model="vecu[index]">
 			</template>
 		</form>
-		<h5>Scalar: </h5>
 		<form class="flex horizontal center">
-			<input type="number" x-model="scalar">
-		</form>
-		<h5>Resultant Vector: </h5>
-		<div class="interior flex horizontal center">
-			<h6><</h6>
-			<template x-for="(dimension, index) in result()">
-				<h6 x-text="result()[index]"></h6>
+			<template x-for="(dimension, index) in vecv">
+				<input type="number" style="width: 24px; margin: 25px;" x-model="vecv[index]">
 			</template>
-			<h6>></h6>
-		</div>
+		</form>
+		<h5 x-text="'Dot Product: ' + dotProduct(vecu, vecv)"></h5>
 	</div>
 </div>
 

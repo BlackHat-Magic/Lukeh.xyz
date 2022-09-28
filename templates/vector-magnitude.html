@@ -1,9 +1,9 @@
 {% extends "master.html" %}
 
 {% block head %}
-<title>Scalar Multiplication Calculator | Luke Henderson</title>
+<title>Vector Magnitude Calculator | Luke Henderson</title>
 
-<script src="{{ url_for('static', filename='js/scalar-multiplication.js') }}"></script>
+<script src="{{ url_for('static', filename='js/vector-magnitude.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -28,11 +28,11 @@
 
 <div class="flex">
 	<div class="flex vertical start" x-data="main">
-		<h1>Scalar Multiplication Calculator</h1>
+		<h1>Vector Magnitude Calculator</h1>
 		
-		<p>To use the calculator, input the value of the vector to be multiplied and the value it is to be multiplied by.</p>
+		<p>To use the calculator, input the components of the vector whose magnitude you would like to calculate.</p>
+		<p>Presently, the calculator returns an approximate decimal value. Precide values expressed as square roots may be added in the future.</p>
 		<p>The resultant vector is listed at the bottom.</p>
-		<p>Presently, only cartesian coordinates are supported as inputs; however, inputting vectors as a magnitude and a direction may be added in the future.</p>
 		<div class="flex horizontal center">
 			<div class="interior flex vertical space-around">
 				<h6 class="inline">Dimensions: </h6>
@@ -55,18 +55,7 @@
 				<input type="number" style="width: 24px; margin: 25px;" x-model="values[index]">
 			</template>
 		</form>
-		<h5>Scalar: </h5>
-		<form class="flex horizontal center">
-			<input type="number" x-model="scalar">
-		</form>
-		<h5>Resultant Vector: </h5>
-		<div class="interior flex horizontal center">
-			<h6><</h6>
-			<template x-for="(dimension, index) in result()">
-				<h6 x-text="result()[index]"></h6>
-			</template>
-			<h6>></h6>
-		</div>
+		<h5 x-text="'Magnitude: ' + result()"></h5>
 	</div>
 </div>
 
