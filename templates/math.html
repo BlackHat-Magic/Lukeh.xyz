@@ -5,25 +5,6 @@
 {% endblock %}
 
 {% block body %}
-<ul class="nav">
-	<li class="nav-item"><a href="/">Home</a></li>
-	<li class="dropdown nav-item active">
-		<a href="/Math" class="dropbtn">Math</a>
-		<div class="dropdown-content">
-			<a href="/Vector-Addition">Vector Addition Calculator</a>
-			<a href="/Scalar-Multiplication">Scalar Multiplication Calculator</a>
-			<a href="/Vector-Magnitude">Vector Magnitude Calculator</a>
-			<a href="/Unit-Vector">Unit Vector Finder</a>
-			<a href="/Dot-Product">Dot Product Calculator</a>
-			<a href="/Cross-Product">Cross Product Calculator</a>
-			<a href="/TSP">Triple Scalar Product Calculator</a>
-			<a href="/Vector-Projection">Vector Projection Calculator</a>
-		</div>
-	</li>
-	<li class="nav-item"><a href="#">D&D</a></li>
-	<li class="nav-right"><a href="mailto:henderson.luket@gmail.com">Contact</a></li>
-</ul>
-
 <div class="flex">
 	<div class="flex vertical start">
 		<h1>Math Tools</h1>
@@ -42,4 +23,5 @@
 	</div>
 </div>
 
+<script defer>document.getElementById("navmath").classList.add("active")</script>
 {% endblock %}
