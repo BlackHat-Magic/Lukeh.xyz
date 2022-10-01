@@ -12,21 +12,35 @@
 
 <body>
 <ul class="nav">
-	<li id="navhome" class="nav-item"><a href="/">Home</a></li>
-	<li id="navmath" class="dropdown nav-item">
-		<a href="/Math" class="dropbtn">Math</a>
+	<li id="nav-home" class="nav-item"><a href="/">Home</a></li>
+	<li id="nav-vector-calc" class="dropdown nav-item">
+		<a href="/Math/Vector-Calc" class="dropbtn">Vector Calculus</a>
 		<div class="dropdown-content">
-			<a href="/Vector-Addition">Vector Addition Calculator</a>
-			<a href="/Scalar-Multiplication">Scalar Multiplication Calculator</a>
-			<a href="/Vector-Magnitude">Vector Magnitude Calculator</a>
-			<a href="/Unit-Vector">Unit Vector Finder</a>
-			<a href="/Dot-Product">Dot Product Calculator</a>
-			<a href="/Cross-Product">Cross Product Calculator</a>
-			<a href="/TSP">Triple Scalar Product Calculator</a>
-			<a href="/Vector-Projection">Vector Projection Calculator</a>
+			<a href="/Math/Vector-Calc/Vector-Addition">Vector Addition Calculator</a>
+			<a href="/Math/Vector-Calc/Scalar-Multiplication">Scalar Multiplication Calculator</a>
+			<a href="/Math/Vector-Calc/Vector-Magnitude">Vector Magnitude Calculator</a>
+			<a href="/Math/Vector-Calc/Unit-Vector">Unit Vector Finder</a>
+			<a href="/Math/Vector-Calc/Dot-Product">Dot Product Calculator</a>
+			<a href="/Math/Vector-Calc/Cross-Product">Cross Product Calculator</a>
+			<a href="/Math/Vector-Calc/TSP">Triple Scalar Product Calculator</a>
+			<a href="/Math/Vector-Calc/Vector-Projection">Vector Projection Calculator</a>
 		</div>
 	</li>
-	<li id="navdnd" class="nav-item"><a href="#">D&D</a></li>
+	<li id="nav-prob-stat" class="dropdown nav-item">
+		<a href="/Math/Prob-Stat" class="dropbtn">Probability & Statistics</a>
+		<div class="dropdown-content">
+			<a href="/Math/Prob-Stat/Inclusion-Exclusion">Inclusion Exclusion</a>
+			<a href="/Math/Prob-Stat/Independence-Dependence">Independence/Dependence</a>
+			<a href="/Math/Prob-Stat/Conditional-Probability">Conditional Probability</a>
+			<a href="/Math/Prob-Stat/Bayes-Theorem">Baye's Theorem</a>
+			<a href="/Math/Prob-Stat/Mean-Median">Mean and Median</a>
+			<a href="/Math/Prob-Stat/Variance">Variance</a>
+			<a href="/Math/Prob-Stat/Expectation">Expectation</a>
+			<a href="/Math/Prob-Stat/Binomial-Distribution">Binomial Distribution</a>
+			<a href="/Math/Prob-Stat/Cumulative-Probabilities">Cumulative Probabilities</a>
+		</div>
+	</li>
+	<li id="nav-dnd" class="nav-item"><a href="#">D&D</a></li>
 	<li class="nav-right"><a href="mailto:henderson.luket@gmail.com">Contact</a></li>
 </ul>
         {% block body %}{% endblock %}

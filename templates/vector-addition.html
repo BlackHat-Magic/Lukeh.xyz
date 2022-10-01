@@ -49,8 +49,8 @@
 			</div>
 			<div>
 				<template x-for="(vector, index) in values">
-					<form class="flex horizontal space-between" style="margin: 68.5px 0px">
-						<select style="margin: 0" x-model="signs[index]">
+					<form class="flex horizontal space-between">
+						<select style="margin: 0px 25px" x-model="signs[index]">
 							<option value="1">+</option>
 							<option value="-1">–</option>
 						</select>
@@ -78,5 +78,5 @@
 	</div>
 </div>
 
-<script defer>document.getElementById("navmath").classList.add("active")</script>
+<script defer>document.getElementById("nav-vector-calc").classList.add("active")</script>
 {% endblock %}

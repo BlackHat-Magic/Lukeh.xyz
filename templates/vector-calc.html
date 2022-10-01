@@ -1,0 +1,25 @@
+{% extends "master.html" %}
+
+{% block head %}
+<title>Math Tools | Luke Henderson</title>
+{% endblock %}
+
+{% block body %}
+<div class="flex">
+	<div class="flex vertical start">
+		<h2 id="Vector-Calc">Vector Calculus Tools</h2>
+		<div class="flex vertical start">
+			<button onclick='window.location.href="/Math/Vector-Calc/Vector-Addition"'>Vector Addition/Subtraction Calculator</button>
+			<button onclick='window.location.href="/Math/Vector-Calc/Scalar-Multiplication"'>Scalar Multiplication Calculator</button>
+			<button onclick='window.location.href="/Math/Vector-Calc/Vector-Magnitude"'>Vector Magnitude Calculator</button>
+			<button onclick='window.location.href="/Math/Vector-Calc/Unit-Vector"'>Unit Vector Finder</button>
+			<button onclick='window.location.href="/Math/Vector-Calc/Dot-Product"'>Dot Product Calculator</button>
+			<button onclick='window.location.href="/Math/Vector-Calc/Cross-Product"'>Cross Product Calculator</button>
+			<button onclick='window.location.href="/Math/Vector-Calc/TSP"'>Triple Scalar Product Calculator</button>
+			<button onclick='window.location.href="/Math/Vector-Calc/Vector-Projection"'>Vector Projection Calculator</button>
+		</div>
+	</div>
+</div>
+
+<script defer>document.getElementById("nav-vector-calc").classList.add("active")</script>
+{% endblock %}

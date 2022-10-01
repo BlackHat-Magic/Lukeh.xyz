@@ -105,14 +105,14 @@ body {
     margin: 0;
 }
 
-button, input {
+button, input, select {
     border-style: solid;
     padding: 16px 32px;
     text-align: center;
     text-decoration: inline-block;
     font-size: 24px;
-    margin: 25px;
-    border-radius: 52px;
+    margin: 12px;
+    border-radius: 25px;
     background-color: var(--nord-inactive);
     color: var(--nord-important);
     border-color: var(--nord3);
@@ -125,7 +125,7 @@ button:hover, input[type=submit]:hover {
     cursor: pointer;
 }
 
-input[type=text], select {
+/*input[type=text], select {
     border-style: none;
     padding: 16px 32px;
     text-decoration: inline-block;
@@ -134,7 +134,7 @@ input[type=text], select {
     border-radius: 48px;
     background-color: var(--nord-inactive);
     color: var(--nord-important);
-}
+}*/
 
 input[type=number] {
     -moz-appearance: textfield;
@@ -146,19 +146,19 @@ input[type=number]::-webkit-inner-spin-buttton, input[type=number]::-webkit-oute
 }
 
 table {
-    margin: 24px;
+    margin: 12px;
     padding:24px;
 }
 
 th {
     font-size: 36px;
-    margin: 18px;
+    margin: 12px;
     padding: 18px;
 }
 
 td {
     font-size: 24px;
-    margin: 12px;
+    margin: 6px;
     padding: 12px;
 }
 
@@ -185,22 +185,26 @@ template, template.vertical, template.horizontal {
     display: flex;
     background-color: var(--nord-canvas); 
     align-content: space-around;
-    border-radius: 25px;
+    border-radius: 12px;
     margin: 50px auto;
     width: 75%;
     align-items: center;
 }
 
+div.canvas {
+    padding: 25px;
+}
+
 .horizontal {
     flex-flow: row wrap;
     width: 100%;
-    margin: 50px;
+    margin: 25px;
 }
 
 .vertical {
     flex-flow: column nowrap;
     width: 100%;
-    margin: 50px;
+    margin: 25px;
 }
 
 .flex.center {
@@ -228,7 +232,7 @@ template, template.vertical, template.horizontal {
     padding: 16px 32px;
     text-align: center;
     font-size: 24px;
-    margin: 25px;
+    margin: 12px;
     color: var(--nord-text);
     text-decoration: none;
 }
@@ -365,4 +369,41 @@ button.circle * {
 div.interior {
     width: auto;
     margin: 0;
+}
+
+@media only screen and (max-width: 900px) {
+    
+    h1 {
+        font-size: 36px;
+        margin: 18px;
+    }
+
+    h2 {
+        font-size: 32px;
+        margin:16px;
+    }
+
+    h3 {
+        font-size: 28px;
+        margin:14px;
+    }
+
+    h4 {
+        font-size: 24px;
+        margin: 12px;
+    }
+
+    h5 {
+        font-size: 20px;
+        margin: 10px;
+    }
+
+    h6 {
+        font-size: 16px;
+        margin: 8px;
+    }
+    .flex {
+        margin: 0;
+        width: 100%;
+    }
 }
