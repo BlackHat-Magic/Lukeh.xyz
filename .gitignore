@@ -1,3 +1,6 @@
 env/
 __pycache__/
 onivim2-crash.log
+session.key
+website/database.db
+instance/

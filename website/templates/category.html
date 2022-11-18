@@ -1,0 +1,20 @@
+{% extends "master.html" %}
+
+{% block head %}
+<title>{{ category.name }} | Luke Henderson</title>
+{% endblock %}
+
+{% block body %}
+<div class="flex">
+	<div class="flex canvas vertical start">
+		<h1>Blog Posts About {{ category.name }}</h1>
+		{% for post in category.contents %}
+		<a href="/Blog/Category/{{ category.name.replace(' ', '-') }}/{{ post.name.replace(' ', '-') }}"><h2>{{ post.name }}</h2></a>
+		{% endfor %}
+	</div>
+</div>
+
+<script defer>document.getElementById("nav-home").classList.add("active")</script>
+
+{% endblock %}
+

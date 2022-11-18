@@ -1,0 +1,29 @@
+{% extends "master.html" %}
+
+{% block head %}
+<title>Create Blog | Luke Henderson</title>
+<script src="{{ url_for('static', filename='js/create-blog.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="flex" x-data="main">
+	<div class="flex canvas vertical start">
+		<h1>Create Blog Post</h1>
+		<form class="interior flex vertical start" method="post">
+			<input type="text" x-model="name" placeholder="Blog Post Title" id="name" name="name">
+			<select name="category" id="category">
+				{% for category in admin.category %}
+				<option value="{{ category.id }}">{{ category.name }}</option>
+				{% endfor %}
+			</select>
+			<textarea x-model="text" placeholder="Blog Post Text" id="text" name="text"></textarea>
+			<a><button type="submit">Create Blog Post</button></a>
+		</form>
+		<h1 x-text="name"></h1>
+		<div x-html="convert(text)" class="usercontent"></div>
+	</div>
+</div>
+
+<script defer>document.getElementById("nav-home").classList.add("active")</script>
+
+{% endblock %}
