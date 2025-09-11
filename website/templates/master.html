@@ -18,14 +18,19 @@
     <div class="relative">
         <ul class="flex flex-1 justify-center items-center p-1 space-x-1 list-none rounded-md border text-neutral-700 group border-neutral-200/80">
             <li>
+                <a href="{{ url_for('endpoints_main.home') }}" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:text-neutral-900 focus:outline-none disabled:opacity-50 disabled:pointer-events-none bg-background hover:bg-neutral-100 group">
+                    Home
+                </a>
+            </li>
+            <li>
                 <a
-                    :class="{ 'bg-neutral-100' : navigationMenu=='portfolio', 'hover:bg-neutral-100' : navigationMenu!='portfolio' }" @mouseover="navigationMenuOpen=true; navigationMenuReposition($el); navigationMenu='portfolio'" @mouseleave="navigationMenuLeave()" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:text-neutral-900 focus:outline-none disabled:opacity-50 disabled:pointer-events-none group" href="{{ url_for('endpoints_projects.projects') }}">
+                    :class="{ 'bg-neutral-100' : navigationMenu=='portfolio', 'hover:bg-neutral-100' : navigationMenu!='portfolio' }" @mouseover="navigationMenuOpen=true; navigationMenuReposition($el); navigationMenu='portfolio'" @mouseleave="navigationMenuLeave()" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:text-neutral-900 focus:outline-none disabled:opacity-50 disabled:pointer-events-none group" href="#">
                     <span>Portfolio Projects</span> 
                     <svg :class="{ '-rotate-180' : navigationMenuOpen==true && navigationMenu == 'portfolio' }" class="relative top-[1px] ml-1 h-3 w-3 ease-out duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
 				</a>
             </li>
             <li>
-                <a href="/math" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:text-neutral-900 focus:outline-none disabled:opacity-50 disabled:pointer-events-none bg-background hover:bg-neutral-100 group">
+                <a href="#" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:text-neutral-900 focus:outline-none disabled:opacity-50 disabled:pointer-events-none bg-background hover:bg-neutral-100 group">
                     Blog
                 </a>
             </li>
@@ -58,7 +63,7 @@
                     </a>
                 </div>
                 <div class="w-72">
-                    <a href="#_" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
+                    <a href="{{ url_for('endpoints_projects.math') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
                         <span class="block mb-1 font-medium text-black">Old Math Demos</span>
                         <span class="block leading-5 opacity-50">Some simple calculators  I wrote to familiarize myself with Alpine</span>
                     </a>
@@ -79,19 +84,6 @@
 
 <!-- <ul class="nav">
 	<li id="nav-home" class="nav-item"><a href="/">Home</a></li>
-	<li id="nav-vector-calc" class="dropdown nav-item">
-		<a href="/Math/Vector-Calc" class="dropbtn">Vector Calculus</a>
-		<div class="dropdown-content">
-			<a href="/Math/Vector-Calc/Vector-Addition">Vector Addition Calculator</a>
-			<a href="/Math/Vector-Calc/Scalar-Multiplication">Scalar Multiplication Calculator</a>
-			<a href="/Math/Vector-Calc/Vector-Magnitude">Vector Magnitude Calculator</a>
-			<a href="/Math/Vector-Calc/Unit-Vector">Unit Vector Finder</a>
-			<a href="/Math/Vector-Calc/Dot-Product">Dot Product Calculator</a>
-			<a href="/Math/Vector-Calc/Cross-Product">Cross Product Calculator</a>
-			<a href="/Math/Vector-Calc/TSP">Triple Scalar Product Calculator</a>
-			<a href="/Math/Vector-Calc/Vector-Projection">Vector Projection Calculator</a>
-		</div>
-	</li>
 	<li id="nav-prob-stat" class="dropdown nav-item">
 		<a href="/Math/Prob-Stat" class="dropbtn">Probability & Statistics</a>
 		<div class="dropdown-content">

@@ -1,0 +1,162 @@
+{% extends "master.html" %}
+
+{% block head %}
+<title>Math Tools | Luke Henderson</title>
+<script src="{{ url_for('static', filename='js/math.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<main class="mx-auto flex min-h-screen max-w-full flex-col items-center justify-start px-6 text-left">
+
+<div class="flex items-center justify-center mx-auto text-center max-w-7xl mb-8 mt-8">
+    <h1 class="text-2xl font-black leading-tight">Math Tools</h1>
+</div>
+
+
+
+<div x-data="main" x-init="tabRepositionMarker($refs.tabButtons.firstElementChild);" class="relative w-full max-w-3xl">
+
+<div x-ref="tabButtons" class="relative inline-grid items-center justify-center w-full h-10 grid-cols-2 p-1 text-gray-500 bg-gray-100 rounded-lg select-none">
+    <button :id="$id('tabs')" @click="tabButtonClicked($el);" type="button" class="relative z-20 inline-flex items-center justify-center w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Vector Calculus</button>
+    <button :id="$id('tabs')" @click="tabButtonClicked($el);" type="button" class="relative z-20 inline-flex items-center justify-center w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Probability and Statistics</button>
+    <div x-ref="tabMarker" class="absolute left-0 z-10 w-1/2 h-full duration-300 ease-out" x-cloak><div class="w-full h-full bg-white rounded-md shadow-sm"></div></div>
+</div>
+<div class="relative w-full mt-2 content">
+    <div :id="$id('tabs-content')" x-show="tabContentActive($el)" class="relative">
+        <!-- Tab Content 1  -->
+        <div class="border rounded-lg shadow-sm bg-card text-neutral-900 p-4">
+            <div class="flex flex-col space-y-1.5 p-2">
+                <h3 class="text-xl font-semibold leading-none tracking-tight">Vector Calculus</h3>
+            </div>
+
+            <div x-data="vecCalc" x-init="tabRepositionMarker($refs.tabButtons.firstElementChild);" class="relative flex w-full">
+                
+                <div x-ref="tabButtons" class="relative inline-grid items-start justify-start h-full p-1 text-gray-500 bg-white border border-gray-100 rounded-lg select-none">
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Vector Addition</button>
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Scalar Multiplication</button>
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Vector Magnitude</button>
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Unit Vector</button>
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Dot Product</button>
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Cross Product</button>
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Triple Scalar Product</button>
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Vector Projection</button>
+                    <div x-ref="tabMarker" class="absolute left-0 top-0 z-10 w-full h-1/2 duration-300 ease-out" x-cloak>
+                        <div class="w-full h-full bg-gray-100 rounded-md shadow-sm"></div>
+                    </div>
+                </div>
+                <div class="relative flex items-start justify-start w-full p-5 ml-2 text-xs text-gray-400 border rounded-md content border-gray-200/70">
+                    
+                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-data="vecAdd">
+                        <h3 class="text-xl font-semibold leading-none tracking-tight mb-4">Vector Addition</h3>
+
+                        <p class="mb-4">Vector addition is very straightforward. For two vectors whose dimensions match, write them left-to-right, one over the other. For each component, the corresponding component in the sum vector is just the sum of those same components in the original vector.</p>
+                        <p class="mb-4">To use the calculator, add vectors to the calculator until you reach the desired number. Then set the number of dimensions that each of the vectors should have.</p>
+                        <p class="mb-4">The resultant vector is listed at the bottom.</p>
+
+                        <h4 class="text-lg font-semibold leading-non tracking-tight mb-4">
+                            <span class="mx-2"># of Vectors</span>
+                            <button type="button" class="inline-flex px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-100 bg-white border-2 aspect-square rounded-full hover:text-white border-neutral-400 hover:bg-neutral-200 w-[45px]" @click="dnvec ()">-</button>
+                            <span x-text="values.length" class="mx-2"></span>
+                            <button type="button" class="inline-flex px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-100 bg-white border-2 aspect-square rounded-full hover:text-white border-neutral-400 hover:bg-neutral-200 w-[45px]" @click="upvec ()">+</button>
+                        </h4>
+
+                        <h4 class="text-lg font-semibold leading-non tracking-tight mb-4">
+                            <span class="mx-2">Dimensions</span>
+                            <button type="button" class="inline-flex px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-100 bg-white border-2 aspect-square rounded-full hover:text-white border-neutral-400 hover:bg-neutral-200 w-[45px]" @click="dndim ()">-</button>
+                            <span x-text="values[0].length" class="mx-2"></span>
+                            <button type="button" class="inline-flex px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-100 bg-white border-2 aspect-square rounded-full hover:text-white border-neutral-400 hover:bg-neutral-200 w-[45px]" @click="updim ()">+</button>
+                        </h4>
+
+                        <div class="items-center justify-center w-full">
+                        <template x-for="(vector, index) in values">
+                        <h6 class="text-lg text-center mb-2">
+                            <span><</span>
+                            <template x-for="(component, subindex) in vector">
+                                <span>
+                                    <template x-if="subindex != 0">
+                                        <span>, </span>
+                                    </template>
+                                    <input type="number" class="inline-flex w-16 h-10 px-3 py-2 text-sm bg-white border rounded-md border-neutral-300 ring-offset-background placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-50" x-model="vector[subindex]"/>
+                                </span>
+                            </template>
+                            <span>></span>
+                        </h6>
+                        </template>
+                        </div>
+
+                        <h4 class="text-lg font-semibold leading-non tracking-tight mb-4">Result</h4>
+                        <h6 class="text-lg text-center mb-2">
+                            <span><</span>
+                            <template x-for="(component, index) in result ()">
+                                <span>
+                                    <template x-if="index != 0">
+                                        <span>, </span>
+                                    </template>
+                                    <span x-text="component"></span>
+                                </span>
+                            </template>
+                            <span>></span>
+                        </h6>
+                    </div>
+
+                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak>
+                        <h3 class="text-lg font-semibold leading-none tracking-tight">Scalar Multiplication</h3>
+                        And, this is the content for Tab2
+                    </div>
+
+                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak>
+                        <h3 class="text-lg font-semibold leading-none tracking-tight">Vector Magnitude</h3>
+                        Finally, this is the content for Tab3
+                    </div>
+
+                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak>
+                        <h3 class="text-lg font-semibold leading-none tracking-tight">Unit Vector</h3>
+                        Finally, this is the content for Tab3
+                    </div>
+
+                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak>
+                        <h3 class="text-lg font-semibold leading-none tracking-tight">Dot Product</h3>
+                        Finally, this is the content for Tab3
+                    </div>
+
+
+                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak>
+                        <h3 class="text-lg font-semibold leading-none tracking-tight">Cross Product</h3>
+                        Finally, this is the content for Tab3
+                    </div>
+
+
+                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak>
+                        <h3 class="text-lg font-semibold leading-none tracking-tight">Triple Scalar Product</h3>
+                        Finally, this is the content for Tab3
+                    </div>
+
+
+                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak>
+                        <h3 class="text-lg font-semibold leading-none tracking-tight">Vector Projection</h3>
+                        Finally, this is the content for Tab3
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        <!-- End Tab Content 1 -->
+    </div>
+
+    <div :id="$id('tabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak>
+        <!-- Tab Content 2 -->
+        <div class="border rounded-lg shadow-sm bg-card text-neutral-900">
+            <div class="flex flex-col space-y-1.5 p-6">
+                <h3 class="text-xl font-semibold leading-none tracking-tight">Probability and Statistics</h3>
+                <p class="text-sm text-neutral-500"></p>
+            </div>
+        </div>
+        <!-- End Tab Content 2 -->
+    </div>
+
+</div>
+</div>
+
+</main>
+{% endblock %}

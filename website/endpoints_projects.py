@@ -21,3 +21,7 @@ def silverquill():
 @endpoints_projects.route("/Asmadi-Engine")
 def asmadi():
     return(render_template("projects/asmadi.html"))
+
+@endpoints_projects.route("/Math")
+def math():
+    return(render_template("projects/math.html"))
