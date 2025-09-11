@@ -1,25 +1,25 @@
-from flask import Blueprint, Flask, render_template, redirect, url_for, request, session, jsonify, flash
-from .models import User, Contents, Category
+from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import current_user, login_required
+
+from .models import User, Contents, Category
 from . import db
-import json
 
-epblog = Blueprint("epblog", __name__)
+endpoints_blog = Blueprint("endpoints_blog", __name__)
 
-@epblog.route("/")
+@endpoints_blog.route("/")
 def blog():
     pass
 
-@epblog.route("/Create", methods=["GET", "POST"])
+@endpoints_blog.route("/Create", methods=["GET", "POST"])
 @login_required
 def create():
     admin = User.query.filter_by(id=1).first()
     if(not admin.category):
-        return(redirect(url_for("epblog.createCategory")))
+        return(redirect(url_for("endpoints_blog.createCategory")))
     if(request.method == "POST"):
         if(current_user.id != 1):
             flash("You are not authorized to make blog posts.")
-            return(redirect(url_for("epmain.home")))
+            return(redirect(url_for("endpoints_main.home")))
         elif(len(request.form.get("name")) < 1):
             flash("Blog Post Title Required.")
         elif(len(request.form.get("name")) > 1023):
@@ -31,17 +31,17 @@ def create():
             db.session.add(new_post)
             db.session.commit()
             flash("Blog Post Created!")
-            return(redirect(url_for("epmain.home")))
+            return(redirect(url_for("endpoints_main.home")))
     return(render_template("create-blog.html", admin = admin))
 
-@epblog.route("/Create-Category", methods=["GET", "POST"])
+@endpoints_blog.route("/Create-Category", methods=["GET", "POST"])
 @login_required
 def createCategory():
     admin = User.query.filter_by(id=1).first()
     if(request.method == "POST"):
         if(current_user.id != 1):
             flash("You are not authorized to make blog post categories.")
-            return(redirect(url_for("epmain.home")))
+            return(redirect(url_for("endpoints_main.home")))
         elif(len(request.form.get("name")) < 1):
             flash("Blog Post Category Name Required.")
         elif(len(request.form.get("name")) > 255):
@@ -51,16 +51,16 @@ def createCategory():
             db.session.add(new_category)
             db.session.commit()
             flash("Blog Post Category Created Successfully!")
-            return(redirect(url_for("epmain.home")))
+            return(redirect(url_for("endpoints_main.home")))
     return(render_template("create-category.html", admin = admin))
 
-@epblog.route("/Category/<string:category>")
+@endpoints_blog.route("/Category/<string:category>")
 def category(category):
     admin = User.query.filter_by(id=1).first()
     category = Category.query.filter_by(name=category.replace("-", " ")).first()
     return(render_template("category.html", admin = admin, category = category))
 
-@epblog.route("/Category/<string:category>/<string:post>")
+@endpoints_blog.route("/Category/<string:category>/<string:post>")
 def post(category, post):
     admin = User.query.filter_by(id=1).first()
     category = Category.query.filter_by(name=category.replace("-", " ")).first()

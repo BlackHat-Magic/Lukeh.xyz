@@ -15,13 +15,15 @@ def start():
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
     db.init_app(app)
 
-    from .epmain import epmain
-    from .epauth import epauth
-    from .epblog import epblog
+    from .endpoints_main import endpoints_main
+    from .endpoints_auth import endpoints_auth
+    from .endpoints_blog import endpoints_blog
+    from .endpoints_projects import endpoints_projects
 
-    app.register_blueprint(epmain, url_prefix="/")
-    app.register_blueprint(epauth, url_prefix="/")
-    app.register_blueprint(epblog, url_prefix="/Blog")
+    app.register_blueprint(endpoints_main, url_prefix="/")
+    app.register_blueprint(endpoints_auth, url_prefix="/auth")
+    app.register_blueprint(endpoints_blog, url_prefix="/Blog")
+    app.register_blueprint(endpoints_projects, url_prefix="/Projects")
 
     from .models import User, Contents
 
