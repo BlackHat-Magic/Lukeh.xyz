@@ -167,5 +167,31 @@ document.addEventListener ("alpine:init", () => {
             }
             return output;
         }
+    }));
+
+    Alpine.data("dotProduct", () => ({
+        vec1: [0, 0, 0],
+        vec2: [0, 0, 0],
+
+        dndim () {
+            if (this.vec1.length <= 1) {
+                alert("Stop that.");
+            } else {
+                this.vec1.pop ();
+                this.vec2.pop ();
+            }
+        },
+        updim () {
+            this.vec1.push (0);
+            this.vec2.push (0);
+        },
+
+        result () {
+            output = 0
+            for (let i = 0; i < this.vec1.length; i++) {
+                output += this.vec1[i] * this.vec2[i];
+            }
+            return output;
+        }
     }))
 })
