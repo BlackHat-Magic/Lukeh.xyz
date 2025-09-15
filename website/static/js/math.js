@@ -88,5 +88,29 @@ document.addEventListener ("alpine:init", () => {
             }
             return output;
         }
+    }));
+
+    Alpine.data("scalarMult", () => ({
+        values: [0, 0, 0],
+        scalar: 1.0,
+
+        dndim () {
+            if (this.values.length <= 1) {
+                alert("Stop that.");
+            } else {
+                this.values.pop ();
+            }
+        },
+        updim () {
+            this.values.push(0);
+        },
+
+        result () {
+            output = [];
+            for (let i = 0; i < this.values.length; i++) {
+                output.push(this.values[i] * this.scalar);
+            }
+            return output;
+        }
     }))
 })
