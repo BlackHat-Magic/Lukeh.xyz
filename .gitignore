@@ -4,3 +4,5 @@ onivim2-crash.log
 session.key
 website/database.db
 instance/
+**/dist/**/*
+node_modules
