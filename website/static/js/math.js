@@ -112,5 +112,53 @@ document.addEventListener ("alpine:init", () => {
             }
             return output;
         }
+    }));
+
+    Alpine.data("vecMagnitude", () => ({
+        values: [0, 0, 0],
+
+        dndim () {
+            if (this.values.length <= 1) {
+                alert("Stop that.");
+            } else {
+                this.values.pop ();
+            }
+        },
+        updim () {
+            this.values.push(0);
+        },
+
+        result () {
+            output = 0;
+            for (let i = 0; i < this.values.length; i++) {
+                output += this.values[i] * this.values[i];
+            }
+            output = Math.sqrt (output).toFixed (5);
+            return output;
+        }
+    }));
+
+    Alpine.data("unitVector", () => ({
+        values: [0, 0, 0],
+
+        dndim () {
+            if (this.values.length <= 1) {
+                alert("Stop that.");
+            } else {
+                this.values.pop ();
+            }
+        },
+        updim () {
+            this.values.push(0);
+        },
+
+        result () {
+            output = 0;
+            for (let i = 0; i < this.values.length; i++) {
+                output += this.values[i] * this.values[i];
+            }
+            output = Math.sqrt (output).toFixed (5);
+            return output;
+        }
     }))
 })
