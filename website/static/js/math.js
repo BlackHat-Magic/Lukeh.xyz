@@ -153,11 +153,18 @@ document.addEventListener ("alpine:init", () => {
         },
 
         result () {
-            output = 0;
+            output = [];
+
+            magnitude = 0;
             for (let i = 0; i < this.values.length; i++) {
-                output += this.values[i] * this.values[i];
+                magnitude += this.values[i] * this.values[i];
             }
-            output = Math.sqrt (output).toFixed (5);
+            magnitude = Math.sqrt (magnitude);
+
+            for (let i = 0; i < this.values.length; i++) {
+                output.push((this.values[i] / magnitude).toFixed (5));
+                isNaN (output[i]) ? output[i] = 0.0 : null;
+            }
             return output;
         }
     }))
