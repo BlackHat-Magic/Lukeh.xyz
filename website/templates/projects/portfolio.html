@@ -1,0 +1,27 @@
+{% extends "master.html" %}
+
+{% block head %}
+<title>About this Portfolio | Luke Henderson</title>
+{% endblock %}
+
+{% block body %}
+<main class="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 text-left">
+
+<div class="flex items-center justify-center mx-auto text-center max-w-7xl">
+    <h1 class="text-2xl font-black leading-tight">Portfolio</h1>
+</div>
+
+<div class="flex items-center justify-center mx-auto text-center max-w-7xl">
+    <a class="text-xs leading-tight" href="https://github.com/BlackHat-Magic/Lukeh.xyz" target="_blank">Source Code</a>
+</div>
+
+<p class="max-w-prose text-lg leading-relaxed text-gray-600 sm:text-xl mt-8">This site serves as my developer portfolio and is written with Flask, Alpine, and Tailwind.</p>
+
+<p class="max-w-prose text-lg leading-relaxed text-gray-600 sm:text-xl mt-8">Flask was chosen because it's what I'm familiar with and it is more than sufficient for the task; this site's needs are barely more complicated than just serving static HTML, and it's not likely to see more than a few dozen concurrent viewers.</p>
+
+<p class="max-w-prose text-lg leading-relaxed text-gray-600 sm:text-xl mt-8">Alpine was chosen for similar reasons; this site isn't seriously limited by the "HTML with interaction on top" approach that using something like vanilla JavaScript or jQuery has. I find Alpine to be more ergonomic than those without inflating the client bundle to multiple megabytes in the way that React would likely do.</p>
+
+<p class="max-w-prose text-lg leading-relaxed text-gray-600 sm:text-xl mt-8">I really dragged my feet on adding Tailwind, but the ability to use existing component libraries was something I couldn't ignore any longer.</p>
+
+</main>
+{% endblock %}

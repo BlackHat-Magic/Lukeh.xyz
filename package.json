@@ -1,0 +1,24 @@
+{
+  "name": "lukeh.xyz",
+  "version": "0.1.0",
+  "description": "portfolio website",
+  "homepage": "https://github.com/BlackHat-Magic/LukeH.xyz#readme",
+  "bugs": {
+    "url": "https://github.com/BlackHat-Magic/LukeH.xyz/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlackHat-Magic/LukeH.xyz.git"
+  },
+  "license": "AGPL-3.0",
+  "author": "BlackHat-Magic (Luke Henderson)",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.13",
+    "tailwindcss": "^4.1.13"
+  }
+}

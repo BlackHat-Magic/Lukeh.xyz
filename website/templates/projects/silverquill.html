@@ -1,0 +1,25 @@
+{% extends "master.html" %}
+
+{% block head %}
+<title>Silverquill Compiler | Luke Henderson</title>
+{% endblock %}
+
+{% block body %}
+<main class="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 text-left">
+
+<div class="flex items-center justify-center mx-auto text-center max-w-7xl">
+    <h1 class="text-2xl font-black leading-tight">Silverquill Compiler</h1>
+</div>
+
+<div class="flex items-center justify-center mx-auto text-center max-w-7xl">
+    <a class="text-xs leading-tight" href="https://github.com/BlackHat-Magic/Silverquill-Compiler" target="_blank">Source Code</a>
+</div>
+
+<p class="max-w-prose text-lg leading-relaxed text-gray-600 sm:text-xl mt-8">The way this project came about is kind of funny. When I was doing my internship at NSHC in the summer of 2025, I was tasked with reading and creating a presentation on the <a href="https://bellard.org/tcc/" target="_blank">Tiny C compiler</a> by Fabrice Bellard. Perhaps because of the language barrier, I had misinterpreted this as being to <em>write</em> a very simple compiler. I had gotten as far as writing a lexer and parser using a <a href="https://kuterdinel.com/writing-a-very-simple-jit-compiler-in-about-1000-lines-of-c.html" target="_blank">tutorial by Kuter Daniel</a> before the misunderstanding had been cleared up.</p>
+
+<p class="max-w-prose text-lg leading-relaxed text-gray-600 sm:text-xl mt-8">The compiler targets the RV64I instruction set for portability. The idea is that the compiled code will run in a virtual machine that executes the RISC-V instructions so that only the VM, not the runtime code, has to be recompiled for new platforms. This virtual machine is, of course, part of the project. As a part of preparing to write this project, I followed a <a href="https://www.jmeiners.com/lc3-vm/" target="_blank">tutorial by Justin Meiners and Ryan Pendleton</a> detailing how to write a simple LC-3 virtual machine, and the RV64I VM would be based on that.</p>
+
+<p class="max-w-prose text-lg leading-relaxed text-gray-600 sm:text-xl mt-8">I intend to come back to this, but as of writing this, my university capstone project is taking up a lot of my time.</p>
+
+</main>
+{% endblock %}

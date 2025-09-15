@@ -2,31 +2,34 @@
 
 {% block head %}
 <title>Home | Luke Henderson</title>
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
 {% endblock %}
 
 {% block body %}
-<div class="flex">
-	<div class="flex canvas vertical start">
-		<img src="https://cdn.discordapp.com/avatars/272197511769227264/5a2ba4f610b649c0c148eec08ef20c0e.png?size=1024" style="max-width: 512px; width: 100%; border-radius: 50%; margin: 50px 150px 50px 150px;">
 
-		<h1>Luke Henderson</h1>
+<main
+class="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 text-center"
+>
+<div class="mb-8">
+  <img
+	src="{{ url_for('static', filename='images/salad.jpg') }}"
+	alt="A photo of Luke Henderson"
+	class="h-40 w-40 rounded-full object-cover shadow-lg ring-2 ring-gray-200"
+  />
+</div>
 
-		<p style="text-align: center;">Hi.</p>
-		<div id="blurb">
-			<p>I'm Luke Henderson, a Computer Science student at UC Merced. This website is where I intend to put programming projects that I'm working on. I don't really have much else to say. Now, you might be thinking: "Hey, Luke, this page is feeling kind of devoid of content. Shouldn't there be more stuff here to fill it out?"</p>
-			<br>
-			<p>And I'd say you're right. But that's work, and my attention span hasn't really improved since </p>
-			<br>
-			<p>So if you want to access some of my projects, you can see them in the navbar. That is, only if</p>
-			<ul>
-				<li>I have gotten around to actually putting the navbar there</li>
-				<li>I haven't forgotten to push that change to production</li>
-				<li>I haven't broken it since doing that</li>
-			</ul>
-		</div>
+<div 
+	x-data="TitleTyping" 
+	x-init="$nextTick (() => {init_function ()})"
+	class="flex items-center justify-center mx-auto text-center max-w-7xl">
+	<div class="relative flex items-center justify-center h-auto">
+		<h1 class="text-2xl font-black leading-tight" x-text="text">⁣</h1>
+		<span class="absolute right-0 w-2 -mr-2 bg-black h-3/4" id="cursor"></span>
 	</div>
 </div>
 
-<script defer>document.getElementById("nav-home").classList.add("active")</script>
-
+<p class="max-w-prose text-lg leading-relaxed text-gray-600 sm:text-xl">
+	I am a computer science and engineering student at the University of California, Merced with a professional interest in game engine and graphics programming and machine learning and  a more casual interest in operating systems, compiler design, and backend development.
+</p>
+</main>
 {% endblock %}
