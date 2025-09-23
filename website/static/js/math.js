@@ -193,5 +193,86 @@ document.addEventListener ("alpine:init", () => {
             }
             return output;
         }
-    }))
+    }));
+
+    Alpine.data("crossProduct", () => ({
+        a: [0, 0, 0],
+        b: [0, 0, 0],
+        // Cross product is 3D; keep controls inert
+        noopDim() { alert("Cross product here is defined for 3D only."); },
+        result() {
+            const [ax, ay, az] = this.a.map(Number);
+            const [bx, by, bz] = this.b.map(Number);
+            const cx = ay * bz - az * by;
+            const cy = az * bx - ax * bz;
+            const cz = ax * by - ay * bx;
+            return [cx, cy, cz];
+        }
+    }));
+
+    Alpine.data("tripleScalarProduct", () => ({
+        vectors: [
+            [0, 0, 0], // a
+            [0, 0, 0], // b
+            [0, 0, 0]  // c
+        ],
+        noopDim() { alert("Triple scalar product here is 3D only."); },
+        result() {
+            const [a, b, c] = this.vectors.map(v => v.map(Number));
+            // Compute determinant |a; b; c| = a · (b × c)
+            const bx = b[0], by = b[1], bz = b[2];
+            const cx = c[0], cy = c[1], cz = c[2];
+            const cross_bc = [
+                by * cz - bz * cy,
+                bz * cx - bx * cz,
+                bx * cy - by * cx
+            ];
+            const val = a[0] * cross_bc[0] + a[1] * cross_bc[1] + a[2] * cross_bc[2];
+            return val;
+        }
+    }));
+
+    Alpine.data("vectorProjection", () => ({
+        a: [0, 0, 0],
+        b: [0, 0, 0],
+        dndim() {
+            if (this.a.length <= 1) {
+                alert("Stop that.");
+            } else {
+                this.a.pop();
+                this.b.pop();
+            }
+        },
+        updim() {
+            this.a.push(0);
+            this.b.push(0);
+        },
+        dot(u, v) {
+            let s = 0;
+            for (let i = 0; i < u.length; i++) s += Number(u[i]) * Number(v[i]);
+            return s;
+        },
+        normSq(v) {
+            let s = 0;
+            for (let i = 0; i < v.length; i++) s += Number(v[i]) * Number(v[i]);
+            return s;
+        },
+        scalarComponent() {
+            const bb = this.normSq(this.b);
+            if (bb === 0) return 0;
+            const comp = this.dot(this.a, this.b) / Math.sqrt(bb);
+            return Number.isFinite(comp) ? comp.toFixed(5) : 0;
+        },
+        result() {
+            const bb = this.normSq(this.b);
+            const out = new Array(this.a.length).fill(0);
+            if (bb === 0) return out;
+            const factor = this.dot(this.a, this.b) / bb;
+            for (let i = 0; i < this.b.length; i++) {
+                const val = factor * Number(this.b[i]);
+                out[i] = Number.isFinite(val) ? Number(val.toFixed(5)) : 0;
+            }
+            return out;
+        }
+    }));
 })
