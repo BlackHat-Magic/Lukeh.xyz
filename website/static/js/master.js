@@ -11,20 +11,14 @@ document.addEventListener ("alpine:init", () => {
         lightThemes: [
             { key: "catppuccin-latte", name: "Catppuccin Latte" },
             { key: "nord-light", name: "Nord Light" },
-            { key: "solarized-light", name: "Solarized Light" },
+            { key: "strawberry-light", name: "Strawberry Light" },
             { key: "gruvbox-light", name: "Gruvbox Light" },
-            { key: "rose-pine-dawn", name: "Rosé Pine Dawn" },
         ],
         darkThemes: [
             { key: "catppuccin-mocha", name: "Catppuccin Mocha" },
-            { key: "catppuccin-macchiato", name: "Catppuccin Macchiato" },
             { key: "nord-dark", name: "Nord Dark" },
-            { key: "dracula", name: "Dracula" },
+            { key: "strawberry-dark", name: "Strawberry Dark" },
             { key: "gruvbox-dark", name: "Gruvbox Dark" },
-            // Optional:
-            // { key: "catppuccin-frappe", name: "Catppuccin Frappé" },
-            // { key: "solarized-dark", name: "Solarized Dark" },
-            // { key: "rose-pine", name: "Rosé Pine" },
         ],
   
         init() {
@@ -41,15 +35,30 @@ document.addEventListener ("alpine:init", () => {
             } catch (_) {
                 this.mode = prefersDark() ? "dark" : "light";
             }
-            this.apply();
+            this.apply(true);
         },
   
-        apply() {
+        apply(animate = false) {
             const html = document.documentElement;
             html.setAttribute("data-mode", this.mode);
             const themeKey = this.mode === "light" ? this.lightKey : this.darkKey;
             html.setAttribute("data-theme", themeKey);
             html.style.colorScheme = this.mode;
+
+            if (animate) {
+                // Respect reduced motion via CSS; class still toggles but transitions are 0ms
+                html.classList.add("theme-anim");
+                // Use duration + small buffer
+                const dur = getComputedStyle(html).getPropertyValue("--theme-anim-duration").trim() || "320ms";
+                // Parse ms
+                const ms = dur.endsWith("ms")
+                ? parseFloat(dur)
+                : dur.endsWith("s")
+                ? parseFloat(dur) * 1000
+                : 320;
+                clearTimeout(this._animT);
+                this._animT = setTimeout(() => html.classList.remove("theme-anim"), ms + 50);
+            }
 
             localStorage.setItem(
                 "theme.pref",
@@ -60,12 +69,12 @@ document.addEventListener ("alpine:init", () => {
   
         toggleMode() {
             this.mode = this.mode === "light" ? "dark" : "light";
-            this.apply();
+            this.apply(true);
         },
   
         setLight(key) {
             this.lightKey = key;
-            if (this.mode === "light") this.apply();
+            if (this.mode === "light") this.apply(true);
             else
             localStorage.setItem(
                 "theme.pref",
@@ -75,7 +84,7 @@ document.addEventListener ("alpine:init", () => {
   
         setDark(key) {
             this.darkKey = key;
-            if (this.mode === "dark") this.apply();
+            if (this.mode === "dark") this.apply(true);
             else
             localStorage.setItem(
                 "theme.pref",
@@ -97,7 +106,7 @@ document.addEventListener ("alpine:init", () => {
             const theme = Alpine.store("theme");
             if (theme.mode !== tab) {
                 theme.mode = tab;
-                theme.apply();
+                theme.apply(true);
             }
         },
         init() {
