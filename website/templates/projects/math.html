@@ -17,12 +17,12 @@
 <div x-data="main" x-init="tabRepositionMarker($refs.tabButtons.firstElementChild);" class="relative w-full max-w-3xl">
 
 <div x-ref="tabButtons" class="relative inline-grid items-center justify-center w-full h-10 grid-cols-2 p-1 text-gray-500 bg-gray-100 rounded-lg select-none">
-    <button :id="$id('tabs')" @click="tabButtonClicked($el);" type="button" class="relative z-20 inline-flex items-center justify-center w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Vector Calculus</button>
-    <button :id="$id('tabs')" @click="tabButtonClicked($el);" type="button" class="relative z-20 inline-flex items-center justify-center w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Probability and Statistics</button>
+    <button :id="$id('tabs')" @click="tabButtonClicked($el);" type="button" class="relative z-20 inline-flex items-center justify-center w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap" data-hash="Vector Calculus">Vector Calculus</button>
+    <button :id="$id('tabs')" @click="tabButtonClicked($el);" type="button" class="relative z-20 inline-flex items-center justify-center w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap" data-hash="Statistics">Probability and Statistics</button>
     <div x-ref="tabMarker" class="absolute left-0 z-10 w-1/2 h-full duration-300 ease-out" x-cloak><div class="w-full h-full bg-white rounded-md shadow-sm"></div></div>
 </div>
 <div class="relative w-full mt-2 content">
-    <div :id="$id('tabs-content')" x-show="tabContentActive($el)" class="relative">
+    <div data-hash="Vector Calculus" :id="$id('tabs-content')" x-show="tabContentActive($el)" class="relative">
         <!-- Tab Content 1  -->
         <div class="border rounded-lg shadow-sm bg-card text-neutral-900 p-4">
             <div class="flex flex-col space-y-1.5 p-2">
@@ -32,21 +32,21 @@
             <div x-data="vecCalc" x-init="tabRepositionMarker($refs.tabButtons.firstElementChild);" class="relative flex w-full">
                 
                 <div x-ref="tabButtons" class="relative inline-grid items-start justify-start h-full p-1 text-gray-500 bg-white border border-gray-100 rounded-lg select-none">
-                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Vector Addition</button>
-                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Scalar Multiplication</button>
-                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Vector Magnitude</button>
-                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Unit Vector</button>
-                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Dot Product</button>
-                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Cross Product</button>
-                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Triple Scalar Product</button>
-                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap">Vector Projection</button>
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap" data-hash="Vector Addition">Vector Addition</button>
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap" data-hash="Scalar Multiplication">Scalar Multiplication</button>
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap" data-hash="Vector Magnitude">Vector Magnitude</button>
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap" data-hash="Unit Vector">Unit Vector</button>
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap" data-hash="Dot Product">Dot Product</button>
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap" data-hash="Cross Product">Cross Product</button>
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap" data-hash="TSP">Triple Scalar Product</button>
+                    <button :id="$id('subtabs')" @click="tabButtonClicked($el);" type="button" :class="{ 'bg-gray-100 text-gray-700' : tabButtonActive($el) }" class="relative z-20 inline-flex items-center justify-start w-full h-8 px-3 text-sm font-medium transition-all rounded-md cursor-pointer whitespace-nowrap" data-hash="Vector Projection">Vector Projection</button>
                     <div x-ref="tabMarker" class="absolute left-0 top-0 z-10 w-full h-1/2 duration-300 ease-out" x-cloak>
                         <div class="w-full h-full bg-gray-100 rounded-md shadow-sm"></div>
                     </div>
                 </div>
                 <div class="relative flex items-start justify-start w-full p-5 ml-2 text-xs text-gray-400 border rounded-md content border-gray-200/70">
                     
-                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-data="vecAdd">
+                    <div data-hash="Vector Addition" :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-data="vecAdd">
                         <h3 class="text-xl font-semibold leading-none tracking-tight mb-4">Vector Addition</h3>
 
                         <p class="mb-4">Vector addition is very straightforward. For two vectors whose dimensions match, write them left-to-right, one over the other. For each component, the corresponding component in the sum vector is just the sum of those same components in the original vector.</p>
@@ -107,7 +107,7 @@
                         </h6>
                     </div>
 
-                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak x-data="scalarMult">
+                    <div data-hash="Scalar Multiplication" :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak x-data="scalarMult">
                         <h3 class="text-xl font-semibold leading-none tracking-tight mb-4">Scalar Multiplication</h3>
 
                         <p class="mb-4">Multiplying a vector by a scalar is very straightforward. For any given component in the vector, the corresponding component in the output vector is that component multiplied by the scalar.</p>
@@ -155,7 +155,7 @@
                         </h6>
                     </div>
 
-                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak x-data="vecMagnitude">
+                    <div data-hash="Vector Magnitude" :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak x-data="vecMagnitude">
                         <h3 class="text-xl font-semibold leading-none tracking-tight mb-4">Vector Magnitude</h3>
 
                         <p class="mb-4">Getting the magnitude of a vector involves extending the Pythagorean theorem into an arbitrary number of dimensions. Take all of the components, square each of them, add them together, then take the square root.</p>
@@ -186,7 +186,7 @@
                         <h4 class="text-lg font-semibold leading-non tracking-tight mb-4">Magnitude: <span x-text="result ()"></span></h4>
                     </div>
 
-                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak x-data="unitVector">
+                    <div data-hash="Unit Vector" :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak x-data="unitVector">
                         <h3 class="text-lg font-semibold leading-none tracking-tight">Unit Vector</h3>
 
                         <p class="mb-4">Finding the unit vector along a given vector's axis involves first getting that vector's magnitude. Then divide each component by that magnitude.</p>
@@ -229,7 +229,7 @@
                         </h6>
                     </div>
 
-                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak x-data="dotProduct">
+                    <div data-hash="Dot Product" :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak x-data="dotProduct">
                         <h3 class="text-lg font-semibold leading-none tracking-tight">Dot Product</h3>
 
                         <p class="mb-4">To take the dot product of two vectors whose dimensions match, sum together the products of each corresponding component.</p>
@@ -273,7 +273,7 @@
                     </div>
 
 
-                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak x-data="crossProduct">
+                    <div data-hash="Cross Product" :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak x-data="crossProduct">
                         <h3 class="text-lg font-semibold leading-none tracking-tight">Cross Product</h3>
                         <p class="mb-4">Defined for 3D vectors: a × b is perpendicular to both a and b.</p>
                     
@@ -312,7 +312,7 @@
                     </div>
 
 
-                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak x-data="tripleScalarProduct">
+                    <div data-hash="TSP" :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak x-data="tripleScalarProduct">
                         <h3 class="text-lg font-semibold leading-none tracking-tight">Triple Scalar Product</h3>
                         <p class="mb-4">a · (b × c). Signed volume of the parallelepiped spanned by a, b, c (3D).</p>
                     
@@ -335,7 +335,7 @@
                     </div>
 
 
-                    <div :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak x-data="vectorProjection">
+                    <div data-hash="Vector Projection" :id="$id('subtabs-content')" x-show="tabContentActive($el)" class="relative" x-cloak x-data="vectorProjection">
                         <h3 class="text-lg font-semibold leading-none tracking-tight">Vector Projection</h3>
                         <p class="mb-4">proj<sub>b</sub>(a) = (a · b / ||b||²) b</p>
                     

@@ -1,41 +1,141 @@
 document.addEventListener ("alpine:init", () => {
+    const parseHash = () => {
+        const raw = decodeURIComponent ((window.location.hash || "").replace(/^#/, ""));
+        if (!raw) return { main: "Vector Calculus", sub: "Vector Addition" };
+        const parts = raw.split ("/");
+        const main = parts[0] || "Vector Calculus";
+        const sub = parts[1] || null;
+        return { main, sub };
+    };
+    const setHash = (main, sub = null) => {
+        const target = sub ? `#${encodeURIComponent (main)}/${encodeURIComponent (sub)}` : `#${main}`;
+        if (window.location.hash !== target) {
+            history.replaceState (null, "", target);
+        }
+    };
+
+    const validMain = new Set (["Vector Calculus", "Statistics"]);
+    const validSub = new Set ([
+        "Vector Addition",
+        "Scalar Multiplication",
+        "Vector Magnitude",
+        "Unit Vector",
+        "Dot Product",
+        "Cross Product",
+        "TSP",
+        "Vector Projection"
+    ]);
+
     Alpine.data ("main", () => ({
-        tabSelected: 1,
-        // tabId: $id('tabs'),
+        mainKey: "Vector Calculus",
+
         tabButtonClicked(tabButton){
-            this.tabSelected = tabButton.id.split('-').pop();
-            this.tabRepositionMarker(tabButton);
+            const key = tabButton.dataset.hash;
+            if (!validMain.has (key)) return;
+            this.mainKey = key;
+            this.tabRepositionMarker (tabButton);
+            const { sub } = parseHash ();
+            if (key === "Vector Calculus") {
+                setHash ("Vector Calculus", validSub.has (sub) ? sub : "Vector Addition");
+            } else {
+                setHash ("Statistics");
+            }
         },
         tabRepositionMarker(tabButton){
             this.$refs.tabMarker.style.width=tabButton.offsetWidth + 'px';
             this.$refs.tabMarker.style.height=tabButton.offsetHeight + 'px';
             this.$refs.tabMarker.style.left=tabButton.offsetLeft + 'px';
         },
-        tabContentActive(tabContent){
-            return this.tabSelected == tabContent.id.split('-').pop();
+        tabContentActive (tabContent) {
+            return tabContent.dataset.hash === this.mainKey;
+        },
+
+        init () {
+            const { main } = parseHash ();
+            this.mainKey = validMain.has (main) ? main : "Vector Calculus";
+
+            this.$nextTick (() => {
+                const button = Array.from (this.$refs.tabButtons.querySelectorAll ("button")).find (
+                    (b) => b.dataset.hash === this.mainKey
+                );
+                if (button) this.tabRepositionMarker (button);
+            });
+
+            window.addEventListener ("hashchange", () => {
+                const { main } = parseHash ();
+                const newKey = validMain.has (main) ? main : "Vector Calculus";
+                if (newKey !== this.mainKey) {
+                    this.mainKey = newKey;
+                    this.$nextTick (() => {
+                        const button = Array.from (
+                            this.$refs.tabButtons.querySelectorAll ("button")
+                        ).find ((b) => b.dataset.hash === this.mainKey);
+                        if (button) this.tabRepositionMarker (button);
+                    })
+                }
+            })
         }
     }));
 
     Alpine.data("vecCalc", () => ({
-        tabSelected: 1,
-        // tabId: $id('tabs'),
-        tabButtonClicked(tabButton){
-            this.tabSelected = tabButton.id.split('-').pop();
+        // Subtabs only apply when main is 'vc'
+        subKey: "Vector Addition",
+    
+        tabButtonClicked(tabButton) {
+            const key = tabButton.dataset.hash;
+            if (!validSub.has(key)) return;
+            this.subKey = key;
             this.tabRepositionMarker(tabButton);
+            setHash("Vector Calculus", key);
         },
-        tabRepositionMarker(tabButton){
-            this.$refs.tabMarker.style.width=tabButton.offsetWidth + 'px';
-            this.$refs.tabMarker.style.height=tabButton.offsetHeight + 'px';
-            this.$refs.tabMarker.style.top=tabButton.offsetTop + 'px';
-            this.$refs.tabMarker.style.left='0px';
+    
+        tabRepositionMarker(tabButton) {
+            this.$refs.tabMarker.style.width = tabButton.offsetWidth + "px";
+            this.$refs.tabMarker.style.height = tabButton.offsetHeight + "px";
+            this.$refs.tabMarker.style.top = tabButton.offsetTop + "px";
+            this.$refs.tabMarker.style.left = "0px";
         },
-        tabContentActive(tabContent){
-            return this.tabSelected == tabContent.id.split('-').pop();
+    
+        tabContentActive(tabContent) {
+          // Each content div carries data-hash, e.g., "add"
+            return tabContent.dataset.hash === this.subKey;
         },
-        tabButtonActive(tabContent){
-            const tabId = tabContent.id.split('-').slice(-1);
-            return this.tabSelected == tabId;
-        }
+    
+        tabButtonActive(tabButton) {
+            return tabButton.dataset.hash === this.subKey;
+        },
+    
+        init() {
+          // Initialize from hash if main is vc and sub is valid
+            const { main, sub } = parseHash();
+            if (main === "Vector Calculus" && validSub.has(sub || "")) {
+                this.subKey = sub;
+            } else {
+                this.subKey = "Vector Addition";
+            }
+
+            this.$nextTick(() => {
+                const btn = Array.from(this.$refs.tabButtons.querySelectorAll("button")).find(
+                    (b) => b.dataset.hash === this.subKey
+                );
+                if (btn) this.tabRepositionMarker(btn);
+            });
+    
+            window.addEventListener("hashchange", () => {
+                const { main, sub } = parseHash();
+                if (main !== "Vector Calculus") return; // only react while in vc
+                const next = validSub.has(sub || "") ? sub : "Vector Addition";
+                if (next !== this.subKey) {
+                    this.subKey = next;
+                    this.$nextTick(() => {
+                        const btn = Array.from(
+                        this.$refs.tabButtons.querySelectorAll("button")
+                        ).find((b) => b.dataset.hash === this.subKey);
+                        if (btn) this.tabRepositionMarker(btn);
+                    });
+                }
+            });
+        },
     }));
 
     Alpine.data("vecAdd", () => ({
