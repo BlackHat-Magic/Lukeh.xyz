@@ -86,10 +86,26 @@ document.addEventListener ("alpine:init", () => {
   
     Alpine.data("ThemeUI", () => ({
         menuOpen: false,
+        activeTab: "light", // "light" | "dark"
         open() { this.menuOpen = true; },
         close() { this.menuOpen = false; },
         toggle() { Alpine.store("theme").toggleMode(); },
-    }));
+        setTab(tab) {
+            // Switch mode when switching tabs
+            if (tab !== "light" && tab !== "dark") return;
+            this.activeTab = tab;
+            const theme = Alpine.store("theme");
+            if (theme.mode !== tab) {
+                theme.mode = tab;
+                theme.apply();
+            }
+        },
+        init() {
+            // Keep tabs synced with store mode
+            this.activeTab = Alpine.store("theme").mode;
+            this.$watch("$store.theme.mode", (v) => { this.activeTab = v; });
+        },
+      }));
 
     Alpine.data ("NavData", () => ({
         navigationMenuOpen: false,
