@@ -84,16 +84,30 @@ document.addEventListener ("alpine:init", () => {
         tabButtonClicked(tabButton) {
             const key = tabButton.dataset.hash;
             if (!validSub.has(key)) return;
-            this.subKey = key;
-            this.tabRepositionMarker(tabButton);
+            requestAnimationFrame (() => {
+                this.subKey = key;
+                this.tabRepositionMarker(tabButton);
+            })
             setHash("Vector Calculus", key);
         },
     
         tabRepositionMarker(tabButton) {
-            this.$refs.tabMarker.style.width = tabButton.offsetWidth + "px";
-            this.$refs.tabMarker.style.height = tabButton.offsetHeight + "px";
-            this.$refs.tabMarker.style.top = tabButton.offsetTop + "px";
-            this.$refs.tabMarker.style.left = "0px";
+            const marker = this.$refs.tabMarker;
+            const container = this.$refs.tabButtons;
+            if (!marker || !container || !tabButton) return;
+
+            const btnRect = tabButton.getBoundingClientRect();
+            const ctnRect = container.getBoundingClientRect();
+            const width = Math.round(btnRect.width);
+            const height = Math.round(btnRect.height);
+            const dx = Math.round(btnRect.left - ctnRect.left);
+            const dy = Math.round(btnRect.top - ctnRect.top);
+
+            marker.style.width = width + "px";
+            marker.style.height = height + "px";
+            marker.style.left = "0px";
+            marker.style.top = "0px";
+            marker.style.transform = `translate(${dx}px, ${dy}px)`;
         },
     
         tabContentActive(tabContent) {
@@ -119,6 +133,13 @@ document.addEventListener ("alpine:init", () => {
                     (b) => b.dataset.hash === this.subKey
                 );
                 if (btn) this.tabRepositionMarker(btn);
+                this._onResize = () => {
+                    const activeBtn = Array.from(this.$refs.tabButtons.querySelectorAll("button")).find(
+                      (b) => b.dataset.hash === this.subKey
+                    );
+                    if (activeBtn) this.tabRepositionMarker(activeBtn);
+                };
+                window.addEventListener("resize", this._onResize);
             });
     
             window.addEventListener("hashchange", () => {
@@ -135,6 +156,9 @@ document.addEventListener ("alpine:init", () => {
                     });
                 }
             });
+        },
+        destroy() {
+            if (this._onResize) window.removeEventListener("resize", this._onResize);
         },
     }));
 
