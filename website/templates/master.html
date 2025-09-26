@@ -90,13 +90,35 @@
                 aria-label="Toggle light/dark theme"
                 title="Toggle theme"
             >
-            <!-- Sun if dark mode (indicates you can switch to light) -->
             <svg x-show="$store.theme.mode === 'dark'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2m0 14v2m7.071-13.071-1.414 1.414M6.343 17.657l-1.414 1.414M21 12h-2M5 12H3m13.657 6.343-1.414-1.414M7.757 7.757 6.343 6.343M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"/>
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                    <g clip-path="url(#clip0_429_11017)">
+                        <path d="M20.9955 11.7115L22.2448 11.6721C22.2326 11.2847 22.0414 10.9249 21.7272 10.698C21.413 10.4711 21.0113 10.4029 20.6397 10.5132L20.9955 11.7115ZM12.2885 3.00454L13.4868 3.36028C13.5971 2.98873 13.5289 2.58703 13.302 2.2728C13.0751 1.95857 12.7153 1.76736 12.3279 1.75516L12.2885 3.00454ZM20.6397 10.5132C20.1216 10.667 19.5716 10.75 19 10.75V13.25C19.815 13.25 20.6046 13.1314 21.3512 12.9098L20.6397 10.5132ZM19 10.75C15.8244 10.75 13.25 8.17564 13.25 5H10.75C10.75 9.55635 14.4437 13.25 19 13.25V10.75ZM13.25 5C13.25 4.42841 13.333 3.87841 13.4868 3.36028L11.0902 2.64879C10.8686 3.39542 10.75 4.18496 10.75 5H13.25ZM12 4.25C12.0834 4.25 12.1665 4.25131 12.2492 4.25392L12.3279 1.75516C12.219 1.75173 12.1097 1.75 12 1.75V4.25ZM4.25 12C4.25 7.71979 7.71979 4.25 12 4.25V1.75C6.33908 1.75 1.75 6.33908 1.75 12H4.25ZM12 19.75C7.71979 19.75 4.25 16.2802 4.25 12H1.75C1.75 17.6609 6.33908 22.25 12 22.25V19.75ZM19.75 12C19.75 16.2802 16.2802 19.75 12 19.75V22.25C17.6609 22.25 22.25 17.6609 22.25 12H19.75ZM19.7461 11.7508C19.7487 11.8335 19.75 11.9166 19.75 12H22.25C22.25 11.8903 22.2483 11.781 22.2448 11.6721L19.7461 11.7508Z" fill="currentColor"></path>
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_429_11017">
+                            <rect width="24" height="24" fill="white"></rect>
+                        </clipPath>
+                    </defs>
+                </g>
             </svg>
-            <!-- Moon if light mode (indicates you can switch to dark) -->
-            <svg x-show="$store.theme.mode === 'light'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 1 1 8.646 3.646a7 7 0 1 0 11.708 11.708Z"/>
+            <svg x-show="$store.theme.mode === 'light'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 64 64" fill="currentColor" stroke-width="2">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <g>
+                        <circle fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" cx="32.003" cy="32.005" r="16.001"></circle>
+                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M12.001,31.997c0-2.211-1.789-4-4-4H4c-2.211,0-4,1.789-4,4 s1.789,4,4,4h4C10.212,35.997,12.001,34.208,12.001,31.997z"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M12.204,46.139l-2.832,2.833c-1.563,1.562-1.563,4.094,0,5.656 c1.562,1.562,4.094,1.562,5.657,0l2.833-2.832c1.562-1.562,1.562-4.095,0-5.657C16.298,44.576,13.767,44.576,12.204,46.139z"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M32.003,51.999c-2.211,0-4,1.789-4,4V60c0,2.211,1.789,4,4,4 s4-1.789,4-4l-0.004-4.001C36.003,53.788,34.21,51.999,32.003,51.999z"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M51.798,46.143c-1.559-1.566-4.091-1.566-5.653-0.004 s-1.562,4.095,0,5.657l2.829,2.828c1.562,1.57,4.094,1.562,5.656,0s1.566-4.09,0-5.656L51.798,46.143z"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M60.006,27.997l-4.009,0.008 c-2.203-0.008-3.992,1.781-3.992,3.992c-0.008,2.211,1.789,4,3.992,4h4.001c2.219,0.008,4-1.789,4-4 C64.002,29.79,62.217,27.997,60.006,27.997z"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M51.798,17.859l2.828-2.829c1.574-1.566,1.562-4.094,0-5.657 c-1.559-1.567-4.09-1.567-5.652-0.004l-2.829,2.836c-1.562,1.555-1.562,4.086,0,5.649C47.699,19.426,50.239,19.418,51.798,17.859z"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M32.003,11.995c2.207,0.016,4-1.789,4-3.992v-4 c0-2.219-1.789-4-4-4c-2.211-0.008-4,1.781-4,3.993l0.008,4.008C28.003,10.206,29.792,11.995,32.003,11.995z"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M12.212,17.855c1.555,1.562,4.079,1.562,5.646-0.004 c1.574-1.551,1.566-4.09,0.008-5.649l-2.829-2.828c-1.57-1.571-4.094-1.559-5.657,0c-1.575,1.559-1.575,4.09-0.012,5.653 L12.212,17.855z"></path>
+                    </g>
+                </g>
             </svg>
             </button>
 
@@ -113,29 +135,64 @@
                 class="absolute right-0 mt-2 w-72 bg-card text-foreground border border-border rounded-md shadow-md p-2 z-50"
                 x-cloak
             >
-            <div class="px-1 py-1">
-                <div class="text-xs font-semibold opacity-70 mb-1">Light theme</div>
+            <div class="flex items-center gap-1 p-1 border-b border-border">
+                <button
+                    @click="setTab('light')"
+                    :class="activeTab === 'light' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted'"
+                    class="px-3 py-1.5 text-sm rounded-md transition-colors"
+                    role="tab"
+                    aria-selected="activeTab === 'light'"
+                >
+                    Light
+                </button>
+                <button
+                    @click="setTab('dark')"
+                    :class="activeTab === 'dark' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted'"
+                    class="px-3 py-1.5 text-sm rounded-md transition-colors"
+                    role="tab"
+                    aria-selected="activeTab === 'dark'"
+                >
+                    Dark
+                </button>
+            </div>
+
+            <!-- Tab panels -->
+            <div class="px-1 py-2">
+            <!-- Light panel -->
+            <div x-show="activeTab === 'light'" role="tabpanel">
+                <div class="text-xs font-semibold opacity-70 mb-1">Choose a light theme</div>
                 <template x-for="t in $store.theme.lightThemes" :key="t.key">
                 <button
                     @click="$store.theme.setLight(t.key)"
                     class="w-full flex items-center justify-between text-left px-2 py-1 rounded hover:bg-muted"
                 >
                     <span x-text="t.name"></span>
-                    <span x-show="$store.theme.lightKey === t.key" class="text-accent">•</span>
+                    <span
+                    x-show="$store.theme.lightKey === t.key"
+                    class="inline-flex h-2 w-2 rounded-full"
+                    :style="`background: var(--accent);`"
+                    ></span>
                 </button>
                 </template>
             </div>
-            <div class="px-1 py-1 mt-2">
-                <div class="text-xs font-semibold opacity-70 mb-1">Dark theme</div>
+
+            <!-- Dark panel -->
+            <div x-show="activeTab === 'dark'" role="tabpanel">
+                <div class="text-xs font-semibold opacity-70 mb-1">Choose a dark theme</div>
                 <template x-for="t in $store.theme.darkThemes" :key="t.key">
                 <button
                     @click="$store.theme.setDark(t.key)"
                     class="w-full flex items-center justify-between text-left px-2 py-1 rounded hover:bg-muted"
                 >
                     <span x-text="t.name"></span>
-                    <span x-show="$store.theme.darkKey === t.key" class="text-accent">•</span>
+                    <span
+                    x-show="$store.theme.darkKey === t.key"
+                    class="inline-flex h-2 w-2 rounded-full"
+                    :style="`background: var(--accent);`"
+                    ></span>
                 </button>
                 </template>
+            </div>
             </div>
             </div>
         </div>
