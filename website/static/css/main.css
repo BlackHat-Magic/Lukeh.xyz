@@ -42,6 +42,17 @@ html.theme-anim *, html.theme-anim ::before, html.theme-anim ::after {
     }
 }
 
+.math-page input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+    appearance: textfield;      /* Future-proof */
+}
+
+.math-page input[type="number"]::-webkit-outer-spin-button,
+.math-page input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none; /* Chrome/Safari/Edge */
+    margin: 0;
+}
+
 /* Make native controls match current mode */
 html[data-mode="dark"] { color-scheme: dark; }
 html[data-mode="light"] { color-scheme: light; }
