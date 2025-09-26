@@ -13,24 +13,23 @@
 
 <body>
 
-<!-- TODO: fix z-index -->
 <nav x-data="NavData" class="relative z-30 w-auto">
     <div class="relative">
-        <ul class="flex flex-1 justify-center items-center p-1 space-x-1 list-none rounded-md border text-neutral-700 group border-neutral-200/80">
+        <ul class="flex flex-1 justify-center items-center p-1 space-x-1 list-none rounded-md border group bg-background text-foreground border-border">
             <li>
-                <a href="{{ url_for('endpoints_main.home') }}" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:text-neutral-900 focus:outline-none disabled:opacity-50 disabled:pointer-events-none bg-background hover:bg-neutral-100 group">
+                <a href="{{ url_for('endpoints_main.home') }}" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:opacity-90 focus:outline-none disabled:opacity-50 disabled:pointer-events-none bg-background hover:bg-muted group">
                     Home
                 </a>
             </li>
             <li>
                 <a
-                    :class="{ 'bg-neutral-100' : navigationMenu=='portfolio', 'hover:bg-neutral-100' : navigationMenu!='portfolio' }" @mouseover="navigationMenuOpen=true; navigationMenuReposition($el); navigationMenu='portfolio'" @mouseleave="navigationMenuLeave()" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:text-neutral-900 focus:outline-none disabled:opacity-50 disabled:pointer-events-none group" href="#">
+                    :class="{ 'bg-muted' : navigationMenu=='portfolio', 'hover:bg-muted' : navigationMenu!='portfolio' }" @mouseover="navigationMenuOpen=true; navigationMenuReposition($el); navigationMenu='portfolio'" @mouseleave="navigationMenuLeave()" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:opacity-90 focus:outline-none disabled:opacity-50 disabled:pointer-events-none group" href="#">
                     <span>Portfolio Projects</span> 
                     <svg :class="{ '-rotate-180' : navigationMenuOpen==true && navigationMenu == 'portfolio' }" class="relative top-[1px] ml-1 h-3 w-3 ease-out duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
 				</a>
             </li>
             <li>
-                <a href="#" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:text-neutral-900 focus:outline-none disabled:opacity-50 disabled:pointer-events-none bg-background hover:bg-neutral-100 group">
+                <a href="#" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:opacity-90 focus:outline-none disabled:opacity-50 disabled:pointer-events-none bg-background hover:bg-muted group">
                     Blog
                 </a>
             </li>
@@ -46,38 +45,99 @@
         @mouseover="navigationMenuClearCloseTimeout()" @mouseleave="navigationMenuLeave()"
         class="absolute top-0 pt-3 duration-200 ease-out -translate-x-1/2 translate-y-11" x-cloak>
 
-        <div class="flex overflow-hidden justify-center w-auto h-auto bg-white rounded-md border shadow-sm border-neutral-200/70">
+        <div class="flex overflow-hidden justify-center w-auto h-auto bg-card text-foreground rounded-md border shadow-sm border-border">
             <div x-show="navigationMenu == 'portfolio'" class="flex justify-center items-stretch p-6 w-full">
                 <div class="w-72">
-                    <a href="{{ url_for('endpoints_projects.portfolio') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
-                        <span class="block mb-1 font-medium text-black">Lukeh.xyz</span>
+                    <a href="{{ url_for('endpoints_projects.portfolio') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">Lukeh.xyz</span>
                         <span class="block leading-5 opacity-50">This portfolio website</span>
                     </a>
-                    <a href="{{ url_for('endpoints_projects.sd_runpod') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
-                        <span class="block mb-1 font-medium text-black">SD-Runpod</span>
+                    <a href="{{ url_for('endpoints_projects.sd_runpod') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">SD-Runpod</span>
                         <span class="block leading-5 opacity-50">A project using Runpod's serverless platform to serve transformer and diffusion models</span>
                     </a>
-                    <a href="{{ url_for('endpoints_projects.silverquill') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
-                        <span class="block mb-1 font-medium text-black">Silverquill Compiler</span>
+                    <a href="{{ url_for('endpoints_projects.silverquill') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">Silverquill Compiler</span>
                         <span class="block leading-5 opacity-50">A simple Rust-based compiler for a small, C-like language</span>
                     </a>
                 </div>
                 <div class="w-72">
-                    <a href="{{ url_for('endpoints_projects.math') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
-                        <span class="block mb-1 font-medium text-black">Old Math Demos</span>
+                    <a href="{{ url_for('endpoints_projects.math') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">Old Math Demos</span>
                         <span class="block leading-5 opacity-50">Some simple calculators  I wrote to familiarize myself with Alpine</span>
                     </a>
-                    <a href="{{ url_for('endpoints_projects.asmadi') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
-                        <span class="block mb-1 font-medium text-black">Asmadi Game Engine</span>
+                    <a href="{{ url_for('endpoints_projects.asmadi') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">Asmadi Game Engine</span>
                         <span class="block leading-5 opacity-50">A simple ECS-based game engine written in C using SDL's GPU API</span>
                     </a>
-                    <a href="#_" @click="{{ url_for('endpoints_projects.projects') }}" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
-                        <span class="block mb-1 font-medium text-black">More...</span>
+                    <a href="#_" @click="{{ url_for('endpoints_projects.projects') }}" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">More...</span>
                         <span class="block leading-5 opacity-50">Other portfolio projects that didn't make it above the fold</span>
                     </a>
                 </div>
             </div>
         
+        </div>
+    </div>
+        <!-- Theme toggle + hovercard on the right -->
+    <div class="absolute right-2 top-1/2 -translate-y-1/2">
+        <div x-data="ThemeUI" class="relative" @keydown.escape="close()">
+            <button
+                @click="toggle()"
+                @mouseover="open()"
+                @mouseleave="close()"
+                class="inline-flex items-center justify-center w-9 h-9 rounded-md border border-border bg-card hover:bg-muted transition-colors focus:outline-none"
+                aria-label="Toggle light/dark theme"
+                title="Toggle theme"
+            >
+            <!-- Sun if dark mode (indicates you can switch to light) -->
+            <svg x-show="$store.theme.mode === 'dark'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2m0 14v2m7.071-13.071-1.414 1.414M6.343 17.657l-1.414 1.414M21 12h-2M5 12H3m13.657 6.343-1.414-1.414M7.757 7.757 6.343 6.343M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"/>
+            </svg>
+            <!-- Moon if light mode (indicates you can switch to dark) -->
+            <svg x-show="$store.theme.mode === 'light'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 1 1 8.646 3.646a7 7 0 1 0 11.708 11.708Z"/>
+            </svg>
+            </button>
+
+            <!-- Hovercard -->
+            <div
+                x-show="menuOpen"
+                x-transition:enter="transition ease-out duration-100"
+                x-transition:enter-start="opacity-0 scale-95"
+                x-transition:enter-end="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-100"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-95"
+                @mouseover="open()" @mouseleave="close()"
+                class="absolute right-0 mt-2 w-72 bg-card text-foreground border border-border rounded-md shadow-md p-2 z-50"
+                x-cloak
+            >
+            <div class="px-1 py-1">
+                <div class="text-xs font-semibold opacity-70 mb-1">Light theme</div>
+                <template x-for="t in $store.theme.lightThemes" :key="t.key">
+                <button
+                    @click="$store.theme.setLight(t.key)"
+                    class="w-full flex items-center justify-between text-left px-2 py-1 rounded hover:bg-muted"
+                >
+                    <span x-text="t.name"></span>
+                    <span x-show="$store.theme.lightKey === t.key" class="text-accent">•</span>
+                </button>
+                </template>
+            </div>
+            <div class="px-1 py-1 mt-2">
+                <div class="text-xs font-semibold opacity-70 mb-1">Dark theme</div>
+                <template x-for="t in $store.theme.darkThemes" :key="t.key">
+                <button
+                    @click="$store.theme.setDark(t.key)"
+                    class="w-full flex items-center justify-between text-left px-2 py-1 rounded hover:bg-muted"
+                >
+                    <span x-text="t.name"></span>
+                    <span x-show="$store.theme.darkKey === t.key" class="text-accent">•</span>
+                </button>
+                </template>
+            </div>
+            </div>
         </div>
     </div>
 </nav>
