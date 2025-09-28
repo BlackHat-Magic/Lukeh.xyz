@@ -25,22 +25,14 @@
             var bg = {
                 "catppuccin-latte": "#eff1f5",
                 "catppuccin-mocha": "#1e1e2e",
-                "catppuccin-macchiato": "#24273a",
-                "catppuccin-frappe": "#303446",
                 "nord-light": "#eceff4",
                 "nord-dark": "#2e3440",
-                "solarized-light": "#fdf6e3",
-                "solarized-dark": "#002b36",
                 "gruvbox-light": "#fbf1c7",
                 "gruvbox-dark": "#282828",
-                "dracula": "#282a36",
                 "rose-pine-dawn": "#faf4ed",
                 "rose-pine": "#191724",
                 "strawberry-light": "#fff1f2",
                 "strawberry-dark": "#111827",
-                "lil-dragon-light": "#f5f3ff",
-                "lil-dragon-dark": "#100b1f",
-                "lil-dragon-dark-v2b": "#0f0b1d"
             };
             var bgColor = bg[themeKey] || (mode === "dark" ? "#111827" : "#ffffff");
             html.style.backgroundColor = bgColor;
@@ -92,30 +84,30 @@
         <div class="flex overflow-hidden justify-center w-auto h-auto bg-card text-foreground rounded-md border shadow-sm border-border">
             <div x-show="navigationMenu == 'portfolio'" class="flex justify-center items-stretch p-6 w-full">
                 <div class="w-72">
-                    <a href="{{ url_for('endpoints_projects.portfolio') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
-                        <span class="block mb-1 font-medium text-foreground">Lukeh.xyz</span>
-                        <span class="block leading-5 opacity-50">This portfolio website</span>
-                    </a>
-                    <a href="{{ url_for('endpoints_projects.sd_runpod') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
-                        <span class="block mb-1 font-medium text-foreground">SD-Runpod</span>
-                        <span class="block leading-5 opacity-50">A project using Runpod's serverless platform to serve transformer and diffusion models</span>
+                    <a href="{{ url_for('endpoints_projects.asmadi') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">Asmadi Game Engine</span>
+                        <span class="block leading-5 opacity-50">A simple ECS-based game engine written in C using SDL's GPU API</span>
                     </a>
                     <a href="{{ url_for('endpoints_projects.silverquill') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
                         <span class="block mb-1 font-medium text-foreground">Silverquill Compiler</span>
                         <span class="block leading-5 opacity-50">A simple Rust-based compiler for a small, C-like language</span>
                     </a>
+                    <a href="{{ url_for('endpoints_projects.portfolio') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">Lukeh.xyz</span>
+                        <span class="block leading-5 opacity-50">This portfolio website</span>
+                    </a>
                 </div>
                 <div class="w-72">
+                    <a href="{{ url_for('endpoints_projects.sd_runpod') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">SD-Runpod</span>
+                        <span class="block leading-5 opacity-50">A project using Runpod's serverless platform to serve transformer and diffusion models</span>
+                    </a>
                     <a href="{{ url_for('endpoints_projects.math') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
                         <span class="block mb-1 font-medium text-foreground">Old Math Demos</span>
                         <span class="block leading-5 opacity-50">Some simple calculators  I wrote to familiarize myself with Alpine</span>
                     </a>
-                    <a href="{{ url_for('endpoints_projects.asmadi') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
-                        <span class="block mb-1 font-medium text-foreground">Asmadi Game Engine</span>
-                        <span class="block leading-5 opacity-50">A simple ECS-based game engine written in C using SDL's GPU API</span>
-                    </a>
-                    <a href="#_" @click="{{ url_for('endpoints_projects.projects') }}" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
-                        <span class="block mb-1 font-medium text-foreground">More...</span>
+                    <a href="{{ url_for('endpoints_projects.other') }}" @click="{{ url_for('endpoints_projects.projects') }}" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">View All</span>
                         <span class="block leading-5 opacity-50">Other portfolio projects that didn't make it above the fold</span>
                     </a>
                 </div>
