@@ -25,22 +25,14 @@
             var bg = {
                 "catppuccin-latte": "#eff1f5",
                 "catppuccin-mocha": "#1e1e2e",
-                "catppuccin-macchiato": "#24273a",
-                "catppuccin-frappe": "#303446",
                 "nord-light": "#eceff4",
                 "nord-dark": "#2e3440",
-                "solarized-light": "#fdf6e3",
-                "solarized-dark": "#002b36",
                 "gruvbox-light": "#fbf1c7",
                 "gruvbox-dark": "#282828",
-                "dracula": "#282a36",
                 "rose-pine-dawn": "#faf4ed",
                 "rose-pine": "#191724",
                 "strawberry-light": "#fff1f2",
                 "strawberry-dark": "#111827",
-                "lil-dragon-light": "#f5f3ff",
-                "lil-dragon-dark": "#100b1f",
-                "lil-dragon-dark-v2b": "#0f0b1d"
             };
             var bgColor = bg[themeKey] || (mode === "dark" ? "#111827" : "#ffffff");
             html.style.backgroundColor = bgColor;
@@ -73,7 +65,7 @@
 				</a>
             </li>
             <li>
-                <a href="#" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:opacity-90 focus:outline-none disabled:opacity-50 disabled:pointer-events-none bg-background hover:bg-muted group">
+                <a href="{{ url_for('endpoints_main.blog') }}" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:opacity-90 focus:outline-none disabled:opacity-50 disabled:pointer-events-none bg-background hover:bg-muted group">
                     Blog
                 </a>
             </li>
@@ -92,30 +84,30 @@
         <div class="flex overflow-hidden justify-center w-auto h-auto bg-card text-foreground rounded-md border shadow-sm border-border">
             <div x-show="navigationMenu == 'portfolio'" class="flex justify-center items-stretch p-6 w-full">
                 <div class="w-72">
-                    <a href="{{ url_for('endpoints_projects.portfolio') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
-                        <span class="block mb-1 font-medium text-foreground">Lukeh.xyz</span>
-                        <span class="block leading-5 opacity-50">This portfolio website</span>
-                    </a>
-                    <a href="{{ url_for('endpoints_projects.sd_runpod') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
-                        <span class="block mb-1 font-medium text-foreground">SD-Runpod</span>
-                        <span class="block leading-5 opacity-50">A project using Runpod's serverless platform to serve transformer and diffusion models</span>
+                    <a href="{{ url_for('endpoints_projects.asmadi') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">Asmadi Game Engine</span>
+                        <span class="block leading-5 opacity-50">A simple ECS-based game engine written in C using SDL's GPU API</span>
                     </a>
                     <a href="{{ url_for('endpoints_projects.silverquill') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
                         <span class="block mb-1 font-medium text-foreground">Silverquill Compiler</span>
                         <span class="block leading-5 opacity-50">A simple Rust-based compiler for a small, C-like language</span>
                     </a>
+                    <a href="{{ url_for('endpoints_projects.portfolio') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">Lukeh.xyz</span>
+                        <span class="block leading-5 opacity-50">This portfolio website</span>
+                    </a>
                 </div>
                 <div class="w-72">
+                    <a href="{{ url_for('endpoints_projects.sd_runpod') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">SD-Runpod</span>
+                        <span class="block leading-5 opacity-50">A project using Runpod's serverless platform to serve transformer and diffusion models</span>
+                    </a>
                     <a href="{{ url_for('endpoints_projects.math') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
                         <span class="block mb-1 font-medium text-foreground">Old Math Demos</span>
                         <span class="block leading-5 opacity-50">Some simple calculators  I wrote to familiarize myself with Alpine</span>
                     </a>
-                    <a href="{{ url_for('endpoints_projects.asmadi') }}" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
-                        <span class="block mb-1 font-medium text-foreground">Asmadi Game Engine</span>
-                        <span class="block leading-5 opacity-50">A simple ECS-based game engine written in C using SDL's GPU API</span>
-                    </a>
-                    <a href="#_" @click="{{ url_for('endpoints_projects.projects') }}" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
-                        <span class="block mb-1 font-medium text-foreground">More...</span>
+                    <a href="{{ url_for('endpoints_projects.other') }}" @click="{{ url_for('endpoints_projects.projects') }}" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">View All</span>
                         <span class="block leading-5 opacity-50">Other portfolio projects that didn't make it above the fold</span>
                     </a>
                 </div>
@@ -125,120 +117,147 @@
     </div>
         <!-- Theme toggle + hovercard on the right -->
     <div class="absolute right-2 top-1/2 -translate-y-1/2">
-        <div x-data="ThemeUI" class="relative" @keydown.escape="close()">
-            <button
-                @click="toggle()"
-                @mouseover="open()"
-                @mouseleave="close()"
+        <div class="flex items-center gap-1">
+            <!-- GitHub button -->
+            <a
+                href="https://github.com/BlackHat-Magic/Lukeh.xyz"
+                target="_blank"
+                rel="noopener noreferrer"
                 class="inline-flex items-center justify-center w-9 h-9 rounded-md hover:bg-muted transition-colors focus:outline-none"
-                aria-label="Toggle light/dark theme"
-                title="Toggle theme"
-                x-cloak
+                aria-label="View GitHub repository"
+                title="GitHub"
             >
-            <svg x-show="$store.theme.mode === 'dark'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
-                    <g clip-path="url(#clip0_429_11017)">
-                        <path d="M20.9955 11.7115L22.2448 11.6721C22.2326 11.2847 22.0414 10.9249 21.7272 10.698C21.413 10.4711 21.0113 10.4029 20.6397 10.5132L20.9955 11.7115ZM12.2885 3.00454L13.4868 3.36028C13.5971 2.98873 13.5289 2.58703 13.302 2.2728C13.0751 1.95857 12.7153 1.76736 12.3279 1.75516L12.2885 3.00454ZM20.6397 10.5132C20.1216 10.667 19.5716 10.75 19 10.75V13.25C19.815 13.25 20.6046 13.1314 21.3512 12.9098L20.6397 10.5132ZM19 10.75C15.8244 10.75 13.25 8.17564 13.25 5H10.75C10.75 9.55635 14.4437 13.25 19 13.25V10.75ZM13.25 5C13.25 4.42841 13.333 3.87841 13.4868 3.36028L11.0902 2.64879C10.8686 3.39542 10.75 4.18496 10.75 5H13.25ZM12 4.25C12.0834 4.25 12.1665 4.25131 12.2492 4.25392L12.3279 1.75516C12.219 1.75173 12.1097 1.75 12 1.75V4.25ZM4.25 12C4.25 7.71979 7.71979 4.25 12 4.25V1.75C6.33908 1.75 1.75 6.33908 1.75 12H4.25ZM12 19.75C7.71979 19.75 4.25 16.2802 4.25 12H1.75C1.75 17.6609 6.33908 22.25 12 22.25V19.75ZM19.75 12C19.75 16.2802 16.2802 19.75 12 19.75V22.25C17.6609 22.25 22.25 17.6609 22.25 12H19.75ZM19.7461 11.7508C19.7487 11.8335 19.75 11.9166 19.75 12H22.25C22.25 11.8903 22.2483 11.781 22.2448 11.6721L19.7461 11.7508Z" fill="currentColor"></path>
+                <!-- GitHub mark (SVG) -->
+                <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor" class="w-5 h-5">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -7559.000000)" fill="currentColor">
+                                <g id="icons" transform="translate(56.000000, 160.000000)">
+                                    <path d="M94,7399 C99.523,7399 104,7403.59 104,7409.253 C104,7413.782 101.138,7417.624 97.167,7418.981 C96.66,7419.082 96.48,7418.762 96.48,7418.489 C96.48,7418.151 96.492,7417.047 96.492,7415.675 C96.492,7414.719 96.172,7414.095 95.813,7413.777 C98.04,7413.523 100.38,7412.656 100.38,7408.718 C100.38,7407.598 99.992,7406.684 99.35,7405.966 C99.454,7405.707 99.797,7404.664 99.252,7403.252 C99.252,7403.252 98.414,7402.977 96.505,7404.303 C95.706,7404.076 94.85,7403.962 94,7403.958 C93.15,7403.962 92.295,7404.076 91.497,7404.303 C89.586,7402.977 88.746,7403.252 88.746,7403.252 C88.203,7404.664 88.546,7405.707 88.649,7405.966 C88.01,7406.684 87.619,7407.598 87.619,7408.718 C87.619,7412.646 89.954,7413.526 92.175,7413.785 C91.889,7414.041 91.63,7414.493 91.54,7415.156 C90.97,7415.418 89.522,7415.871 88.63,7414.304 C88.63,7414.304 88.101,7413.319 87.097,7413.247 C87.097,7413.247 86.122,7413.234 87.029,7413.87 C87.029,7413.87 87.684,7414.185 88.139,7415.37 C88.139,7415.37 88.726,7417.2 91.508,7416.58 C91.513,7417.437 91.522,7418.245 91.522,7418.489 C91.522,7418.76 91.338,7419.077 90.839,7418.982 C86.865,7417.627 84,7413.783 84,7409.253 C84,7403.59 88.478,7399 94,7399" id="github-[#142]"></path>
+                                </g>
+                            </g>
+                        </g>
                     </g>
-                    <defs>
-                        <clipPath id="clip0_429_11017">
-                            <rect width="24" height="24" fill="white"></rect>
-                        </clipPath>
-                    </defs>
-                </g>
-            </svg>
-            <svg x-show="$store.theme.mode === 'light'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 64 64" fill="currentColor" stroke-width="2">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <g>
-                        <circle fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" cx="32.003" cy="32.005" r="16.001"></circle>
-                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M12.001,31.997c0-2.211-1.789-4-4-4H4c-2.211,0-4,1.789-4,4 s1.789,4,4,4h4C10.212,35.997,12.001,34.208,12.001,31.997z"></path>
-                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M12.204,46.139l-2.832,2.833c-1.563,1.562-1.563,4.094,0,5.656 c1.562,1.562,4.094,1.562,5.657,0l2.833-2.832c1.562-1.562,1.562-4.095,0-5.657C16.298,44.576,13.767,44.576,12.204,46.139z"></path>
-                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M32.003,51.999c-2.211,0-4,1.789-4,4V60c0,2.211,1.789,4,4,4 s4-1.789,4-4l-0.004-4.001C36.003,53.788,34.21,51.999,32.003,51.999z"></path>
-                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M51.798,46.143c-1.559-1.566-4.091-1.566-5.653-0.004 s-1.562,4.095,0,5.657l2.829,2.828c1.562,1.57,4.094,1.562,5.656,0s1.566-4.09,0-5.656L51.798,46.143z"></path>
-                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M60.006,27.997l-4.009,0.008 c-2.203-0.008-3.992,1.781-3.992,3.992c-0.008,2.211,1.789,4,3.992,4h4.001c2.219,0.008,4-1.789,4-4 C64.002,29.79,62.217,27.997,60.006,27.997z"></path>
-                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M51.798,17.859l2.828-2.829c1.574-1.566,1.562-4.094,0-5.657 c-1.559-1.567-4.09-1.567-5.652-0.004l-2.829,2.836c-1.562,1.555-1.562,4.086,0,5.649C47.699,19.426,50.239,19.418,51.798,17.859z"></path>
-                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M32.003,11.995c2.207,0.016,4-1.789,4-3.992v-4 c0-2.219-1.789-4-4-4c-2.211-0.008-4,1.781-4,3.993l0.008,4.008C28.003,10.206,29.792,11.995,32.003,11.995z"></path>
-                        <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M12.212,17.855c1.555,1.562,4.079,1.562,5.646-0.004 c1.574-1.551,1.566-4.09,0.008-5.649l-2.829-2.828c-1.57-1.571-4.094-1.559-5.657,0c-1.575,1.559-1.575,4.09-0.012,5.653 L12.212,17.855z"></path>
+                </svg>
+            </a>
+
+            <div x-data="ThemeUI" class="relative" @keydown.escape="close()">
+                <a><button
+                    @click="toggle()"
+                    @mouseover="open()"
+                    @mouseleave="close()"
+                    class="inline-flex items-center justify-center w-9 h-9 rounded-md hover:bg-muted transition-colors focus:outline-none"
+                    aria-label="Toggle light/dark theme"
+                    title="Toggle theme"
+                    x-cloak
+                >
+                <svg x-show="$store.theme.mode === 'dark'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                        <g clip-path="url(#clip0_429_11017)">
+                            <path d="M20.9955 11.7115L22.2448 11.6721C22.2326 11.2847 22.0414 10.9249 21.7272 10.698C21.413 10.4711 21.0113 10.4029 20.6397 10.5132L20.9955 11.7115ZM12.2885 3.00454L13.4868 3.36028C13.5971 2.98873 13.5289 2.58703 13.302 2.2728C13.0751 1.95857 12.7153 1.76736 12.3279 1.75516L12.2885 3.00454ZM20.6397 10.5132C20.1216 10.667 19.5716 10.75 19 10.75V13.25C19.815 13.25 20.6046 13.1314 21.3512 12.9098L20.6397 10.5132ZM19 10.75C15.8244 10.75 13.25 8.17564 13.25 5H10.75C10.75 9.55635 14.4437 13.25 19 13.25V10.75ZM13.25 5C13.25 4.42841 13.333 3.87841 13.4868 3.36028L11.0902 2.64879C10.8686 3.39542 10.75 4.18496 10.75 5H13.25ZM12 4.25C12.0834 4.25 12.1665 4.25131 12.2492 4.25392L12.3279 1.75516C12.219 1.75173 12.1097 1.75 12 1.75V4.25ZM4.25 12C4.25 7.71979 7.71979 4.25 12 4.25V1.75C6.33908 1.75 1.75 6.33908 1.75 12H4.25ZM12 19.75C7.71979 19.75 4.25 16.2802 4.25 12H1.75C1.75 17.6609 6.33908 22.25 12 22.25V19.75ZM19.75 12C19.75 16.2802 16.2802 19.75 12 19.75V22.25C17.6609 22.25 22.25 17.6609 22.25 12H19.75ZM19.7461 11.7508C19.7487 11.8335 19.75 11.9166 19.75 12H22.25C22.25 11.8903 22.2483 11.781 22.2448 11.6721L19.7461 11.7508Z" fill="currentColor"></path>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_429_11017">
+                                <rect width="24" height="24" fill="currentColor"></rect>
+                            </clipPath>
+                        </defs>
                     </g>
-                </g>
-            </svg>
-            </button>
+                </svg>
+                <svg x-show="$store.theme.mode === 'light'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 64 64" fill="currentColor" stroke-width="2">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <g>
+                            <circle fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" cx="32.003" cy="32.005" r="16.001"></circle>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M12.001,31.997c0-2.211-1.789-4-4-4H4c-2.211,0-4,1.789-4,4 s1.789,4,4,4h4C10.212,35.997,12.001,34.208,12.001,31.997z"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M12.204,46.139l-2.832,2.833c-1.563,1.562-1.563,4.094,0,5.656 c1.562,1.562,4.094,1.562,5.657,0l2.833-2.832c1.562-1.562,1.562-4.095,0-5.657C16.298,44.576,13.767,44.576,12.204,46.139z"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M32.003,51.999c-2.211,0-4,1.789-4,4V60c0,2.211,1.789,4,4,4 s4-1.789,4-4l-0.004-4.001C36.003,53.788,34.21,51.999,32.003,51.999z"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M51.798,46.143c-1.559-1.566-4.091-1.566-5.653-0.004 s-1.562,4.095,0,5.657l2.829,2.828c1.562,1.57,4.094,1.562,5.656,0s1.566-4.09,0-5.656L51.798,46.143z"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M60.006,27.997l-4.009,0.008 c-2.203-0.008-3.992,1.781-3.992,3.992c-0.008,2.211,1.789,4,3.992,4h4.001c2.219,0.008,4-1.789,4-4 C64.002,29.79,62.217,27.997,60.006,27.997z"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M51.798,17.859l2.828-2.829c1.574-1.566,1.562-4.094,0-5.657 c-1.559-1.567-4.09-1.567-5.652-0.004l-2.829,2.836c-1.562,1.555-1.562,4.086,0,5.649C47.699,19.426,50.239,19.418,51.798,17.859z"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M32.003,11.995c2.207,0.016,4-1.789,4-3.992v-4 c0-2.219-1.789-4-4-4c-2.211-0.008-4,1.781-4,3.993l0.008,4.008C28.003,10.206,29.792,11.995,32.003,11.995z"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M12.212,17.855c1.555,1.562,4.079,1.562,5.646-0.004 c1.574-1.551,1.566-4.09,0.008-5.649l-2.829-2.828c-1.57-1.571-4.094-1.559-5.657,0c-1.575,1.559-1.575,4.09-0.012,5.653 L12.212,17.855z"></path>
+                        </g>
+                    </g>
+                </svg>
+                </button></a>
 
-            <!-- Hovercard -->
-            <div
-                x-show="menuOpen"
-                x-transition:enter="transition ease-out duration-100"
-                x-transition:enter-start="opacity-0 scale-95"
-                x-transition:enter-end="opacity-100 scale-100"
-                x-transition:leave="transition ease-in duration-100"
-                x-transition:leave-start="opacity-100 scale-100"
-                x-transition:leave-end="opacity-0 scale-95"
-                @mouseover="open()" @mouseleave="close()"
-                class="absolute right-0 mt-2 w-72 bg-card text-foreground border border-border rounded-md shadow-md p-2 z-50"
-                x-cloak
-            >
-            <div class="flex items-center gap-1 p-1 border-b border-border">
-                <button
-                    @click="setTab('light')"
-                    :class="activeTab === 'light' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted'"
-                    class="px-3 py-1.5 text-sm rounded-md transition-colors"
-                    role="tab"
-                    aria-selected="activeTab === 'light'"
+                <!-- Hovercard -->
+                <div
+                    x-show="menuOpen"
+                    x-transition:enter="transition ease-out duration-100"
+                    x-transition:enter-start="opacity-0 scale-95"
+                    x-transition:enter-end="opacity-100 scale-100"
+                    x-transition:leave="transition ease-in duration-100"
+                    x-transition:leave-start="opacity-100 scale-100"
+                    x-transition:leave-end="opacity-0 scale-95"
+                    @mouseover="open()" @mouseleave="close()"
+                    class="absolute right-0 mt-2 w-72 bg-card text-foreground border border-border rounded-md shadow-md p-2 z-50"
+                    x-cloak
                 >
-                    Light
-                </button>
-                <button
-                    @click="setTab('dark')"
-                    :class="activeTab === 'dark' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted'"
-                    class="px-3 py-1.5 text-sm rounded-md transition-colors"
-                    role="tab"
-                    aria-selected="activeTab === 'dark'"
-                >
-                    Dark
-                </button>
-            </div>
+                <div class="flex items-center gap-1 p-1 border-b border-border">
+                    <button
+                        @click="setTab('light')"
+                        :class="activeTab === 'light' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted'"
+                        class="px-3 py-1.5 text-sm rounded-md transition-colors"
+                        role="tab"
+                        aria-selected="activeTab === 'light'"
+                    >
+                        Light
+                    </button>
+                    <button
+                        @click="setTab('dark')"
+                        :class="activeTab === 'dark' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted'"
+                        class="px-3 py-1.5 text-sm rounded-md transition-colors"
+                        role="tab"
+                        aria-selected="activeTab === 'dark'"
+                    >
+                        Dark
+                    </button>
+                </div>
 
-            <!-- Tab panels -->
-            <div class="px-1 py-2">
-            <!-- Light panel -->
-            <div x-show="activeTab === 'light'" role="tabpanel">
-                <div class="text-xs font-semibold opacity-70 mb-1">Choose a light theme</div>
-                <template x-for="t in $store.theme.lightThemes" :key="t.key">
-                <button
-                    @click="$store.theme.setLight(t.key)"
-                    class="w-full flex items-center justify-between text-left px-2 py-1 rounded hover:bg-muted"
-                >
-                    <span x-text="t.name"></span>
-                    <span
-                    x-show="$store.theme.lightKey === t.key"
-                    class="inline-flex h-2 w-2 rounded-full"
-                    :style="`background: var(--accent);`"
-                    ></span>
-                </button>
-                </template>
-            </div>
+                <!-- Tab panels -->
+                <div class="px-1 py-2">
+                <!-- Light panel -->
+                <div x-show="activeTab === 'light'" role="tabpanel">
+                    <div class="text-xs font-semibold opacity-70 mb-1">Choose a light theme</div>
+                    <template x-for="t in $store.theme.lightThemes" :key="t.key">
+                    <button
+                        @click="$store.theme.setLight(t.key)"
+                        class="w-full flex items-center justify-between text-left px-2 py-1 rounded hover:bg-muted"
+                    >
+                        <span x-text="t.name"></span>
+                        <span
+                        x-show="$store.theme.lightKey === t.key"
+                        class="inline-flex h-2 w-2 rounded-full"
+                        :style="`background: var(--accent);`"
+                        ></span>
+                    </button>
+                    </template>
+                </div>
 
-            <!-- Dark panel -->
-            <div x-show="activeTab === 'dark'" role="tabpanel">
-                <div class="text-xs font-semibold opacity-70 mb-1">Choose a dark theme</div>
-                <template x-for="t in $store.theme.darkThemes" :key="t.key">
-                <button
-                    @click="$store.theme.setDark(t.key)"
-                    class="w-full flex items-center justify-between text-left px-2 py-1 rounded hover:bg-muted"
-                >
-                    <span x-text="t.name"></span>
-                    <span
-                    x-show="$store.theme.darkKey === t.key"
-                    class="inline-flex h-2 w-2 rounded-full"
-                    :style="`background: var(--accent);`"
-                    ></span>
-                </button>
-                </template>
-            </div>
-            </div>
+                <!-- Dark panel -->
+                <div x-show="activeTab === 'dark'" role="tabpanel">
+                    <div class="text-xs font-semibold opacity-70 mb-1">Choose a dark theme</div>
+                    <template x-for="t in $store.theme.darkThemes" :key="t.key">
+                    <button
+                        @click="$store.theme.setDark(t.key)"
+                        class="w-full flex items-center justify-between text-left px-2 py-1 rounded hover:bg-muted"
+                    >
+                        <span x-text="t.name"></span>
+                        <span
+                        x-show="$store.theme.darkKey === t.key"
+                        class="inline-flex h-2 w-2 rounded-full"
+                        :style="`background: var(--accent);`"
+                        ></span>
+                    </button>
+                    </template>
+                </div>
+                </div>
+                </div>
             </div>
         </div>
     </div>

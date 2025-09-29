@@ -25,3 +25,7 @@ def asmadi():
 @endpoints_projects.route("/Math")
 def math():
     return(render_template("projects/math.html"))
+
+@endpoints_projects.route("/Other")
+def other():
+    return(render_template("projects/other.html"))
