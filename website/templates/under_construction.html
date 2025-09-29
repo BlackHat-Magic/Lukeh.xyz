@@ -1,0 +1,16 @@
+{% extends "master.html" %}
+
+{% block head %}
+<title>Blog | Lukeh.xyz</title>
+{% endblock %}
+
+{% block body %}
+<main class="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 text-left">
+<div class="flex items-center justify-center mx-auto text-center max-w-7xl mb-4">
+    <h1 class="text-2xl font-black leading-tight">(Under Construction)</h1>
+</div>
+<img src="{{ url_for('static', filename='images/construction.webp') }}" alt="An image depicting an anime character nailing wooden boards to the page background" class="min-w-[50%] mx-auto mb-8"/>
+<p class="max-w-prose text-lg sm:text-xl">This page is under construction. Come back soon when it's done!</p>
+<p class="mt-16 text-xs">Above image generated with AI</p>
+</main>
+{% endblock %}
