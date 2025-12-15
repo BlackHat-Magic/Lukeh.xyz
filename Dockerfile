@@ -35,4 +35,4 @@ COPY --from=assets /build/website/static/dist/main.css ./website/static/dist/mai
 
 EXPOSE 8000
 
-CMD ["python", "-m", "gunicorn", "-w", "5", "-b", "0.0.0.0:8000", "app:app"]
+CMD ["python", "-m", "gunicorn", "-w", "2", "-b", "0.0.0.0:8000", "app:app"]
