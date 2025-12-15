@@ -21,7 +21,7 @@ RUN npx @tailwindcss/cli \
 FROM python:3.13.7-slim-bookworm
 
 RUN apt-get update && \
-    apt-get upgrade && \
+    apt-get upgrade -y && \
     apt-get install -y --no-install-recommends curl && \
     rm -rf /var/lib/apt/lists/*
 
@@ -35,4 +35,4 @@ COPY --from=assets /build/website/static/dist/main.css ./website/static/dist/mai
 
 EXPOSE 8000
 
-CMD ["python", "-m", "gunicorn", "-w", "5", "-b", "0.0.0.0:8000", "app:app"]
+CMD ["python", "-m", "gunicorn", "-w", "2", "-b", "0.0.0.0:8000", "app:app"]
