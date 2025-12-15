@@ -27,12 +27,16 @@ TO_EMAIL = os.getenv("TO_EMAIL", None)
 if TO_EMAIL is None:
     raise ValueError("TO_EMAIL environment variable cannot be None.")
 
+FLASK_SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "")
+
 def start():
     """
     Create Flask app object
     """
 
     app = Flask(__name__)
+
+    app.secret_key = FLASK_SECRET_KEY
 
     smtp = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
     if SMTP_USE_TLS:
