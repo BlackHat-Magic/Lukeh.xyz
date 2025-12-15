@@ -29,10 +29,19 @@ def sd_runpod():
 @endpoints_projects.route("/Silverquill-Compiler")
 def silverquill():
     """
-    Silverquill
+    Silverquill was renamed
     """
 
-    return render_template("projects/silverquill.html")
+    return redirect(url_for("endpoints_projects.piru"))
+
+@endpoints_projects.route("/Piru")
+def piru():
+    """
+    Piru
+    (Formerly Silverquill)
+    """
+
+    return render_template("projects/piru.html")
 
 @endpoints_projects.route("/Asmadi-Engine")
 def asmadi():
