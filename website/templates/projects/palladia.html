@@ -1,24 +1,27 @@
 {% extends "master.html" %}
 
 {% block head %}
-<title>Asmadi Game Engine | Luke Henderson</title>
+<title>Palladia Game Engine | Luke Henderson</title>
 {% endblock %}
 
 {% block body %}
 <main class="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 text-left">
 
 <div class="flex items-center justify-center mx-auto text-center max-w-7xl mb-4">
-    <h1 class="text-2xl font-black leading-tight">Asmadi Game Engine</h1>
+    <h1 class="text-2xl font-black leading-tight">Palladia Game Engine</h1>
+</div>
+<div class="flex items-center justify-center mx-auto text-center max-w-7xl mb-4">
+    <p class="text-xs leading-relaxed text-foreground mb-8 text-center">(Formerly known as Asmadi)</p>
 </div>
 
 <div class="flex items-center justify-center mx-auto text-center max-w-7xl mb-8">
-    <a class="text-xs leading-tight hover:underline" href="https://github.com/BlackHat-Magic/Asmadi-Engine" target="_blank">Source Code</a>
+    <a class="text-xs leading-tight hover:underline" href="https://github.com/BlackHat-Magic/Palladia-Engine" target="_blank">Source Code</a>
 </div>
 
-<img src="{{ url_for('static', filename='images/asmadi.gif') }}" alt="A gif depicting a spinning torus" class="min-w-[50%] mx-auto"/>
+<img src="{{ url_for('static', filename='images/palladia.gif') }}" alt="A gif depicting a spinning torus" class="min-w-[50%] mx-auto"/>
 <p class="text-xs leading-relaxed text-foreground mb-8 text-center">Right now the engine doesn't do much, so here's a spinning donut.</p>
 
-<p class="max-w-prose text-lg leading-relaxed text-foreground sm:text-xl mb-8">The Asmadi Engine is a simple, ECS-based game engine written in C using the SDL GPU API. Currently, it only targets a Vulkan backend, but the goal is to at least also support WebGPU. Most of the code written so far is loosely based on the <a href="https://learnopengl.com/" target="_blank">Learn OpenGL tutorials</a>, at least as far as they can be for using an entirely different graphics API.</p>
+<p class="max-w-prose text-lg leading-relaxed text-foreground sm:text-xl mb-8">The Palladia Engine is a simple, ECS-based game engine written in C using the SDL GPU API. Currently, it only targets a Vulkan backend, but the goal is to at least also support WebGPU. Most of the code written so far is loosely based on the <a href="https://learnopengl.com/" target="_blank">Learn OpenGL tutorials</a>, at least as far as they can be for using an entirely different graphics API.</p>
 
 <p class="max-w-prose text-lg leading-relaxed text-foreground sm:text-xl mb-8">The project stemmed from a desire to learn graphics programming and the fact that, in game programming, I often find myself knowing exactly what I want the code to look like, but unsure of how to tell the game engine to do what I want. So I figured that several hundred hours of trial and error should save me thirty or so minutes of reading the Godot documentation.</p>
 
