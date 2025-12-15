@@ -35,17 +35,17 @@ def contact():
     if request.method == "POST":
         email = request.form.get("email")
         if not email:
-            flash("Email is required.")
+            flash("Email is required.", "error")
             return render_template("contact.html")
 
         subject = request.form.get("subject")
         if not subject:
-            flash("Subject is required.")
+            flash("Subject is required.", "error")
             return render_template("contact.html")
 
         body = request.form.get("body")
         if not body:
-            flash("Body is required.")
+            flash("Body is required.", "error")
             return render_template("contact.html")
 
         msg = MIMEMultipart()
@@ -55,6 +55,6 @@ def contact():
         msg["Subject"] = subject
         msg.attach(MIMEText(body, "plain"))
         current_app.config["smtp"].send_message(msg)
-        flash("Message sent. You have been CCed.")
+        flash("Message sent. You have been CCed.", "success")
 
     return render_template("contact.html")
