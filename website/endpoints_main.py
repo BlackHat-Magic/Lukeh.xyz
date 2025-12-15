@@ -15,7 +15,7 @@ def home():
     Homepage
     """
 
-    return(render_template("index.html"))
+    return render_template("index.html")
 
 @endpoints_main.route("/Blog")
 def blog():
@@ -24,7 +24,7 @@ def blog():
     (Under construction)
     """
 
-    return(render_template("under_construction.html"))
+    return render_template("under_construction.html")
 
 @endpoints_main.route("/Contact", methods=["POST", "GET"])
 def contact():
