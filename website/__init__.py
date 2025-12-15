@@ -41,7 +41,7 @@ def start():
     smtp = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
     if SMTP_USE_TLS:
         smtp.starttls()
-    # smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
+    smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
 
     app.config["smtp"] = smtp
     app.config["from_email"] = FROM_EMAIL
