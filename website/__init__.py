@@ -1,5 +1,6 @@
 import os
 import smtplib
+import socket
 
 from dotenv import load_dotenv
 from flask import Flask
@@ -39,7 +40,7 @@ def start():
     app.secret_key = FLASK_SECRET_KEY
 
     try:
-        smtp = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+        smtp = smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=10)
         if SMTP_USE_TLS:
             smtp.starttls()
         smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
@@ -48,6 +49,8 @@ def start():
         app.config["from_email"] = FROM_EMAIL
         app.config["from_name"] = FROM_NAME
         app.config["to_email"] = TO_EMAIL
+    except socket.timeout:
+        print("SMTP timeout")
     except smtplib.SMTPException as e:
         print(e)
 
