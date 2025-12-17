@@ -5,7 +5,8 @@ Main Endpoints
 # from email.mime.multipart import MIMEMultipart
 # from email.mime.text import MIMEText
 
-from flask import Blueprint, current_app, flash, render_template, request
+# from flask import Blueprint, current_app, flash, render_template, request
+from flask import Blueprint, render_template
 
 endpoints_main = Blueprint("endpoints_main", __name__)
 
