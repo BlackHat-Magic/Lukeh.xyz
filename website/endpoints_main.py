@@ -52,27 +52,24 @@ def contact():
             return render_template("contact.html")
 
         try:
-            smtp = smtplib.SMTP(
+            with smtplib.SMTP(
                 current_app.config["SMTP_SERVER"],
                 current_app.config["SMTP_PORT"],
                 timeout=5.0
-            )
-            smtp.login(current_app.config["SMTP_USERNAME"], current_app.config["SMTP_PASSWORD"])
-        except (socket.timeout, smtplib.SMTPAuthenticationError) as e:
-            flash("Failed to send email. Try again later or send from your email client.", "error")
-            print(e)
-            return render_template("contact.html")
+            ) as smtp:
+                if current_app.config("SMTP_USE_TLS"):
+                    smtp.starttls()
+                smtp.login(current_app.config["SMTP_USERNAME"], current_app.config["SMTP_PASSWORD"])
 
-        msg = MIMEMultipart()
-        msg["from"] = f"{current_app.config['from_name']} <{current_app.config['from_email']}>"
-        msg["To"] = current_app.config["to_email"]
-        msg["Cc"] = email
-        msg["Subject"] = subject
-        msg.attach(MIMEText(body, "plain"))
+                msg = MIMEMultipart()
+                msg["from"] = f"{current_app.config['from_name']} <{current_app.config['from_email']}>"
+                msg["To"] = current_app.config["to_email"]
+                msg["Cc"] = email
+                msg["Subject"] = subject
+                msg.attach(MIMEText(body, "plain"))
 
-        try:
-            current_app.config["smtp"].send_message(msg)
-        except smtplib.SMTPException as e:
+                smtp.send_message(msg)
+        except (socket.timeout, smtplib.SMTPAuthenticationError, smtplib.SMTPException) as e:
             flash("Failed to send email. Try again later or send from your email client.", "error")
             print(e)
             return render_template("contact.html")
