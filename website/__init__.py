@@ -39,20 +39,14 @@ def start():
 
     app.secret_key = FLASK_SECRET_KEY
 
-    try:
-        smtp = smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=10)
-        if SMTP_USE_TLS:
-            smtp.starttls()
-        smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-
-        app.config["smtp"] = smtp
-        app.config["from_email"] = FROM_EMAIL
-        app.config["from_name"] = FROM_NAME
-        app.config["to_email"] = TO_EMAIL
-    except socket.timeout:
-        print("SMTP timeout")
-    except smtplib.SMTPException as e:
-        print(e)
+    app.config["SMTP_SERVER"] = SMTP_SERVER
+    app.config["SMTP_PORT"] = SMTP_PORT
+    app.config["SMTP_USERNAME"] = SMTP_USERNAME
+    app.config["SMTP_PASSWORD"] = SMTP_PASSWORD
+    app.config["SMTP_USE_TLS"] = SMT_USE_TLS
+    app.config["from_email"] = FROM_EMAIL
+    app.config["from_name"] = FROM_NAME
+    app.config["to_email"] = TO_EMAIL
 
     from .endpoints_main import endpoints_main
     # from .endpoints_auth import endpoints_auth
