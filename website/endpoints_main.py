@@ -5,6 +5,9 @@ Main Endpoints
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+import smtplib
+import socket
+
 from flask import Blueprint, current_app, flash, render_template, request
 
 endpoints_main = Blueprint("endpoints_main", __name__)
@@ -48,13 +51,32 @@ def contact():
             flash("Body is required.", "error")
             return render_template("contact.html")
 
+        try:
+            smtp = smtplib.SMTP(
+                current_app.config["SMTP_SERVER"],
+                current_app.config["SMTP_PORT"],
+                timeout=5.0
+            )
+            smtp.login(current_app.config["SMTP_USERNAME"], current_app.config["SMTP_PASSWORD"])
+        except (socket.timeout, smtplib.SMTPAuthenticationError) as e:
+            flash("Failed to send email. Try again later or send from your email client.", "error")
+            print(e)
+            return render_template("contact.html")
+
         msg = MIMEMultipart()
         msg["from"] = f"{current_app.config['from_name']} <{current_app.config['from_email']}>"
         msg["To"] = current_app.config["to_email"]
         msg["Cc"] = email
         msg["Subject"] = subject
         msg.attach(MIMEText(body, "plain"))
-        current_app.config["smtp"].send_message(msg)
+
+        try:
+            current_app.config["smtp"].send_message(msg)
+        except smtplib.SMTPException as e:
+            flash("Failed to send email. Try again later or send from your email client.", "error")
+            print(e)
+            return render_template("contact.html")
+
         flash("Message sent. You have been CCed.", "success")
 
     return render_template("contact.html")
