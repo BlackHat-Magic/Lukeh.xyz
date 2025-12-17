@@ -43,7 +43,7 @@ def start():
     app.config["SMTP_PORT"] = SMTP_PORT
     app.config["SMTP_USERNAME"] = SMTP_USERNAME
     app.config["SMTP_PASSWORD"] = SMTP_PASSWORD
-    app.config["SMTP_USE_TLS"] = SMT_USE_TLS
+    app.config["SMTP_USE_TLS"] = SMTP_USE_TLS
     app.config["from_email"] = FROM_EMAIL
     app.config["from_name"] = FROM_NAME
     app.config["to_email"] = TO_EMAIL
