@@ -32,29 +32,29 @@ def contact():
     Contact form
     """
 
-    if request.method == "POST":
-        email = request.form.get("email")
-        if not email:
-            flash("Email is required.", "error")
-            return render_template("contact.html")
+    # if request.method == "POST":
+    #     email = request.form.get("email")
+    #     if not email:
+    #         flash("Email is required.", "error")
+    #         return render_template("contact.html")
 
-        subject = request.form.get("subject")
-        if not subject:
-            flash("Subject is required.", "error")
-            return render_template("contact.html")
+    #     subject = request.form.get("subject")
+    #     if not subject:
+    #         flash("Subject is required.", "error")
+    #         return render_template("contact.html")
 
-        body = request.form.get("body")
-        if not body:
-            flash("Body is required.", "error")
-            return render_template("contact.html")
+    #     body = request.form.get("body")
+    #     if not body:
+    #         flash("Body is required.", "error")
+    #         return render_template("contact.html")
 
-        msg = MIMEMultipart()
-        msg["from"] = f"{current_app.config['from_name']} <{current_app.config['from_email']}>"
-        msg["To"] = current_app.config["to_email"]
-        msg["Cc"] = email
-        msg["Subject"] = subject
-        msg.attach(MIMEText(body, "plain"))
-        current_app.config["smtp"].send_message(msg)
-        flash("Message sent. You have been CCed.", "success")
+    #     msg = MIMEMultipart()
+    #     msg["from"] = f"{current_app.config['from_name']} <{current_app.config['from_email']}>"
+    #     msg["To"] = current_app.config["to_email"]
+    #     msg["Cc"] = email
+    #     msg["Subject"] = subject
+    #     msg.attach(MIMEText(body, "plain"))
+    #     current_app.config["smtp"].send_message(msg)
+    #     flash("Message sent. You have been CCed.", "success")
 
     return render_template("contact.html")
