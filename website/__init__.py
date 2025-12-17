@@ -36,14 +36,14 @@ def start():
 
     app = Flask(__name__)
 
-    app.secret_key = FLASK_SECRET_KEY
+    # app.secret_key = FLASK_SECRET_KEY
 
-    smtp = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-    if SMTP_USE_TLS:
-        smtp.starttls()
+    # smtp = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+    # if SMTP_USE_TLS:
+    #     smtp.starttls()
     # smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
 
-    app.config["smtp"] = smtp
+    # app.config["smtp"] = smtp
     app.config["from_email"] = FROM_EMAIL
     app.config["from_name"] = FROM_NAME
     app.config["to_email"] = TO_EMAIL
