@@ -57,7 +57,7 @@ def contact():
                 current_app.config["SMTP_PORT"],
                 timeout=5.0
             ) as smtp:
-                if current_app.config("SMTP_USE_TLS"):
+                if current_app.config["SMTP_USE_TLS"]:
                     smtp.starttls()
                 smtp.login(current_app.config["SMTP_USERNAME"], current_app.config["SMTP_PASSWORD"])
 
