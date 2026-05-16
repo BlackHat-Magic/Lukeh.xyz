@@ -1,5 +1,5 @@
 # build step
-FROM node:24.8.0-alpine3.21 AS assets
+FROM node:26.1-alpine3.22 AS assets
 
 WORKDIR /build
 
@@ -18,21 +18,20 @@ RUN npx @tailwindcss/cli \
     --minify
 
 # runtime
-FROM python:3.13.7-slim-bookworm
+FROM python:3.13-alpine3.23
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends curl && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk update && apk upgrade --available
+RUN apk add uv
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
+COPY pyproject.toml .
+COPY uv.lock .
 COPY . .
+RUN uv sync --group prod --no-dev
+
 COPY --from=assets /build/website/static/dist/main.css ./website/static/dist/main.css
 
 EXPOSE 8000
 
-CMD ["python", "-m", "gunicorn", "-w", "2", "-b", "0.0.0.0:8000", "app:app"]
+CMD ["uv", "run", "python", "-m", "gunicorn", "-w", "2", "-b", "0.0.0.0:8000", "app:app"]
