@@ -3,7 +3,7 @@ FROM oven/bun:1.3-alpine AS assets
 
 WORKDIR /build
 
-COPY package.json bun.lock tsconfig.json .
+COPY package.json bun.lock tsconfig.json build.ts .
 
 RUN bun ci
 
