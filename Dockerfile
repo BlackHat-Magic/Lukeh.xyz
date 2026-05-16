@@ -33,4 +33,3 @@ COPY --from=assets /build/website/static/js ./website/static/js
 EXPOSE 8000
 
 CMD ["uv", "run", "--no-dev", "python", "-m", "hypercorn", "--bind", "0.0.0.0:8000", "--workers", "2", "app:app"]
-
