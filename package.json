@@ -17,12 +17,17 @@
   "scripts": {
     "build:ts": "bun run build.ts",
     "build:css": "bunx @tailwindcss/cli -i ./website/static/css/main.css -o ./website/static/dist/main.css --minify",
-    "build": "bun run build:ts && bun run build:css",
-    "watch:ts": "bun run build.ts --watch",
-    "watch:css": "bunx @tailwindcss/cli -i ./website/static/css/main.css -o ./website/static/dist/main.css --watch",
-    "watch": "concurrently --names ts,css \"bun run watch:ts\" \"bun run watch:css\"",
-    "dev": "concurrently --names ts,css,server \"bun run watch:ts\" \"bun run watch:css\" \"HYPERCORN_BIND=${HYPERCORN_BIND:-0.0.0.0:8000} uv run --no-dev python -m hypercorn app:app --reload\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:docker": "docker buildx build .",
+	"build:all": "bun run build:ts && bun run build:css && bun run build:docker",
+
+    "watch": "concurrently --names ts,css \"bun run build.ts --watch\" \"bunx @tailwindcss/cli -i ./website/static/css/main.css -o ./website/static/dist/main.css --watch --minify\"",
+    "dev": "concurrently --names ts,css,server \"bun run watch\" \"HYPERCORN_BIND=${HYPERCORN_BIND:-0.0.0.0:8000} uv run --no-dev python -m hypercorn app:app --reload\"",
+
+	"check": "./checks.sh",
+
+	"clean": "rm -rf website/static/js/*.js website/static/dist/*.css",
+
+    "test": "echo \"No tests yet\" && exit 1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
