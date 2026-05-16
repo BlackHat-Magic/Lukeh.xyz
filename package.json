@@ -15,7 +15,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "build:ts": "tsc",
+    "build:ts": "bun run build.ts",
     "build:css": "bunx @tailwindcss/cli -i ./website/static/css/main.css -o ./website/static/dist/main.css --minify",
     "build": "bun run build:ts && bun run build:css",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -23,6 +23,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@tailwindcss/cli": "^4.1.18",
+    "esbuild": "^0.28.0",
     "eslint": "^10.4.0",
     "tailwindcss": "^4.1.18",
     "typescript": "^6.0.3",
