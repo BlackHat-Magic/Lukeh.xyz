@@ -18,11 +18,16 @@
     "build:ts": "bun run build.ts",
     "build:css": "bunx @tailwindcss/cli -i ./website/static/css/main.css -o ./website/static/dist/main.css --minify",
     "build": "bun run build:ts && bun run build:css",
+    "watch:ts": "bun run build.ts --watch",
+    "watch:css": "bunx @tailwindcss/cli -i ./website/static/css/main.css -o ./website/static/dist/main.css --watch",
+    "watch": "concurrently --names ts,css \"bun run watch:ts\" \"bun run watch:css\"",
+    "dev": "concurrently --names ts,css,server \"bun run watch:ts\" \"bun run watch:css\" \"HYPERCORN_BIND=${HYPERCORN_BIND:-0.0.0.0:8000} uv run --no-dev python -m hypercorn app:app --reload\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@tailwindcss/cli": "^4.1.18",
+    "concurrently": "^9.2.1",
     "esbuild": "^0.28.0",
     "eslint": "^10.4.0",
     "tailwindcss": "^4.1.18",
