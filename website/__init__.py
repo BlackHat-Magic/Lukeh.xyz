@@ -1,6 +1,4 @@
 import os
-import smtplib
-import socket
 
 from dotenv import load_dotenv
 from flask import Flask

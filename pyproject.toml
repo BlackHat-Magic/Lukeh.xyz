@@ -8,6 +8,10 @@ dependencies = [
 ]
 
 [dependency-groups]
+dev = [
+    "ruff>=0.15.13",
+    "ty>=0.0.37",
+]
 prod = [
     "gunicorn>=26.0.0",
 ]
