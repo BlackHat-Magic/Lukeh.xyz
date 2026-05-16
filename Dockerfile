@@ -3,15 +3,17 @@ FROM oven/bun:1.3-alpine AS assets
 
 WORKDIR /build
 
-COPY package*.json .
+COPY package.json bun.lock tsconfig.json .
 
 RUN bun ci
 
 COPY website/templates/ ./website/templates
-COPY website/static/js ./website/static/js
+COPY website/static/ts ./website/static/ts
 COPY website/static/css ./website/static/css
 
-RUN mkdir -p static/dist
+RUN mkdir -p website/static/js website/static/dist
+
+RUN bun run build:ts
 
 RUN bunx @tailwindcss/cli \
     -i ./website/static/css/main.css \
@@ -32,6 +34,7 @@ COPY . .
 RUN uv sync --group prod --no-dev
 
 COPY --from=assets /build/website/static/dist/main.css ./website/static/dist/main.css
+COPY --from=assets /build/website/static/js ./website/static/js
 
 EXPOSE 8000
 
