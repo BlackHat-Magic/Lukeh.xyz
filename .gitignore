@@ -6,4 +6,5 @@ website/database.db
 instance/
 **/dist/**/*
 node_modules
+website/static/js/
 **/.env
