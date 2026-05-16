@@ -1,6 +1,8 @@
 import * as esbuild from 'esbuild';
 
-await esbuild.build({
+const watch = process.argv.includes('--watch');
+
+const ctx = await esbuild.context({
     entryPoints: [
         'website/static/ts/index.ts',
         'website/static/ts/master.ts',
@@ -16,4 +18,11 @@ await esbuild.build({
     target: 'es2022',
 });
 
-console.log('Build complete.');
+if (watch) {
+    await ctx.watch();
+    console.log('Watching for changes...');
+} else {
+    await ctx.rebuild();
+    await ctx.dispose();
+    console.log('Build complete.');
+}
