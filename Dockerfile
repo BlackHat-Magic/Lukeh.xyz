@@ -18,7 +18,7 @@ RUN mkdir -p website/static/js website/static/dist && \
 # runtime
 FROM python:3.13-alpine3.23
 
-RUN apk update && apk upgrade --available && apk add --no-cache uv=0.11
+RUN apk update && apk upgrade --available && apk add --no-cache uv>=0.10
 
 WORKDIR /app
 
