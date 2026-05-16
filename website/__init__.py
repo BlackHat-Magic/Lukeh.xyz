@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Flask
+from quart import Quart
 
 load_dotenv()
 
@@ -26,10 +26,10 @@ TO_EMAIL: str = _get_required_env("TO_EMAIL")
 FLASK_SECRET_KEY: str = os.getenv("FLASK_SECRET_KEY", "")
 
 
-def start() -> Flask:
-    """Create and configure Flask app."""
+def start() -> Quart:
+    """Create and configure Quart app."""
 
-    app = Flask(__name__)
+    app = Quart(__name__)
     app.secret_key = FLASK_SECRET_KEY
 
     app.config["SMTP_SERVER"] = SMTP_SERVER
