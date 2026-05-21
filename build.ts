@@ -4,11 +4,11 @@ const watch = process.argv.includes('--watch');
 
 const ctx = await esbuild.context({
     entryPoints: [
-        'website/static/ts/index.ts',
-        'website/static/ts/master.ts',
-        'website/static/ts/math.ts',
-        'website/static/ts/post.ts',
-        'website/static/ts/signup.ts',
+        'static/ts/index.ts',
+        'static/ts/master.ts',
+        'static/ts/math.ts',
+        'static/ts/post.ts',
+        'static/ts/signup.ts',
     ],
     outdir: 'public/js',
     bundle: true,
