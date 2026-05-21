@@ -10,7 +10,7 @@ const ctx = await esbuild.context({
         'website/static/ts/post.ts',
         'website/static/ts/signup.ts',
     ],
-    outdir: 'website/static/js',
+    outdir: 'public/js',
     bundle: true,
     minify: true,
     format: 'iife',

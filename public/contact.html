@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie-edge">
+    <script>
+        (function () {
+            try {
+            var ls = window.localStorage;
+            var savedMode = ls.getItem("theme.mode");
+            var pref = null;
+            try { pref = JSON.parse(ls.getItem("theme.pref") || "null"); } catch (_) {}
+            var lightKey = (pref && pref.lightKey) || "catppuccin-latte";
+            var darkKey = (pref && pref.darkKey) || "catppuccin-mocha";
+            var mode = savedMode || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+            var themeKey = mode === "light" ? lightKey : darkKey;
+            var html = document.documentElement;
+            html.setAttribute("data-mode", mode);
+            html.setAttribute("data-theme", themeKey);
+            html.style.colorScheme = mode;
+            var bg = {
+                "catppuccin-latte": "#eff1f5",
+                "catppuccin-mocha": "#1e1e2e",
+                "nord-light": "#eceff4",
+                "nord-dark": "#2e3440",
+                "gruvbox-light": "#fbf1c7",
+                "gruvbox-dark": "#282828",
+                "rose-pine-dawn": "#faf4ed",
+                "rose-pine": "#191724",
+                "strawberry-light": "#fff1f2",
+                "strawberry-dark": "#111827",
+            };
+            var bgColor = bg[themeKey] || (mode === "dark" ? "#111827" : "#ffffff");
+            html.style.backgroundColor = bgColor;
+            } catch (e) {
+            }
+        })();
+    </script>
+	<link rel="icon" type="image/x-icon" href="https://discord.id/img/flags/7.png">
+	<link rel="stylesheet" href="/dist/main.css">
+	<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+	<script src="/js/master.js"></script>
+	<title>Contact | Luke Henderson</title>
+</head>
+
+<body>
+
+<nav x-data="NavData" class="relative z-30 w-auto">
+    <div class="relative">
+        <ul class="flex flex-1 justify-center items-center p-1 space-x-1 list-none rounded-md group bg-background text-foreground">
+            <li>
+                <a href="/" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:opacity-90 focus:outline-none disabled:opacity-50 disabled:pointer-events-none bg-background hover:bg-muted group">
+                    Home
+                </a>
+            </li>
+            <li>
+                <a
+                    :class="{ 'bg-muted' : navigationMenu=='portfolio', 'hover:bg-muted' : navigationMenu!='portfolio' }" @mouseover="navigationMenuOpen=true; navigationMenuReposition($el); navigationMenu='portfolio'" @mouseleave="navigationMenuLeave()" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:opacity-90 focus:outline-none disabled:opacity-50 disabled:pointer-events-none group" href="#">
+                    <span>Portfolio Projects</span>
+                    <svg :class="{ '-rotate-180' : navigationMenuOpen==true && navigationMenu == 'portfolio' }" class="relative top-[1px] ml-1 h-3 w-3 ease-out duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+				</a>
+            </li>
+            <li>
+                <a href="/blog" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:opacity-90 focus:outline-none disabled:opacity-50 disabled:pointer-events-none bg-background hover:bg-muted group">
+                    Blog
+                </a>
+            </li>
+            <li>
+                <a href="/contact" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:opacity-90 focus:outline-none disabled:opacity-50 disabled:pointer-events-none bg-background hover:bg-muted group">
+                    Contact
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div x-ref="navigationDropdown" x-show="navigationMenuOpen"
+        x-transition:enter="transition ease-out duration-100"
+        x-transition:enter-start="opacity-0 scale-90"
+        x-transition:enter-end="opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-100"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-90"
+        @mouseover="navigationMenuClearCloseTimeout()" @mouseleave="navigationMenuLeave()"
+        class="absolute top-0 pt-3 duration-200 ease-out -translate-x-1/2 translate-y-11" x-cloak>
+
+        <div class="flex overflow-hidden justify-center w-auto h-auto bg-card text-foreground rounded-md border shadow-sm border-border">
+            <div x-show="navigationMenu == 'portfolio'" class="flex justify-center items-stretch p-6 w-full">
+                <div class="w-72">
+                    <a href="/projects/palladia-engine" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">Palladia Game Engine</span>
+                        <span class="block leading-5 opacity-50">A simple ECS-based game engine written in C using SDL's GPU API</span>
+                    </a>
+                    <a href="/projects/piru" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">Piru Compiler</span>
+                        <span class="block leading-5 opacity-50">A simple Rust-based compiler for a small, C-like language</span>
+                    </a>
+                    <a href="/projects/portfolio" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">Lukeh.xyz</span>
+                        <span class="block leading-5 opacity-50">This portfolio website</span>
+                    </a>
+                </div>
+                <div class="w-72">
+                    <a href="/projects/sd-runpod" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">SD-Runpod</span>
+                        <span class="block leading-5 opacity-50">A project using Runpod's serverless platform to serve transformer and diffusion models</span>
+                    </a>
+                    <a href="/projects/math" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">Old Math Demos</span>
+                        <span class="block leading-5 opacity-50">Some simple calculators I wrote to familiarize myself with Alpine</span>
+                    </a>
+                    <a href="/projects/other" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-muted">
+                        <span class="block mb-1 font-medium text-foreground">View All</span>
+                        <span class="block leading-5 opacity-50">Other portfolio projects that didn't make it above the fold</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="absolute right-2 top-1/2 -translate-y-1/2">
+        <div class="flex items-center gap-1">
+            <a
+                href="https://ko-fi.com/lukethenderson"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center w-9 h-9 rounded-md hover:bg-muted transition-colors focus:outline-none"
+                aria-label="Support on Ko-Fi"
+                title="Ko-Fi"
+            >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.963 1.904.82 1.832 3.011.723 4.311zm6.173.478c-.928.116-1.682.028-1.682.028V7.284h1.77s1.971.551 1.971 2.638c0 1.913-.985 2.667-2.059 3.015z"></path>
+                    </g>
+                </svg>
+            </a>
+            <a
+                href="https://github.com/BlackHat-Magic/Lukeh.xyz"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center w-9 h-9 rounded-md hover:bg-muted transition-colors focus:outline-none"
+                aria-label="View GitHub repository"
+                title="GitHub"
+            >
+                <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor" class="w-5 h-5">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -7559.000000)" fill="currentColor">
+                                <g id="icons" transform="translate(56.000000, 160.000000)">
+                                    <path d="M94,7399 C99.523,7399 104,7403.59 104,7409.253 C104,7413.782 101.138,7417.624 97.167,7418.981 C96.66,7419.082 96.48,7418.762 96.48,7418.489 C96.48,7418.151 96.492,7417.047 96.492,7415.675 C96.492,7414.719 96.172,7414.095 95.813,7413.777 C98.04,7413.523 100.38,7412.656 100.38,7408.718 C100.38,7407.598 99.992,7406.684 99.35,7405.966 C99.454,7405.707 99.797,7404.664 99.252,7403.252 C99.252,7403.252 98.414,7402.977 96.505,7404.303 C95.706,7404.076 94.85,7403.962 94,7403.958 C93.15,7403.962 92.295,7404.076 91.497,7404.303 C89.586,7402.977 88.746,7403.252 88.746,7403.252 C88.203,7404.664 88.546,7405.707 88.649,7405.966 C88.01,7406.684 87.619,7407.598 87.619,7408.718 C87.619,7412.646 89.954,7413.526 92.175,7413.785 C91.889,7414.041 91.63,7414.493 91.54,7415.156 C90.97,7415.418 89.522,7415.871 88.63,7414.304 C88.63,7414.304 88.101,7413.319 87.097,7413.247 C87.097,7413.247 86.122,7413.234 87.029,7413.87 C87.029,7413.87 87.684,7414.185 88.139,7415.37 C88.139,7415.37 88.726,7417.2 91.508,7416.58 C91.513,7417.437 91.522,7418.245 91.522,7418.489 C91.522,7418.76 91.338,7419.077 90.839,7418.982 C86.865,7417.627 84,7413.783 84,7409.253 C84,7403.59 88.478,7399 94,7399" id="github-[#142]"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            </a>
+
+            <div x-data="ThemeUI" class="relative" @keydown.escape="close()">
+                <a><button
+                    @click="toggle()"
+                    @mouseover="open()"
+                    @mouseleave="close()"
+                    class="inline-flex items-center justify-center w-9 h-9 rounded-md hover:bg-muted transition-colors focus:outline-none"
+                    aria-label="Toggle light/dark theme"
+                    title="Toggle theme"
+                    x-cloak
+                >
+                <svg x-show="$store.theme.mode === 'dark'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
+                        <g clip-path="url(#clip0_429_11017)">
+                            <path d="M20.9955 11.7115L22.2448 11.6721C22.2326 11.2847 22.0414 10.9249 21.7272 10.698C21.413 10.4711 21.0113 10.4029 20.6397 10.5132L20.9955 11.7115ZM12.2885 3.00454L13.4868 3.36028C13.5971 2.98873 13.5289 2.58703 13.302 2.2728C13.0751 1.95857 12.7153 1.76736 12.3279 1.75516L12.2885 3.00454ZM20.6397 10.5132C20.1216 10.667 19.5716 10.75 19 10.75V13.25C19.815 13.25 20.6046 13.1314 21.3512 12.9098L20.6397 10.5132ZM19 10.75C15.8244 10.75 13.25 8.17564 13.25 5H10.75C10.75 9.55635 14.4437 13.25 19 13.25V10.75ZM13.25 5C13.25 4.42841 13.333 3.87841 13.4868 3.36028L11.0902 2.64879C10.8686 3.39542 10.75 4.18496 10.75 5H13.25ZM12 4.25C12.0834 4.25 12.1665 4.25131 12.2492 4.25392L12.3279 1.75516C12.219 1.75173 12.1097 1.75 12 1.75V4.25ZM4.25 12C4.25 7.71979 7.71979 4.25 12 4.25V1.75C6.33908 1.75 1.75 6.33908 1.75 12H4.25ZM12 19.75C7.71979 19.75 4.25 16.2802 4.25 12H1.75C1.75 17.6609 6.33908 22.25 12 22.25V19.75ZM19.75 12C19.75 16.2802 16.2802 19.75 12 19.75V22.25C17.6609 22.25 22.25 17.6609 22.25 12H19.75ZM19.7461 11.7508C19.7487 11.8335 19.75 11.9166 19.75 12H22.25C22.25 11.8903 22.2483 11.781 22.2448 11.6721L19.7461 11.7508Z" fill="currentColor"></path>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_429_11017">
+                                <rect width="24" height="24" fill="currentColor"></rect>
+                            </clipPath>
+                        </defs>
+                    </g>
+                </svg>
+                <svg x-show="$store.theme.mode === 'light'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 64 64" fill="currentColor" stroke-width="2">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <g>
+                            <circle fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" cx="32.003" cy="32.005" r="16.001"></circle>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M12.001,31.997c0-2.211-1.789-4-4-4H4c-2.211,0-4,1.789-4,4 s1.789,4,4,4h4C10.212,35.997,12.001,34.208,12.001,31.997z"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M12.204,46.139l-2.832,2.833c-1.563,1.562-1.563,4.094,0,5.656 c1.562,1.562,4.094,1.562,5.657,0l2.833-2.832c1.562-1.562,1.562-4.095,0-5.657C16.298,44.576,13.767,44.576,12.204,46.139z"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M32.003,51.999c-2.211,0-4,1.789-4,4V60c0,2.211,1.789,4,4,4 s4-1.789,4-4l-0.004-4.001C36.003,53.788,34.21,51.999,32.003,51.999z"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M51.798,46.143c-1.559-1.566-4.091-1.566-5.653-0.004 s-1.562,4.095,0,5.657l2.829,2.828c1.562,1.57,4.094,1.562,5.656,0s1.566-4.09,0-5.656L51.798,46.143z"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M60.006,27.997l-4.009,0.008 c-2.203-0.008-3.992,1.781-3.992,3.992c-0.008,2.211,1.789,4,3.992,4h4.001c2.219,0.008,4-1.789,4-4 C64.002,29.79,62.217,27.997,60.006,27.997z"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M51.798,17.859l2.828-2.829c1.574-1.566,1.562-4.094,0-5.657 c-1.559-1.567-4.09-1.567-5.652-0.004l-2.829,2.836c-1.562,1.555-1.562,4.086,0,5.649C47.699,19.426,50.239,19.418,51.798,17.859z"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M32.003,11.995c2.207,0.016,4-1.789,4-3.992v-4 c0-2.219-1.789-4-4-4c-2.211-0.008-4,1.781-4,3.993l0.008,4.008C28.003,10.206,29.792,11.995,32.003,11.995z"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor" d="M12.212,17.855c1.555,1.562,4.079,1.562,5.646-0.004 c1.574-1.551,1.566-4.09,0.008-5.649l-2.829-2.828c-1.57-1.571-4.094-1.559-5.657,0c-1.575,1.559-1.575,4.09-0.012,5.653 L12.212,17.855z"></path>
+                        </g>
+                    </g>
+                </svg>
+                </button></a>
+
+                <div
+                    x-show="menuOpen"
+                    x-transition:enter="transition ease-out duration-100"
+                    x-transition:enter-start="opacity-0 scale-95"
+                    x-transition:enter-end="opacity-100 scale-100"
+                    x-transition:leave="transition ease-in duration-100"
+                    x-transition:leave-start="opacity-100 scale-100"
+                    x-transition:leave-end="opacity-0 scale-95"
+                    @mouseover="open()" @mouseleave="close()"
+                    class="absolute right-0 mt-2 w-72 bg-card text-foreground border border-border rounded-md shadow-md p-2 z-50"
+                    x-cloak
+                >
+                <div class="flex items-center gap-1 p-1 border-b border-border">
+                    <button
+                        @click="setTab('light')"
+                        :class="activeTab === 'light' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted'"
+                        class="px-3 py-1.5 text-sm rounded-md transition-colors"
+                        role="tab"
+                        aria-selected="activeTab === 'light'"
+                    >
+                        Light
+                    </button>
+                    <button
+                        @click="setTab('dark')"
+                        :class="activeTab === 'dark' ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted'"
+                        class="px-3 py-1.5 text-sm rounded-md transition-colors"
+                        role="tab"
+                        aria-selected="activeTab === 'dark'"
+                    >
+                        Dark
+                    </button>
+                </div>
+
+                <div class="px-1 py-2">
+                <div x-show="activeTab === 'light'" role="tabpanel">
+                    <div class="text-xs font-semibold opacity-70 mb-1">Choose a light theme</div>
+                    <template x-for="t in $store.theme.lightThemes" :key="t.key">
+                    <button
+                        @click="$store.theme.setLight(t.key)"
+                        class="w-full flex items-center justify-between text-left px-2 py-1 rounded hover:bg-muted"
+                    >
+                        <span x-text="t.name"></span>
+                        <span
+                        x-show="$store.theme.lightKey === t.key"
+                        class="inline-flex h-2 w-2 rounded-full"
+                        :style="`background: var(--accent);`"
+                        ></span>
+                    </button>
+                    </template>
+                </div>
+
+                <div x-show="activeTab === 'dark'" role="tabpanel">
+                    <div class="text-xs font-semibold opacity-70 mb-1">Choose a dark theme</div>
+                    <template x-for="t in $store.theme.darkThemes" :key="t.key">
+                    <button
+                        @click="$store.theme.setDark(t.key)"
+                        class="w-full flex items-center justify-between text-left px-2 py-1 rounded hover:bg-muted"
+                    >
+                        <span x-text="t.name"></span>
+                        <span
+                        x-show="$store.theme.darkKey === t.key"
+                        class="inline-flex h-2 w-2 rounded-full"
+                        :style="`background: var(--accent);`"
+                        ></span>
+                    </button>
+                    </template>
+                </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6">
+    <div class="w-full max-w-md">
+        <h1 class="text-2xl font-bold text-center mb-6 text-foreground">Contact Me</h1>
+        <p class="text-xs leading-relaxed text-foreground mb-8 text-center">You can send <a href="mailto:contact@lukeh.xyz">from your email client if you'd prefer</a></p>
+
+        <div x-data="contactForm" class="space-y-4 mb-32">
+            <template x-if="message">
+                <div
+                    :class="messageType === 'success' ? 'bg-green-50 text-green-600 border-green-200' : 'bg-red-50 text-red-600 border-red-200'"
+                    class="relative w-full rounded-lg border p-4 text-sm"
+                >
+                    <h5 class="mb-1 font-medium leading-none tracking-tight" x-text="messageType === 'success' ? 'Success' : 'Error'"></h5>
+                    <div class="text-sm opacity-80" x-text="message"></div>
+                </div>
+            </template>
+
+            <form @submit.prevent="submit" method="POST" action="/api/contact">
+                <div class="space-y-4">
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-foreground mb-1">Email</label>
+                        <input type="email" id="email" name="email" x-model="email" required
+                               class="w-full px-3 py-2 bg-card border border-border rounded-md text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent" placeholder="So I can get back to you">
+                    </div>
+
+                    <div>
+                        <label for="subject" class="block text-sm font-medium text-foreground mb-1">Subject</label>
+                        <input type="text" id="subject" name="subject" x-model="subject" required
+                               class="w-full px-3 py-2 bg-card border border-border rounded-md text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent">
+                    </div>
+
+                    <div>
+                        <label for="body" class="block text-sm font-medium text-foreground mb-1">Message</label>
+                        <textarea id="body" name="body" rows="5" x-model="body" required
+                                  class="w-full px-3 py-2 bg-card border border-border rounded-md text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent resize-vertical" placeholder="You are so cool, can I hire you?"></textarea>
+                    </div>
+
+                    <button type="submit" :disabled="sending"
+                            class="w-full bg-accent text-card font-medium py-2 px-4 rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-accent transition-colors disabled:opacity-50">
+                        <span x-text="sending ? 'Sending...' : 'Send Message'"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <script>
+            document.addEventListener("alpine:init", () => {
+                Alpine.data("contactForm", () => ({
+                    email: "",
+                    subject: "",
+                    body: "",
+                    sending: false,
+                    message: "",
+                    messageType: "",
+                    async submit() {
+                        this.sending = true;
+                        this.message = "";
+                        try {
+                            const formData = new FormData();
+                            formData.append("email", this.email);
+                            formData.append("subject", this.subject);
+                            formData.append("body", this.body);
+                            const res = await fetch("/api/contact", {
+                                method: "POST",
+                                body: formData,
+                            });
+                            const data = await res.json();
+                            this.message = data.message;
+                            this.messageType = data.success ? "success" : "error";
+                            if (data.success) {
+                                this.email = "";
+                                this.subject = "";
+                                this.body = "";
+                            }
+                        } catch {
+                            this.message = "Failed to send email. Try again later.";
+                            this.messageType = "error";
+                        } finally {
+                            this.sending = false;
+                        }
+                    },
+                }));
+            });
+        </script>
+
+        <h2 class="text-xl font-bold text-center mb-6 text-foreground">Or find me on these platforms</h2>
+
+        <div class="flex items-center gap-4 mb-8 justify-center">
+            <a href="https://github.com/BlackHat-Magic" target="_blank" aria-label="GitHub" class="hover:-translate-y-1 transition duration-300 hover:bg-muted p-2 rounded-full">
+                <svg viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="currentColor" class="w-5 h-5">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -7559.000000)" fill="currentColor">
+                                <g id="icons" transform="translate(56.000000, 160.000000)">
+                                    <path d="M94,7399 C99.523,7399 104,7403.59 104,7409.253 C104,7413.782 101.138,7417.624 97.167,7418.981 C96.66,7419.082 96.48,7418.762 96.48,7418.489 C96.48,7418.151 96.492,7417.047 96.492,7415.675 C96.492,7414.719 96.172,7414.095 95.813,7413.777 C98.04,7413.523 100.38,7412.656 100.38,7408.718 C100.38,7407.598 99.992,7406.684 99.35,7405.966 C99.454,7405.707 99.797,7404.664 99.252,7403.252 C99.252,7403.252 98.414,7402.977 96.505,7404.303 C95.706,7404.076 94.85,7403.962 94,7403.958 C93.15,7403.962 92.295,7404.076 91.497,7404.303 C89.586,7402.977 88.746,7403.252 88.746,7403.252 C88.203,7404.664 88.546,7405.707 88.649,7405.966 C88.01,7406.684 87.619,7407.598 87.619,7408.718 C87.619,7412.646 89.954,7413.526 92.175,7413.785 C91.889,7414.041 91.63,7414.493 91.54,7415.156 C90.97,7415.418 89.522,7415.871 88.63,7414.304 C88.63,7414.304 88.101,7413.319 87.097,7413.247 C87.097,7413.247 86.122,7413.234 87.029,7413.87 C87.029,7413.87 87.684,7414.185 88.139,7415.37 C88.139,7415.37 88.726,7417.2 91.508,7416.58 C91.513,7417.437 91.522,7418.245 91.522,7418.489 C91.522,7418.76 91.338,7419.077 90.839,7418.982 C86.865,7417.627 84,7413.783 84,7409.253 C84,7403.59 88.478,7399 94,7399" id="github-[#142]"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            </a>
+
+            <a href="https://x.com/Black_HatMagic/" target="_blank" aria-label="Twitter" class="hover:-translate-y-1 transition duration-300 hover:bg-muted p-2 rounded-full">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M19.7828 3.91825C20.1313 3.83565 20.3743 3.75444 20.5734 3.66915C20.8524 3.54961 21.0837 3.40641 21.4492 3.16524C21.7563 2.96255 22.1499 2.9449 22.4739 3.11928C22.7979 3.29366 23 3.6319 23 3.99986C23 5.08079 22.8653 5.96673 22.5535 6.7464C22.2911 7.40221 21.9225 7.93487 21.4816 8.41968C21.2954 11.7828 20.3219 14.4239 18.8336 16.4248C17.291 18.4987 15.2386 19.8268 13.0751 20.5706C10.9179 21.3121 8.63863 21.4778 6.5967 21.2267C4.56816 20.9773 2.69304 20.3057 1.38605 19.2892C1.02813 19.0108 0.902313 18.5264 1.07951 18.109C1.25671 17.6916 1.69256 17.4457 2.14144 17.5099C3.42741 17.6936 4.6653 17.4012 5.6832 16.9832C5.48282 16.8742 5.29389 16.7562 5.11828 16.6346C4.19075 15.9925 3.4424 15.1208 3.10557 14.4471C2.96618 14.1684 2.96474 13.8405 3.10168 13.5606C3.17232 13.4161 3.27562 13.293 3.40104 13.1991C2.04677 12.0814 1.49999 10.5355 1.49999 9.49986C1.49999 9.19192 1.64187 8.90115 1.88459 8.71165C1.98665 8.63197 2.10175 8.57392 2.22308 8.53896C2.12174 8.24222 2.0431 7.94241 1.98316 7.65216C1.71739 6.3653 1.74098 4.91284 2.02985 3.75733C2.1287 3.36191 2.45764 3.06606 2.86129 3.00952C3.26493 2.95299 3.6625 3.14709 3.86618 3.50014C4.94369 5.36782 6.93116 6.50943 8.78086 7.18568C9.6505 7.50362 10.4559 7.70622 11.0596 7.83078C11.1899 6.61019 11.5307 5.6036 12.0538 4.80411C12.7439 3.74932 13.7064 3.12525 14.74 2.84698C16.5227 2.36708 18.5008 2.91382 19.7828 3.91825Z" fill="currentColor"></path>
+                </svg>
+            </a>
+
+            <a href="https://bsky.app/profile/blackhatmagic.bsky.social" target="_blank" aria-label="Bluesky" class="hover:-translate-y-1 transition duration-300 hover:bg-muted p-2 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -3.268 64 68.414" width="24" height="24"><path fill="currentColor" d="M13.873 3.805C21.21 9.332 29.103 20.537 32 26.55v15.882c0-.338-.13.044-.41.867-1.512 4.456-7.418 21.847-20.923 7.944-7.111-7.32-3.819-14.64 9.125-16.85-7.405 1.264-15.73-.825-18.014-9.015C1.12 23.022 0 8.51 0 6.55 0-3.268 8.579-.182 13.873 3.805zm36.254 0C42.79 9.332 34.897 20.537 32 26.55v15.882c0-.338.13.044.41.867 1.512 4.456 7.418 21.847 20.923 7.944 7.111-7.32 3.819-14.64-9.125-16.85 7.405 1.264 15.73-.825 18.014-9.015C62.88 23.022 64 8.51 64 6.55c0-9.818-8.578-6.732-13.873-2.745z"/></svg>
+            </a>
+
+            <a href="https://www.threads.com/@black_hat_magic" target="_blank" aria-label="Threads" class="hover:-translate-y-1 transition duration-300 hover:bg-muted p-2 rounded-full">
+                <svg width="24" height="24" aria-label="Threads" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M141.537 88.9883C140.71 88.5919 139.87 88.2104 139.019 87.8451C137.537 60.5382 122.616 44.905 97.5619 44.745C97.4484 44.7443 97.3355 44.7443 97.222 44.7443C82.2364 44.7443 69.7731 51.1409 62.102 62.7807L75.881 72.2328C81.6116 63.5383 90.6052 61.6848 97.2286 61.6848C97.3051 61.6848 97.3819 61.6848 97.4576 61.6855C105.707 61.7381 111.932 64.1366 115.961 68.814C118.893 72.2193 120.854 76.925 121.825 82.8638C114.511 81.6207 106.601 81.2385 98.145 81.7233C74.3247 83.0954 59.0111 96.9879 60.0396 116.292C60.5615 126.084 65.4397 134.508 73.775 140.011C80.8224 144.663 89.899 146.938 99.3323 146.423C111.79 145.74 121.563 140.987 128.381 132.296C133.559 125.696 136.834 117.143 138.28 106.366C144.217 109.949 148.617 114.664 151.047 120.332C155.179 129.967 155.42 145.8 142.501 158.708C131.182 170.016 117.576 174.908 97.0135 175.059C74.2042 174.89 56.9538 167.575 45.7381 153.317C35.2355 139.966 29.8077 120.682 29.6052 96C29.8077 71.3178 35.2355 52.0336 45.7381 38.6827C56.9538 24.4249 74.2039 17.11 97.0132 16.9405C119.988 17.1113 137.539 24.4614 149.184 38.788C154.894 45.8136 159.199 54.6488 162.037 64.9503L178.184 60.6422C174.744 47.9622 169.331 37.0357 161.965 27.974C147.036 9.60668 125.202 0.195148 97.0695 0H96.9569C68.8816 0.19447 47.2921 9.6418 32.7883 28.0793C19.8819 44.4864 13.2244 67.3157 13.0007 95.9325L13 96L13.0007 96.0675C13.2244 124.684 19.8819 147.514 32.7883 163.921C47.2921 182.358 68.8816 191.806 96.9569 192H97.0695C122.03 191.827 139.624 185.292 154.118 170.811C173.081 151.866 172.51 128.119 166.26 113.541C161.776 103.087 153.227 94.5962 141.537 88.9883ZM98.4405 129.507C88.0005 130.095 77.1544 125.409 76.6196 115.372C76.2232 107.93 81.9158 99.626 99.0812 98.6368C101.047 98.5234 102.976 98.468 104.871 98.468C111.106 98.468 116.939 99.0737 122.242 100.233C120.264 124.935 108.662 128.946 98.4405 129.507Z"/></svg>
+            </a>
+
+            <a href="https://www.instagram.com/black_hat_magic/" target="_blank" aria-label="Instagram" class="hover:-translate-y-1 transition duration-300 hover:bg-muted p-2 rounded-full">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" fill="currentColor"></path> <path d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z" fill="currentColor"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M1.65396 4.27606C1 5.55953 1 7.23969 1 10.6V13.4C1 16.7603 1 18.4405 1.65396 19.7239C2.2292 20.8529 3.14708 21.7708 4.27606 22.346C5.55953 23 7.23969 23 10.6 23H13.4C16.7603 23 18.4405 23 19.7239 22.346C20.8529 21.7708 21.7708 20.8529 22.346 19.7239C23 18.4405 23 16.7603 23 13.4V10.6C23 7.23969 23 5.55953 22.346 4.27606C21.7708 3.14708 20.8529 2.2292 19.7239 1.65396C18.4405 1 16.7603 1 13.4 1H10.6C7.23969 1 5.55953 1 4.27606 1.65396C3.14708 2.2292 2.2292 3.14708 1.65396 4.27606ZM13.4 3H10.6C8.88684 3 7.72225 3.00156 6.82208 3.0751C5.94524 3.14674 5.49684 3.27659 5.18404 3.43597C4.43139 3.81947 3.81947 4.43139 3.43597 5.18404C3.27659 5.49684 3.14674 5.94524 3.0751 6.82208C3.00156 7.72225 3 8.88684 3 10.6V13.4C3 15.1132 3.00156 16.2777 3.0751 17.1779C3.14674 18.0548 3.27659 18.5032 3.43597 18.816C3.81947 19.5686 4.43139 20.1805 5.18404 20.564C5.49684 20.7234 5.94524 20.8533 6.82208 20.9249C7.72225 20.9984 8.88684 21 10.6 21H13.4C15.1132 21 16.2777 20.9984 17.1779 20.9249C18.0548 20.8533 18.5032 20.7234 18.816 20.564C19.5686 20.1805 20.1805 19.5686 20.564 18.816C20.7234 18.5032 20.8533 18.0548 20.9249 17.1779C20.9984 16.2777 21 15.1132 21 13.4V10.6C21 8.88684 20.9984 7.72225 20.9249 6.82208C20.8533 5.94524 20.7234 5.49684 20.564 5.18404C20.1805 4.43139 19.5686 3.81947 18.816 3.43597C18.5032 3.27659 18.0548 3.14674 17.1779 3.0751C16.2777 3.00156 15.1132 3 13.4 3Z" fill="currentColor"></path></svg>
+            </a>
+
+            <a href="https://www.linkedin.com/school/university-of-california-merced/" target="_blank" aria-label="LinkedIn" class="hover:-translate-y-1 transition duration-300 hover:bg-muted p-2 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+                </svg>
+            </a>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>
