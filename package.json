@@ -1,6 +1,6 @@
 {
   "name": "lukeh.xyz",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "portfolio website",
   "homepage": "https://github.com/BlackHat-Magic/LukeH.xyz#readme",
   "bugs": {
@@ -16,27 +16,27 @@
   "main": "index.js",
   "scripts": {
     "build:ts": "bun run build.ts",
-    "build:css": "bunx @tailwindcss/cli -i ./website/static/css/main.css -o ./website/static/dist/main.css --minify",
-    "build:docker": "docker buildx build .",
-	"build:all": "bun run build:ts && bun run build:css && bun run build:docker",
-
-    "watch": "concurrently --names ts,css \"bun run build.ts --watch\" \"bunx @tailwindcss/cli -i ./website/static/css/main.css -o ./website/static/dist/main.css --watch --minify\"",
-    "dev": "concurrently --names ts,css,server \"bun run watch\" \"HYPERCORN_BIND=${HYPERCORN_BIND:-0.0.0.0:8000} uv run --no-dev python -m hypercorn app:app --reload\"",
-
-	"check": "./checks.sh",
-
-	"clean": "rm -rf website/static/js/*.js website/static/dist/*.css",
-
+    "build:css": "bunx @tailwindcss/cli -i ./website/static/css/main.css -o ./public/dist/main.css --minify",
+    "build:assets": "cp -r website/static/images public/images && cp website/static/dist/main.css public/dist/main.css 2>/dev/null; true",
+    "build:all": "bun run build:ts && bun run build:css && bun run build:assets",
+    "watch": "concurrently --names ts,css \"bun run build.ts --watch\" \"bunx @tailwindcss/cli -i ./website/static/css/main.css -o ./public/dist/main.css --watch --minify\"",
+    "dev": "bun run watch",
+    "check": "./checks.sh",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev",
+    "clean": "rm -rf public/js/*.js public/dist/*.css",
     "test": "echo \"No tests yet\" && exit 1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@tailwindcss/cli": "^4.1.18",
+    "@types/node": "^25.9.1",
     "concurrently": "^9.2.1",
     "esbuild": "^0.28.0",
     "eslint": "^10.4.0",
     "tailwindcss": "^4.1.18",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.59.3"
+    "typescript-eslint": "^8.59.3",
+    "wrangler": "^4.93.1"
   }
 }
