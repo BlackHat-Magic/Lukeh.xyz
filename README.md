@@ -42,7 +42,7 @@ uv sync
 bun run build:ts					# compile TypeScript files
 	# bun run build.ts
 bun run build:css					# build Tailwind styles
-	# bunx @tailwindcss/cli -i ./website/static/css/main.css -o ./website/static/dist/main.css --minfy
+	# bunx @tailwindcss/cli -i ./static/css/main.css -o ./static/dist/main.css --minfy
 bun run build:docker -- -t <tag>	# build docker container
 	# docker buildx build .
 bun run build:all					# all of the above
@@ -66,14 +66,8 @@ bun run check	# type checking + linting + syntax checking
 	# hadolint Dockerfile
 
 bun run clean	# clean build artifacts
-	# rm -rf website/static/js/*.js
-	# rm -rf website/static/dist/*.css
+	# rm -rf static/js/*.js
+	# rm -rf static/dist/*.css
 ```
 
-### Building and running the docker image
-
-```sh
-docker buildx build -t lukehxyz:master .
-docker run -p 8000:8000 lukehxyz:master
-```
 

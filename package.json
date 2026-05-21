@@ -16,10 +16,10 @@
   "main": "index.js",
   "scripts": {
     "build:ts": "bun run build.ts",
-    "build:css": "bunx @tailwindcss/cli -i ./website/static/css/main.css -o ./public/dist/main.css --minify",
-    "build:assets": "cp -r website/static/images public/images && cp website/static/dist/main.css public/dist/main.css 2>/dev/null; true",
+    "build:css": "bunx @tailwindcss/cli -i ./static/css/main.css -o ./public/dist/main.css --minify",
+    "build:assets": "cp -r static/images public/images && cp static/dist/main.css public/dist/main.css 2>/dev/null; true",
     "build:all": "bun run build:ts && bun run build:css && bun run build:assets",
-    "watch": "concurrently --names ts,css \"bun run build.ts --watch\" \"bunx @tailwindcss/cli -i ./website/static/css/main.css -o ./public/dist/main.css --watch --minify\"",
+    "watch": "concurrently --names ts,css \"bun run build.ts --watch\" \"bunx @tailwindcss/cli -i ./static/css/main.css -o ./public/dist/main.css --watch --minify\"",
     "dev": "bun run watch",
     "check": "./checks.sh",
     "deploy": "wrangler deploy",
