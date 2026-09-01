@@ -24,7 +24,7 @@
     { value: 10, label: 'Top 10' },
     { value: 100, label: 'Top 100' },
     { value: 1000, label: 'Top 1,000' },
-    { value: 10000, label: 'Top 10,000' },
+    { value: 5000, label: 'Top 5,000' },
   ];
   const ranked: Record<MetricKey, Video[]> = {
     views: [...videos].sort((a, b) => b.views - a.views),
@@ -47,6 +47,7 @@
 
   let activeRank = $derived(hoveredRank ?? focusRank);
   let activeMetric = $derived(hoveredMetric ?? selectedMetric);
+  let activeChartMetric = $derived(chartMetrics.find((metric) => metric.key === activeMetric) ?? chartMetrics[0]);
   let activeVideo = $derived(ranked[activeMetric][Math.min(activeRank, selectedScope) - 1]);
 
   function formatNumber(value: number): string {
@@ -129,7 +130,7 @@
   <header class="hero">
     <div class="eyebrow"><span class="eyebrow-dot"></span> USTU-092 / MILESTONE 1</div>
     <h1>What makes a video<br /><em>trend?</em></h1>
-    <p class="intro">An interactive look at the videos that rose to the top of YouTube. Explore how views, reactions, and conversation change as we widen the lens from the top 10 to the full dataset.</p>
+    <p class="intro">An interactive look at the videos that rose to the top of YouTube. Explore how views, reactions, and conversation change as we widen the lens from the top 10 to the top 5,000.</p>
     <div class="hero-meta">
       <span><strong>{videos.length.toLocaleString('en-US')}</strong> unique records</span>
       <span class="meta-divider">/</span>
@@ -140,8 +141,16 @@
   </header>
 
   <section class="control-panel" aria-label="Chart controls">
-    <div>
-      <p class="control-label">Show me</p>
+    <div class="control-group metric-control">
+      <p class="control-label">Graph</p>
+      <div class="metric-controls" role="group" aria-label="Select graph">
+        {#each chartMetrics as metric}
+          <button class:active={selectedMetric === metric.key} style={`--metric-color: ${metric.color}`} type="button" onclick={() => chooseMetric(metric.key)}>{metric.label}</button>
+        {/each}
+      </div>
+    </div>
+    <div class="control-group scope-control">
+      <p class="control-label">Ranking scope</p>
       <div class="scope-controls" role="group" aria-label="Select ranking scope">
         {#each scopes as scope}
           <button class:active={selectedScope === scope.value} type="button" onclick={() => setScope(scope.value)}>{scope.label}</button>
@@ -157,48 +166,43 @@
     </div>
   </section>
 
-  <section class="chart-grid" aria-label="Engagement charts">
-    {#each chartMetrics as metric}
-      {@const stats = metricStats(metric.key)}
-      {@const points = sampledPoints(metric.key)}
-      {@const selected = ranked[metric.key][Math.min(activeRank, selectedScope) - 1]}
-      <article class="chart-card" class:selected-card={activeMetric === metric.key} style={`--chart-color: ${metric.color}`}>
-        <button class="chart-heading" type="button" onclick={() => chooseMetric(metric.key)} aria-label={`Inspect ${metric.label}`}>
-          <span class="chart-icon" aria-hidden="true"><span></span><span></span><span></span></span>
-          <span><span class="chart-label">{metric.label}</span><span class="chart-description">{metric.description}</span></span>
-          <span class="leader-value">{formatNumber(stats.leader[metric.key])}</span>
-        </button>
-        <div class="chart-wrap">
-          <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} role="img" aria-label={`${metric.label} by video rank`} onpointermove={(event) => inspect(metric.key, event)} onpointerleave={() => { hoveredRank = null; hoveredMetric = null; }}>
-            <defs>
-              <linearGradient id={`fill-${metric.key}`} x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stop-color={metric.color} stop-opacity=".18" />
-                <stop offset="100%" stop-color={metric.color} stop-opacity="0" />
-              </linearGradient>
-            </defs>
-            {#each [0, .25, .5, .75, 1] as tick}
-              <line class="grid-line" x1={plot.left} x2={chartWidth - plot.right} y1={plot.top + tick * plotHeight} y2={plot.top + tick * plotHeight} />
-              <text class="axis-label" x={plot.left - 9} y={plot.top + tick * plotHeight + 4} text-anchor="end">{tickLabel(metric.key, 1 - tick)}</text>
-            {/each}
-            <line class="axis-line" x1={plot.left} x2={chartWidth - plot.right} y1={chartHeight - plot.bottom} y2={chartHeight - plot.bottom} />
-            <text class="axis-label" x={plot.left} y={chartHeight - 10}>1</text>
-            <text class="axis-label" x={chartWidth - plot.right} y={chartHeight - 10} text-anchor="end">{selectedScope.toLocaleString('en-US')}</text>
-            <polygon class="area-fill" fill={`url(#fill-${metric.key})`} points={`${plot.left},${chartHeight - plot.bottom} ${points.map((point) => `${point.x},${point.y}`).join(' ')} ${chartWidth - plot.right},${chartHeight - plot.bottom}`} />
-            <polyline class="data-line" stroke={metric.color} points={points.map((point) => `${point.x},${point.y}`).join(' ')} />
-            {#if selectedScope > 1}
-              <line class="focus-line" x1={xForRank(activeRank)} x2={xForRank(activeRank)} y1={plot.top} y2={chartHeight - plot.bottom} />
-              <circle class="focus-dot" fill={metric.color} cx={xForRank(activeRank)} cy={yForValue(metricValue(selected, metric.key), metric.key)} r="5" />
-            {/if}
-          </svg>
-          <div class="chart-tooltip" aria-live="polite">
-            <span class="tooltip-rank">#{activeRank.toLocaleString('en-US')}</span>
-            <span class="tooltip-title" title={selected.title}>{selected.title}</span>
-            <strong>{fullNumber(metricValue(selected, metric.key))}</strong>
-          </div>
+  <section class="chart-grid" aria-label={`${activeChartMetric.label} chart`}>
+    <article class="chart-card selected-card" style={`--chart-color: ${activeChartMetric.color}`}>
+      <div class="chart-heading">
+        <span class="chart-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span><span class="chart-label">{activeChartMetric.label}</span><span class="chart-description">{activeChartMetric.description} · ranked high → low</span></span>
+        <span class="leader-value">{formatNumber(metricStats(activeChartMetric.key).leader[activeChartMetric.key])}</span>
+      </div>
+      <div class="chart-wrap">
+        <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} role="img" aria-label={`${activeChartMetric.label} by video rank`} onpointermove={(event) => inspect(activeChartMetric.key, event)} onpointerleave={() => { hoveredRank = null; hoveredMetric = null; }}>
+          <defs>
+            <linearGradient id={`fill-${activeChartMetric.key}`} x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stop-color={activeChartMetric.color} stop-opacity=".18" />
+              <stop offset="100%" stop-color={activeChartMetric.color} stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          {#each [0, .25, .5, .75, 1] as tick}
+            <line class="grid-line" x1={plot.left} x2={chartWidth - plot.right} y1={plot.top + tick * plotHeight} y2={plot.top + tick * plotHeight} />
+            <text class="axis-label" x={plot.left - 9} y={plot.top + tick * plotHeight + 4} text-anchor="end">{tickLabel(activeChartMetric.key, 1 - tick)}</text>
+          {/each}
+          <line class="axis-line" x1={plot.left} x2={chartWidth - plot.right} y1={chartHeight - plot.bottom} y2={chartHeight - plot.bottom} />
+          <text class="axis-label" x={plot.left} y={chartHeight - 10}>1</text>
+          <text class="axis-label" x={chartWidth - plot.right} y={chartHeight - 10} text-anchor="end">{selectedScope.toLocaleString('en-US')}</text>
+          <polygon class="area-fill" fill={`url(#fill-${activeChartMetric.key})`} points={`${plot.left},${chartHeight - plot.bottom} ${sampledPoints(activeChartMetric.key).map((point) => `${point.x},${point.y}`).join(' ')} ${chartWidth - plot.right},${chartHeight - plot.bottom}`} />
+          <polyline class="data-line" stroke={activeChartMetric.color} points={sampledPoints(activeChartMetric.key).map((point) => `${point.x},${point.y}`).join(' ')} />
+          {#if selectedScope > 1}
+            <line class="focus-line" x1={xForRank(activeRank)} x2={xForRank(activeRank)} y1={plot.top} y2={chartHeight - plot.bottom} />
+            <circle class="focus-dot" fill={activeChartMetric.color} cx={xForRank(activeRank)} cy={yForValue(metricValue(ranked[activeChartMetric.key][Math.min(activeRank, selectedScope) - 1], activeChartMetric.key), activeChartMetric.key)} r="5" />
+          {/if}
+        </svg>
+        <div class="chart-tooltip" aria-live="polite">
+          <span class="tooltip-rank">#{activeRank.toLocaleString('en-US')}</span>
+          <span class="tooltip-title" title={ranked[activeChartMetric.key][Math.min(activeRank, selectedScope) - 1].title}>{ranked[activeChartMetric.key][Math.min(activeRank, selectedScope) - 1].title}</span>
+          <strong>{fullNumber(metricValue(ranked[activeChartMetric.key][Math.min(activeRank, selectedScope) - 1], activeChartMetric.key))}</strong>
         </div>
-        <footer class="chart-footer"><span>Rank <strong>#{activeRank.toLocaleString('en-US')}</strong></span><span>Average <strong>{formatNumber(stats.average)}</strong></span><span>Drag across chart to inspect</span></footer>
-      </article>
-    {/each}
+      </div>
+      <footer class="chart-footer"><span>Rank <strong>#{activeRank.toLocaleString('en-US')}</strong></span><span>Average <strong>{formatNumber(metricStats(activeChartMetric.key).average)}</strong></span><span>Drag across chart to inspect</span></footer>
+    </article>
   </section>
 
   <section class="inspector" aria-label="Video inspector">
@@ -215,7 +219,7 @@
 
   <footer class="methodology">
     <div><span class="eyebrow-dot"></span><span>METHOD</span></div>
-    <p>The four supplied CSV exports were merged into one dataset and exact duplicate rows were removed before ranking. Rows with the same title and channel but different count snapshots remain distinct. The source contains 6,351 records, so “Top 10,000” represents every available record. A logarithmic scale is on by default to make the long tail readable.</p>
+    <p>The four supplied CSV exports were merged into one dataset and exact duplicate rows were removed before ranking. Rows with the same title and channel but different count snapshots remain distinct. The source contains 6,351 records, so “Top 5,000” is the broadest view shown here without implying that 10,000 records were available. A logarithmic scale is on by default to make the long tail readable.</p>
     <p class="source-note">Source: supplied trending YouTube CSV exports · Built for USTU-092 Milestone 1</p>
   </footer>
 </main>
@@ -234,17 +238,18 @@
   .meta-divider { opacity: .35; }
   .control-panel { display: flex; justify-content: space-between; align-items: end; padding: 20px 22px; margin-bottom: 18px; background: var(--card); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 8px 24px color-mix(in srgb, var(--foreground) 5%, transparent); }
   .control-label { margin: 0 0 9px; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: .13em; font-size: 10px; font-weight: 800; }
-  .scope-controls { display: flex; flex-wrap: wrap; gap: 6px; }
+  .scope-controls, .metric-controls { display: flex; flex-wrap: wrap; gap: 6px; }
   button { font: inherit; color: inherit; cursor: pointer; }
-  .scope-controls button { border: 1px solid var(--border); background: transparent; border-radius: 7px; padding: 8px 13px; color: var(--muted-foreground); font-size: 13px; transition: background .2s, color .2s, border-color .2s; }
-  .scope-controls button:hover, .scope-controls button.active { color: var(--foreground); background: var(--muted); border-color: var(--accent); }
+  .scope-controls button, .metric-controls button { border: 1px solid var(--border); background: transparent; border-radius: 7px; padding: 8px 13px; color: var(--muted-foreground); font-size: 13px; transition: background .2s, color .2s, border-color .2s; }
+  .scope-controls button:hover, .scope-controls button.active, .metric-controls button:hover, .metric-controls button.active { color: var(--foreground); background: var(--muted); border-color: var(--accent); }
+  .metric-controls button.active { border-color: var(--metric-color); }
   .scale-control { text-align: right; }
   .scale-toggle { display: inline-flex; align-items: center; gap: 9px; padding: 0; border: 0; background: transparent; color: var(--foreground); font-size: 13px; }
   .toggle-track { width: 29px; height: 17px; padding: 2px; display: inline-flex; align-items: center; border-radius: 20px; background: var(--border); transition: background .2s; }
   .toggle-track span { width: 13px; height: 13px; border-radius: 50%; background: var(--card); transition: transform .2s; }
   .scale-toggle.active .toggle-track { background: var(--accent); }
   .scale-toggle.active .toggle-track span { transform: translateX(12px); }
-  .chart-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+  .chart-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .chart-card { min-width: 0; overflow: hidden; background: var(--card); border: 1px solid var(--border); border-radius: 14px; transition: border-color .2s, transform .2s, box-shadow .2s; }
   .chart-card:hover, .chart-card.selected-card { border-color: color-mix(in srgb, var(--chart-color) 60%, var(--border)); box-shadow: 0 10px 30px color-mix(in srgb, var(--chart-color) 8%, transparent); }
   .chart-heading { width: 100%; display: flex; align-items: center; gap: 11px; padding: 20px 20px 8px; text-align: left; background: transparent; border: 0; }
