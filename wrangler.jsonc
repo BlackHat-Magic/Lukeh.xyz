@@ -1,17 +1,13 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
+  "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "lukeh-xyz",
+  "pages_build_output_dir": "./public",
   "compatibility_date": "2026-05-21",
-  "build": {
-    "command": "bun run build:all"
-  },
-  "observability": {
-    "enabled": true
-  },
-  "assets": {
-    "directory": "public"
-  },
   "compatibility_flags": [
     "nodejs_compat"
-  ]
+  ],
+  "vars": {
+    "SMTP_SERVER": "smtp.protonmail.ch",
+    "SMTP_PORT": "587"
+  }
 }

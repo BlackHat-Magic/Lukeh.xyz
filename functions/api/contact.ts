@@ -1,3 +1,5 @@
+import { connect } from "cloudflare:sockets";
+
 interface Env {
   SMTP_SERVER: string;
   SMTP_PORT: string;
@@ -18,22 +20,36 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const contentType = request.headers.get("content-type") || "";
   let email: string, subject: string, body: string;
 
-  if (contentType.includes("application/json")) {
-    const json = await request.json() as Record<string, string>;
-    email = json.email || "";
-    subject = json.subject || "";
-    body = json.body || "";
-  } else {
-    const formData = await request.formData();
-    email = (formData.get("email") as string) || "";
-    subject = (formData.get("subject") as string) || "";
-    body = (formData.get("body") as string) || "";
+  try {
+    if (contentType.includes("application/json")) {
+      const json = await request.json() as Record<string, string>;
+      email = json.email || "";
+      subject = json.subject || "";
+      body = json.body || "";
+    } else {
+      const formData = await request.formData();
+      email = (formData.get("email") as string) || "";
+      subject = (formData.get("subject") as string) || "";
+      body = (formData.get("body") as string) || "";
+    }
+  } catch {
+    return Response.json(
+      { success: false, message: "Invalid request body." },
+      { status: 400 },
+    );
   }
 
   if (!email || !subject || !body) {
     return Response.json(
       { success: false, message: "All fields are required." },
-      { status: 400 }
+      { status: 400 },
+    );
+  }
+
+  if (!isEmail(email)) {
+    return Response.json(
+      { success: false, message: "Please provide a valid email address." },
+      { status: 400 },
     );
   }
 
@@ -44,45 +60,81 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     console.error("Failed to send email:", err);
     return Response.json(
       { success: false, message: "Failed to send email. Try again later or send from your email client." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };
 
 async function sendEmail(env: Env, replyTo: string, subject: string, body: string): Promise<void> {
-  const host = env.SMTP_SERVER;
-  const port = parseInt(env.SMTP_PORT || "465", 10);
-  const username = env.SMTP_USERNAME;
-  const password = env.SMTP_PASSWORD;
-  const fromName = env.FROM_NAME;
-  const fromEmail = env.FROM_EMAIL;
-  const toEmail = env.TO_EMAIL;
+  const smtp = await SMTPSession.connect(
+    env.SMTP_SERVER || "smtp.protonmail.ch",
+    parsePort(env.SMTP_PORT || "587"),
+    requiredEnv(env.SMTP_USERNAME, "SMTP_USERNAME"),
+    requiredEnv(env.SMTP_PASSWORD, "SMTP_PASSWORD"),
+  );
 
-  const smtp = await SMTPSession.connect(host, port, username, password);
-  await smtp.sendMail(fromName, fromEmail, toEmail, replyTo, subject, body);
-  await smtp.quit();
+  try {
+    await smtp.sendMail(
+      requiredEnv(env.FROM_NAME, "FROM_NAME"),
+      requiredEnv(env.FROM_EMAIL, "FROM_EMAIL"),
+      requiredEnv(env.TO_EMAIL, "TO_EMAIL"),
+      replyTo,
+      subject,
+      body,
+    );
+  } finally {
+    await smtp.quit();
+  }
+}
+
+function parsePort(value: string): number {
+  const port = Number.parseInt(value, 10);
+  if (!Number.isInteger(port) || port < 1 || port > 65535) {
+    throw new Error("SMTP_PORT must be a valid TCP port");
+  }
+  return port;
+}
+
+function requiredEnv(value: string | undefined, name: string): string {
+  if (!value) throw new Error(`${name} is not configured`);
+  return value;
+}
+
+function headerValue(value: string, name: string): string {
+  const clean = value.replace(/[\r\n]/g, " ").trim();
+  if (!clean) throw new Error(`${name} is empty`);
+  return clean;
+}
+
+function isEmail(value: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) && !/[\r\n]/.test(value);
 }
 
 class SMTPSession {
-  private socket: Socket;
   private reader: ReadableStreamDefaultReader<Uint8Array>;
   private writer: WritableStreamDefaultWriter<Uint8Array>;
   private buffer = "";
 
-  private constructor(socket: Socket) {
-    this.socket = socket;
+  private constructor(private socket: Socket) {
     this.reader = socket.readable.getReader();
     this.writer = socket.writable.getWriter();
   }
 
   static async connect(host: string, port: number, username: string, password: string): Promise<SMTPSession> {
-    const url = `${host}:${port}`;
-    const socket = connect(url, { tls: true });
+    // Proton Mail SMTP submission uses plaintext SMTP followed by STARTTLS on port 587.
+    const socket = connect(
+      { hostname: host, port },
+      { secureTransport: "starttls", allowHalfOpen: false },
+    );
     const session = new SMTPSession(socket);
 
     await session.readResponse(220);
-    await session.sendCommand(`EHLO lukeh.xyz`);
-    await session.readResponse(250);
+    await session.ehlo();
+
+    await session.sendCommand("STARTTLS");
+    await session.readResponse(220);
+    session.upgradeToTls(host);
+    await session.ehlo();
 
     await session.sendCommand("AUTH LOGIN");
     await session.readResponse(334);
@@ -102,25 +154,35 @@ class SMTPSession {
     subject: string,
     body: string,
   ): Promise<void> {
-    await this.sendCommand(`MAIL FROM:<${fromEmail}>`);
+    const cleanFromName = headerValue(fromName, "FROM_NAME");
+    const cleanFromEmail = headerValue(fromEmail, "FROM_EMAIL");
+    const cleanToEmail = headerValue(toEmail, "TO_EMAIL");
+    const cleanReplyTo = headerValue(replyTo, "Reply-To");
+    const cleanSubject = headerValue(subject, "Subject");
+
+    await this.sendCommand(`MAIL FROM:<${cleanFromEmail}>`);
     await this.readResponse(250);
 
-    await this.sendCommand(`RCPT TO:<${toEmail}>`);
-    await this.readResponse(250);
+    for (const recipient of [cleanToEmail, cleanReplyTo]) {
+      await this.sendCommand(`RCPT TO:<${recipient}>`);
+      await this.readResponse(250);
+    }
 
     await this.sendCommand("DATA");
     await this.readResponse(354);
 
+    const safeBody = body.replace(/\r?\n/g, "\r\n").replace(/^\./gm, "..");
     const raw = [
-      `From: ${fromName} <${fromEmail}>`,
-      `To: ${toEmail}`,
-      `Reply-To: ${replyTo}`,
-      `Subject: ${subject}`,
-      `MIME-Version: 1.0`,
-      `Content-Type: text/plain; charset=UTF-8`,
-      `Content-Transfer-Encoding: 7bit`,
+      `From: ${cleanFromName} <${cleanFromEmail}>`,
+      `To: ${cleanToEmail}`,
+      `Cc: ${cleanReplyTo}`,
+      `Reply-To: ${cleanReplyTo}`,
+      `Subject: ${cleanSubject}`,
+      "MIME-Version: 1.0",
+      "Content-Type: text/plain; charset=UTF-8",
+      "Content-Transfer-Encoding: 8bit",
       "",
-      body,
+      safeBody,
       ".",
     ].join("\r\n");
 
@@ -135,13 +197,25 @@ class SMTPSession {
     } finally {
       this.reader.releaseLock();
       this.writer.releaseLock();
-      this.socket.close();
+      await this.socket.close();
     }
   }
 
-  private async sendCommand(cmd: string): Promise<void> {
-    const encoder = new TextEncoder();
-    await this.writer.write(encoder.encode(cmd + "\r\n"));
+  private async ehlo(): Promise<void> {
+    await this.sendCommand("EHLO lukeh.xyz");
+    await this.readResponse(250);
+  }
+
+  private upgradeToTls(host: string): void {
+    this.reader.releaseLock();
+    this.writer.releaseLock();
+    this.socket = this.socket.startTls({ expectedServerHostname: host });
+    this.reader = this.socket.readable.getReader();
+    this.writer = this.socket.writable.getWriter();
+  }
+
+  private async sendCommand(command: string): Promise<void> {
+    await this.writer.write(new TextEncoder().encode(command + "\r\n"));
   }
 
   private async readResponse(expectedCode?: number): Promise<string> {
@@ -156,7 +230,7 @@ class SMTPSession {
         this.buffer = this.buffer.slice(nlIndex + 2);
 
         if (line.length >= 3) {
-          const code = parseInt(line.slice(0, 3), 10);
+          const code = Number.parseInt(line.slice(0, 3), 10);
           const isLast = line.length < 4 || line[3] === " ";
 
           if (isLast) {

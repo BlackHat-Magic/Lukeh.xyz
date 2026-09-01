@@ -22,8 +22,8 @@
     "watch": "concurrently --names ts,css \"bun run build.ts --watch\" \"bunx @tailwindcss/cli -i ./static/css/main.css -o ./public/dist/main.css --watch --minify\"",
     "dev": "bun run watch",
     "check": "./checks.sh",
-    "deploy": "wrangler deploy",
-    "preview": "wrangler dev",
+    "deploy": "bun run build:all && wrangler pages deploy --branch master",
+    "preview": "bun run build:all && wrangler pages dev",
     "clean": "rm -rf public/js/*.js public/dist/*.css",
     "test": "echo \"No tests yet\" && exit 1"
   },
