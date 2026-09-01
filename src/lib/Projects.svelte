@@ -1,0 +1,1 @@
+<main class="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 text-left"><div class="flex items-center justify-center mx-auto text-center max-w-7xl mb-4 mt-8"><h1 class="text-2xl font-black leading-tight">Projects</h1></div><p class="text-sm opacity-70 mb-8">This page is coming soon.</p></main>
