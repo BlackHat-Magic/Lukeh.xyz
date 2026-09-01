@@ -110,7 +110,10 @@
   function inspect(metric: MetricKey, event: PointerEvent) {
     const svg = event.currentTarget as SVGElement;
     const bounds = svg.getBoundingClientRect();
-    const ratio = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+    // Convert the cursor to viewBox coordinates first, then measure against the
+    // plot area rather than the SVG's y-axis gutter.
+    const viewBoxX = ((event.clientX - bounds.left) / bounds.width) * chartWidth;
+    const ratio = Math.max(0, Math.min(1, (viewBoxX - plot.left) / plotWidth));
     hoveredRank = Math.max(1, Math.min(selectedScope, Math.round(ratio * (selectedScope - 1)) + 1));
     hoveredMetric = metric;
   }
@@ -257,9 +260,9 @@
   .scope-controls button:hover, .scope-controls button.active, .metric-controls button:hover, .metric-controls button.active { color: var(--foreground); background: var(--muted); border-color: var(--accent); }
   .metric-controls button.active { border-color: var(--metric-color); }
   .scale-control { text-align: right; }
-  .scale-toggle { display: inline-flex; align-items: center; gap: 9px; padding: 0; border: 0; background: transparent; color: var(--foreground); font-size: 13px; }
-  .toggle-track { width: 29px; height: 17px; padding: 2px; display: inline-flex; align-items: center; border-radius: 20px; background: var(--border); transition: background .2s; }
-  .toggle-track span { width: 13px; height: 13px; border-radius: 50%; background: var(--card); transition: transform .2s; }
+  .scale-toggle { width: 160px; min-width: 160px; white-space: nowrap; display: inline-flex; align-items: center; justify-content: flex-start; gap: 9px; padding: 0; border: 0; background: transparent; color: var(--foreground); font-size: 13px; }
+  .toggle-track { width: 29px; height: 17px; flex: 0 0 29px; box-sizing: border-box; overflow: hidden; padding: 2px; display: inline-flex; align-items: center; border-radius: 20px; background: var(--border); transition: background .2s; }
+  .toggle-track span { width: 13px; height: 13px; flex: 0 0 13px; border-radius: 50%; background: var(--card); transition: transform .2s; }
   .scale-toggle.active .toggle-track { background: var(--accent); }
   .scale-toggle.active .toggle-track span { transform: translateX(12px); }
   .chart-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
