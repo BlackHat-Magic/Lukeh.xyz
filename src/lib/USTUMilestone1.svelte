@@ -68,8 +68,27 @@
 
   function yForValue(value: number, metric: MetricKey): number {
     const max = metricValue(ranked[metric][0], metric);
-    const normalized = logScale ? Math.log10(Math.max(value, 1)) / Math.log10(Math.max(max, 10)) : value / max;
+    const normalized = logScale
+      ? Math.log10(Math.max(value, 1)) / Math.log10(Math.max(max, 1))
+      : value / max;
     return plot.top + (1 - normalized) * plotHeight;
+  }
+
+  function yTicks(metric: MetricKey): { value: number; y: number; label: string }[] {
+    const max = metricValue(ranked[metric][0], metric);
+    if (!logScale) {
+      return [0, .25, .5, .75, 1].map((fraction) => ({
+        value: max * fraction,
+        y: plot.top + (1 - fraction) * plotHeight,
+        label: formatNumber(max * fraction),
+      }));
+    }
+
+    const highestPower = Math.floor(Math.log10(Math.max(max, 1)));
+    const powers = Array.from({ length: highestPower + 1 }, (_, index) => 10 ** index);
+    const values = powers.filter((value) => value <= max);
+    if (values.at(-1) !== max) values.push(max);
+    return values.reverse().map((value) => ({ value, y: yForValue(value, metric), label: formatNumber(value) }));
   }
 
   function sampledPoints(metric: MetricKey): Point[] {
@@ -86,12 +105,6 @@
       points.push({ rank: limit, value, x: xForRank(limit), y: yForValue(value, metric) });
     }
     return points;
-  }
-
-  function tickLabel(metric: MetricKey, fraction: number): string {
-    const max = metricValue(ranked[metric][0], metric);
-    const value = logScale ? Math.pow(Math.max(max, 10), fraction) : max * fraction;
-    return formatNumber(value);
   }
 
   function inspect(metric: MetricKey, event: PointerEvent) {
@@ -181,9 +194,9 @@
               <stop offset="100%" stop-color={activeChartMetric.color} stop-opacity="0" />
             </linearGradient>
           </defs>
-          {#each [0, .25, .5, .75, 1] as tick}
-            <line class="grid-line" x1={plot.left} x2={chartWidth - plot.right} y1={plot.top + tick * plotHeight} y2={plot.top + tick * plotHeight} />
-            <text class="axis-label" x={plot.left - 9} y={plot.top + tick * plotHeight + 4} text-anchor="end">{tickLabel(activeChartMetric.key, 1 - tick)}</text>
+          {#each yTicks(activeChartMetric.key) as tick}
+            <line class="grid-line" x1={plot.left} x2={chartWidth - plot.right} y1={tick.y} y2={tick.y} />
+            <text class="axis-label" x={plot.left - 9} y={tick.y + 4} text-anchor="end">{tick.label}</text>
           {/each}
           <line class="axis-line" x1={plot.left} x2={chartWidth - plot.right} y1={chartHeight - plot.bottom} y2={chartHeight - plot.bottom} />
           <text class="axis-label" x={plot.left} y={chartHeight - 10}>1</text>
@@ -219,7 +232,7 @@
 
   <footer class="methodology">
     <div><span class="eyebrow-dot"></span><span>METHOD</span></div>
-    <p>The four supplied CSV exports were merged into one dataset and exact duplicate rows were removed before ranking. Rows with the same title and channel but different count snapshots remain distinct. The source contains 6,351 records, so “Top 5,000” is the broadest view shown here without implying that 10,000 records were available. A logarithmic scale is on by default to make the long tail readable.</p>
+    <p>The four supplied CSV exports were merged into one dataset and exact duplicate rows were removed before ranking. Rows with the same title and channel but different count snapshots remain distinct. The source contains 6,351 records, and “Top 5,000” is the broadest view shown here. A logarithmic scale is on by default to make the long tail readable.</p>
     <p class="source-note">Source: supplied trending YouTube CSV exports · Built for USTU-092 Milestone 1</p>
   </footer>
 </main>
@@ -236,7 +249,7 @@
   .hero-meta { display: flex; gap: 12px; justify-content: center; align-items: center; color: var(--muted-foreground); font-size: 11px; text-transform: uppercase; letter-spacing: .09em; }
   .hero-meta strong { color: var(--foreground); }
   .meta-divider { opacity: .35; }
-  .control-panel { display: flex; justify-content: space-between; align-items: end; padding: 20px 22px; margin-bottom: 18px; background: var(--card); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 8px 24px color-mix(in srgb, var(--foreground) 5%, transparent); }
+  .control-panel { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 18px 28px; padding: 20px 22px; margin-bottom: 18px; background: var(--card); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 8px 24px color-mix(in srgb, var(--foreground) 5%, transparent); }
   .control-label { margin: 0 0 9px; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: .13em; font-size: 10px; font-weight: 800; }
   .scope-controls, .metric-controls { display: flex; flex-wrap: wrap; gap: 6px; }
   button { font: inherit; color: inherit; cursor: pointer; }
@@ -262,7 +275,8 @@
   svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: none; cursor: crosshair; }
   .grid-line { stroke: var(--border); stroke-width: 1; stroke-dasharray: 2 5; opacity: .65; }.axis-line { stroke: var(--border); stroke-width: 1; }.axis-label { fill: var(--muted-foreground); font-size: 10px; }
   .area-fill { stroke: none; }.data-line { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }.focus-line { stroke: var(--foreground); stroke-width: 1; stroke-dasharray: 3 4; opacity: .42; }.focus-dot { stroke: var(--card); stroke-width: 3; }
-  .chart-tooltip { position: absolute; pointer-events: none; left: 65px; right: 22px; bottom: 9px; display: flex; align-items: center; gap: 8px; font-size: 11px; overflow: hidden; }
+  .chart-tooltip { position: relative; pointer-events: none; left: auto; right: auto; bottom: auto; min-height: 26px; margin: 0 12px 0 65px; display: flex; align-items: center; gap: 8px; font-size: 11px; overflow: hidden; }
+  .chart-tooltip > * { min-width: 0; }
   .tooltip-rank { color: var(--chart-color); font-weight: 800; white-space: nowrap; }.tooltip-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted-foreground); }.chart-tooltip strong { white-space: nowrap; font-size: 12px; }
   .chart-footer { display: flex; gap: 12px; padding: 10px 20px 17px; color: var(--muted-foreground); font-size: 10px; }.chart-footer span:nth-child(2) { margin-left: auto; }.chart-footer span:last-child { display: none; }.chart-footer strong { color: var(--foreground); }
   .inspector { margin-top: 26px; padding: 24px 26px 26px; background: var(--muted); border: 1px solid var(--border); border-radius: 14px; }.inspector-kicker { margin-bottom: 21px; }.inspector-content { display: flex; gap: 30px; align-items: center; }.inspector-title { min-width: 0; flex: 1; }.selected-metric { margin: 0 0 7px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }.inspector h2 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 0; font-size: clamp(19px, 3vw, 28px); letter-spacing: -.04em; }.channel { margin: 7px 0 0; color: var(--muted-foreground); font-size: 13px; }.inspector-stats { display: grid; grid-template-columns: repeat(4, minmax(90px, 1fr)); flex: 1.2; gap: 8px; }.inspector-stats button { padding: 11px 12px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; text-align: left; }.inspector-stats button:hover, .inspector-stats button.chosen { border-color: var(--stat-color); }.inspector-stats span { display: block; color: var(--muted-foreground); font-size: 10px; }.inspector-stats strong { display: block; margin-top: 5px; font-size: 15px; }.methodology { display: grid; grid-template-columns: 190px 1fr; gap: 9px 28px; margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border); }.methodology > div { align-items: start; padding-top: 3px; }.methodology p { max-width: 720px; margin: 0; color: var(--muted-foreground); font-size: 12px; line-height: 1.7; }.methodology .source-note { grid-column: 2; opacity: .7; font-size: 11px; }
