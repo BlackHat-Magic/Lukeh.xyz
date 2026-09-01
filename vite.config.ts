@@ -21,6 +21,7 @@ export default defineConfig({
         'projects/portfolio': resolve(__dirname, 'src/pages/projects/portfolio.html'),
         'projects/sd-runpod': resolve(__dirname, 'src/pages/projects/sd-runpod.html'),
         'projects/math': resolve(__dirname, 'src/pages/projects/math.html'),
+        'School/UCM/USTU-092/Milestone1': resolve(__dirname, 'src/pages/School/UCM/USTU-092/Milestone1.html'),
       },
       output: { assetFileNames: 'dist/[name][extname]' },
     },
