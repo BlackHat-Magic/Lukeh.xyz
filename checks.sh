@@ -20,7 +20,7 @@ else
 fi
 
 printf "TypeScript lint: \n"
-if bunx eslint static/ts build.ts functions/api/contact.ts 2>&1 | sed "s/^/\t/"; then
+if bunx eslint src/entries/*.ts build.ts functions/api/contact.ts 2>&1 | sed "s/^/\t/"; then
   printf "\t\e[1;32mESLint check!\e[0m\n"
 else
   printf "\t\e[1;31mESLint check failed.\e[0m\n"

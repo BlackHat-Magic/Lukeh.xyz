@@ -27,7 +27,7 @@ Uh idk get a job ig? I'm just here for the love of the game tbh.
 ### Software Stack / Technologies Used
 
 - Language: HTML, JavaScript, CSS, Python
-- Framework: Alpine.js, Flask
+- Framework: Svelte 5, Tailwind CSS, Vite, Flask
 
 ## Quickstart
 
@@ -39,7 +39,7 @@ bun install
 uv sync
 
 # build scripts
-bun run build:ts					# compile TypeScript files
+bun run build:ts					# build Svelte pages with Vite
 	# bun run build.ts
 bun run build:css					# build Tailwind styles
 	# bunx @tailwindcss/cli -i ./static/css/main.css -o ./static/dist/main.css --minfy
@@ -48,9 +48,7 @@ bun run build:docker -- -t <tag>	# build docker container
 bun run build:all					# all of the above
 
 # running server
-bun run watch	# watch ts+css files and auto-rebuild
-	# bun run build:ts -- --watch
-	# bun run build:css -- --watch
+bun run watch	# run the Vite development server
 
 bun run dev		# run dev server, update as files are changed
 	# uv run --no-dev python -m hypercorn app:app --reload
@@ -66,8 +64,6 @@ bun run check	# type checking + linting + syntax checking
 	# hadolint Dockerfile
 
 bun run clean	# clean build artifacts
-	# rm -rf static/js/*.js
-	# rm -rf static/dist/*.css
 ```
 
 

@@ -17,10 +17,10 @@
   "scripts": {
     "build:ts": "bun run build.ts",
     "build:css": "bunx @tailwindcss/cli -i ./static/css/main.css -o ./public/dist/main.css --minify",
-    "build:assets": "cp -r static/images public/images && cp static/dist/main.css public/dist/main.css 2>/dev/null; true",
+    "build:assets": "rm -rf public/images && cp -r static/images public/images",
     "build:all": "bun run build:ts && bun run build:css && bun run build:assets",
-    "watch": "concurrently --names ts,css \"bun run build.ts --watch\" \"bunx @tailwindcss/cli -i ./static/css/main.css -o ./public/dist/main.css --watch --minify\"",
-    "dev": "bun run watch",
+    "watch": "vite",
+    "dev": "vite",
     "check": "./checks.sh",
     "deploy": "bun run build:all && wrangler pages deploy --branch master",
     "preview": "bun run build:all && wrangler pages dev",
@@ -29,14 +29,15 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@sveltejs/vite-plugin-svelte": "^7.3.0",
     "@tailwindcss/cli": "^4.1.18",
     "@types/node": "^25.9.1",
-    "concurrently": "^9.2.1",
-    "esbuild": "^0.28.0",
     "eslint": "^10.4.0",
+    "svelte": "^5",
     "tailwindcss": "^4.1.18",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.3",
+    "vite": "^8.2.2",
     "wrangler": "^4.93.1"
   }
 }
