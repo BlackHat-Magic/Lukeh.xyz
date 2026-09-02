@@ -66,10 +66,17 @@
     return plot.left + ((rank - 1) / Math.max(scope - 1, 1)) * plotWidth;
   }
 
+  function positiveMinimum(metric: MetricKey): number {
+    const limit = Math.min(selectedScope, ranked[metric].length);
+    const positiveValues = ranked[metric].slice(0, limit).map((video) => metricValue(video, metric)).filter((value) => value > 0);
+    return positiveValues.length > 0 ? Math.min(...positiveValues) : 1;
+  }
+
   function yForValue(value: number, metric: MetricKey): number {
     const max = metricValue(ranked[metric][0], metric);
+    const minimum = positiveMinimum(metric);
     const normalized = logScale
-      ? Math.log10(Math.max(value, 1)) / Math.log10(Math.max(max, 1))
+      ? (Math.log10(Math.max(value, minimum)) - Math.log10(minimum)) / (Math.log10(Math.max(max, minimum)) - Math.log10(minimum) || 1)
       : value / max;
     return plot.top + (1 - normalized) * plotHeight;
   }
@@ -84,9 +91,11 @@
       }));
     }
 
-    const highestPower = Math.floor(Math.log10(Math.max(max, 1)));
-    const powers = Array.from({ length: highestPower + 1 }, (_, index) => 10 ** index);
-    const values = powers.filter((value) => value <= max);
+    const minimum = positiveMinimum(metric);
+    const values = [minimum];
+    for (let power = 10 ** Math.ceil(Math.log10(minimum)); power < max; power *= 10) {
+      if (power > minimum) values.push(power);
+    }
     if (values.at(-1) !== max) values.push(max);
     return values.reverse().map((value) => ({ value, y: yForValue(value, metric), label: formatNumber(value) }));
   }
@@ -145,15 +154,6 @@
 <main class="milestone-page">
   <header class="hero">
     <div class="eyebrow"><span class="eyebrow-dot"></span> USTU-092 / MILESTONE 1</div>
-    <h1>What makes a video<br /><em>trend?</em></h1>
-    <p class="intro">An interactive look at the videos that rose to the top of YouTube. Explore how views, reactions, and conversation change as we widen the lens from the top 10 to the top 5,000.</p>
-    <div class="hero-meta">
-      <span><strong>{videos.length.toLocaleString('en-US')}</strong> unique records</span>
-      <span class="meta-divider">/</span>
-      <span>four engagement signals</span>
-      <span class="meta-divider">/</span>
-      <span>ranked high → low</span>
-    </div>
   </header>
 
   <section class="control-panel" aria-label="Chart controls">
@@ -201,7 +201,12 @@
             <line class="grid-line" x1={plot.left} x2={chartWidth - plot.right} y1={tick.y} y2={tick.y} />
             <text class="axis-label" x={plot.left - 9} y={tick.y + 4} text-anchor="end">{tick.label}</text>
           {/each}
+          <line class="axis-spine" x1={plot.left} x2={plot.left} y1={plot.top} y2={chartHeight - plot.bottom} />
           <line class="axis-line" x1={plot.left} x2={chartWidth - plot.right} y1={chartHeight - plot.bottom} y2={chartHeight - plot.bottom} />
+          {#if logScale}
+            <path class="axis-break" d={`M ${plot.left - 5} ${chartHeight - plot.bottom - 8} l 7 6 M ${plot.left - 5} ${chartHeight - plot.bottom - 1} l 7 6`} />
+            <text class="break-label" x={plot.left - 9} y={chartHeight - plot.bottom + 27} text-anchor="end">0 / 1</text>
+          {/if}
           <text class="axis-label" x={plot.left} y={chartHeight - 10}>1</text>
           <text class="axis-label" x={chartWidth - plot.right} y={chartHeight - 10} text-anchor="end">{selectedScope.toLocaleString('en-US')}</text>
           <polygon class="area-fill" fill={`url(#fill-${activeChartMetric.key})`} points={`${plot.left},${chartHeight - plot.bottom} ${sampledPoints(activeChartMetric.key).map((point) => `${point.x},${point.y}`).join(' ')} ${chartWidth - plot.right},${chartHeight - plot.bottom}`} />
@@ -235,7 +240,7 @@
 
   <footer class="methodology">
     <div><span class="eyebrow-dot"></span><span>METHOD</span></div>
-    <p>The four supplied CSV exports were merged into one dataset and exact duplicate rows were removed before ranking. Rows with the same title and channel but different count snapshots remain distinct. The source contains 6,351 records, and “Top 5,000” is the broadest view shown here. A logarithmic scale is on by default to make the long tail readable.</p>
+    <p>The four supplied CSV exports were merged into one dataset and exact duplicate rows were removed before ranking. Rows with the same title and channel but different count snapshots remain distinct. The source contains 6,351 records, and “Top 5,000” is the broadest view shown here. Logarithmic charts use a broken axis: zero and the small values below the first observed positive value are skipped rather than given misleading spacing.</p>
     <p class="source-note">Source: supplied trending YouTube CSV exports · Built for USTU-092 Milestone 1</p>
   </footer>
 </main>
@@ -276,7 +281,7 @@
   .leader-value { margin-left: auto; color: var(--chart-color); font-size: 17px; font-weight: 800; letter-spacing: -.03em; }
   .chart-wrap { position: relative; padding: 0 10px; }
   svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: none; cursor: crosshair; }
-  .grid-line { stroke: var(--border); stroke-width: 1; stroke-dasharray: 2 5; opacity: .65; }.axis-line { stroke: var(--border); stroke-width: 1; }.axis-label { fill: var(--muted-foreground); font-size: 10px; }
+  .grid-line { stroke: var(--border); stroke-width: 1; stroke-dasharray: 2 5; opacity: .65; }.axis-line, .axis-spine { stroke: var(--border); stroke-width: 1; }.axis-label, .break-label { fill: var(--muted-foreground); font-size: 10px; }.axis-break { fill: none; stroke: var(--foreground); stroke-width: 2; stroke-linecap: round; opacity: .8; }
   .area-fill { stroke: none; }.data-line { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }.focus-line { stroke: var(--foreground); stroke-width: 1; stroke-dasharray: 3 4; opacity: .42; }.focus-dot { stroke: var(--card); stroke-width: 3; }
   .chart-tooltip { position: relative; pointer-events: none; left: auto; right: auto; bottom: auto; min-height: 26px; margin: 0 12px 0 65px; display: flex; align-items: center; gap: 8px; font-size: 11px; overflow: hidden; }
   .chart-tooltip > * { min-width: 0; }
