@@ -6,9 +6,8 @@ instance/
 node_modules
 **/.env
 .wrangler/
-public/js/
-public/assets/
-public/images/
+public/*
+public/**/*
 functions/.wrangler/
 **/dist/
 

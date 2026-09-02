@@ -90,7 +90,6 @@
           <div class="w-72">
             <a href="/projects/sd-runpod" class="block px-3.5 py-3 text-sm rounded hover:bg-muted"><span class="block mb-1 font-medium text-foreground">SD-Runpod</span><span class="block leading-5 opacity-50">A project using Runpod's serverless platform to serve transformer and diffusion models</span></a>
             <a href="/projects/math" class="block px-3.5 py-3 text-sm rounded hover:bg-muted"><span class="block mb-1 font-medium text-foreground">Old Math Demos</span><span class="block leading-5 opacity-50">Some simple calculators I wrote to familiarize myself with Alpine</span></a>
-            <a href="/School/UCM/USTU-092/Milestone1" class="block px-3.5 py-3 text-sm rounded hover:bg-muted"><span class="block mb-1 font-medium text-foreground">USTU-092 Milestone 1</span><span class="block leading-5 opacity-50">Interactive YouTube trending video analysis</span></a>
             <a href="/projects/other" class="block px-3.5 py-3 text-sm rounded hover:bg-muted"><span class="block mb-1 font-medium text-foreground">View All</span><span class="block leading-5 opacity-50">Other portfolio projects that didn't make it above the fold</span></a>
           </div>
         </div>
