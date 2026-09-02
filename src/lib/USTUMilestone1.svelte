@@ -1,5 +1,5 @@
 <script lang="ts">
-  import dataset from '../data/youtube-trending-enriched.json';
+  import { onMount } from 'svelte';
 
   type MetricKey = 'views' | 'likes' | 'dislikes' | 'comment_count';
   type Video = {
@@ -15,7 +15,10 @@
   type ChartMetric = { key: MetricKey; label: string; shortLabel: string; color: string; description: string };
   type Point = { rank: number; value: number; x: number; y: number };
 
-  const videos = dataset as Video[];
+  const datasetUrl = new URL('../data/youtube-trending-enriched.json', import.meta.url).href;
+  let videos = $state<Video[]>([]);
+  let isLoading = $state(true);
+  let loadError = $state('');
   const chartMetrics: ChartMetric[] = [
     { key: 'views', label: 'Views', shortLabel: 'views', color: '#1e66f5', description: 'total plays' },
     { key: 'likes', label: 'Likes', shortLabel: 'likes', color: '#40a02b', description: 'positive reactions' },
@@ -28,12 +31,12 @@
     { value: 1000, label: 'Top 1,000' },
     { value: 5000, label: 'Top 5,000' },
   ];
-  const ranked: Record<MetricKey, Video[]> = {
+  let ranked = $derived.by((): Record<MetricKey, Video[]> => ({
     views: [...videos].sort((a, b) => b.views - a.views),
     likes: [...videos].sort((a, b) => b.likes - a.likes),
     dislikes: [...videos].sort((a, b) => b.dislikes - a.dislikes),
     comment_count: [...videos].sort((a, b) => b.comment_count - a.comment_count),
-  };
+  }));
   const chartWidth = 800;
   const chartHeight = 270;
   const plot = { left: 54, right: 18, top: 20, bottom: 37 };
@@ -46,6 +49,18 @@
   let hoveredRank = $state<number | null>(null);
   let hoveredMetric = $state<MetricKey | null>(null);
   let selectedMetric = $state<MetricKey>('views');
+
+  onMount(async () => {
+    try {
+      const response = await fetch(datasetUrl);
+      if (!response.ok) throw new Error(`Dataset request failed: ${response.status}`);
+      videos = await response.json() as Video[];
+    } catch (error) {
+      loadError = error instanceof Error ? error.message : 'Dataset request failed';
+    } finally {
+      isLoading = false;
+    }
+  });
 
   let activeRank = $derived(hoveredRank ?? focusRank);
   let activeMetric = $derived(hoveredMetric ?? selectedMetric);
@@ -171,6 +186,19 @@
 </svelte:head>
 
 <main class="milestone-page">
+  {#if isLoading}
+    <section class="loading-state" role="status" aria-live="polite">
+      <span class="loading-spinner" aria-hidden="true"></span>
+      <p>Loading the YouTube dataset…</p>
+      <span>Preparing the interactive distribution</span>
+    </section>
+  {:else if loadError}
+    <section class="loading-state error-state" role="alert">
+      <strong>Couldn’t load the dataset.</strong>
+      <p>{loadError}</p>
+      <button type="button" onclick={() => window.location.reload()}>Try again</button>
+    </section>
+  {:else}
   <header class="hero">
     <div class="eyebrow"><span class="eyebrow-dot"></span> USTU-092 / MILESTONE 1</div>
   </header>
@@ -258,11 +286,21 @@
       </div>
     </div>
   </section>
+  {/if}
 
 </main>
 
 <style>
   .milestone-page { max-width: 1180px; margin: 0 auto; padding: 70px 32px 90px; color: var(--foreground); }
+  .loading-state { min-height: 420px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--muted-foreground); text-align: center; }
+  .loading-state p { margin: 4px 0 0; color: var(--foreground); font-size: 16px; font-weight: 700; }
+  .loading-state > span:last-child { font-size: 12px; }
+  .loading-spinner { width: 28px; height: 28px; border: 3px solid var(--muted); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; }
+  .error-state strong { color: var(--foreground); font-size: 16px; }
+  .error-state button { margin-top: 8px; padding: 8px 13px; border: 1px solid var(--border); border-radius: 7px; background: var(--card); font-size: 13px; }
+  .error-state button:hover { background: var(--muted); border-color: var(--accent); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .loading-spinner { animation: none; } }
   .hero { max-width: 820px; margin: 0 auto 56px; text-align: center; }
   .eyebrow, .inspector-kicker { display: flex; align-items: center; gap: 9px; color: var(--muted-foreground); font-size: 11px; font-weight: 800; letter-spacing: .16em; }
   .eyebrow { justify-content: center; margin-bottom: 22px; }
