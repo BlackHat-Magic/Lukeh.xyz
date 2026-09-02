@@ -117,7 +117,7 @@ main:not(.milestone-page) > p, main:not(.milestone-page) .prose { color: var(--f
 main:not(.milestone-page) a { color: var(--accent); text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent); text-underline-offset: 3px; }
 main:not(.milestone-page) a:hover { text-decoration: underline; }
 main:not(.milestone-page) img { border: 1px solid var(--border); box-shadow: 10px 10px 0 color-mix(in srgb, var(--foreground) 8%, transparent); }
-.home-avatar { border-radius: 50% !important; }
+.profile-avatar { border-radius: 50% !important; }
 main:not(.milestone-page) iframe { border: 1px solid var(--border); box-shadow: 10px 10px 0 color-mix(in srgb, var(--foreground) 8%, transparent); }
 main:not(.milestone-page) input, main:not(.milestone-page) textarea { border: 1px solid var(--border); background: var(--card); color: var(--foreground); }
 main:not(.milestone-page) input:focus, main:not(.milestone-page) textarea:focus { border-color: var(--accent); outline: 2px solid color-mix(in srgb, var(--ring) 30%, transparent); outline-offset: 0; }
