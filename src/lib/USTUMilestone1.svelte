@@ -237,12 +237,6 @@
       </div>
     </div>
   </section>
-
-  <footer class="methodology">
-    <div><span class="eyebrow-dot"></span><span>METHOD</span></div>
-    <p>The four supplied CSV exports were merged into one dataset and exact duplicate rows were removed before ranking. Rows with the same title and channel but different count snapshots remain distinct. The source contains 6,351 records, and “Top 5,000” is the broadest view shown here. Logarithmic charts use a broken axis: zero and the small values below the first observed positive value are skipped rather than given misleading spacing.</p>
-    <p class="source-note">Source: supplied trending YouTube CSV exports · Built for USTU-092 Milestone 1</p>
-  </footer>
 </main>
 
 <style>
