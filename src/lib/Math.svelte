@@ -1,5 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { HugeiconsIcon } from '@hugeicons/svelte';
+  import { MinusIcon as MinusIconGlyph, PlusIcon as PlusIconGlyph } from '@hugeicons/core-free-icons';
 
   type MainTab = 'Vector Calculus' | 'Statistics';
   const tabs = ['Vector Addition', 'Scalar Multiplication', 'Vector Magnitude', 'Unit Vector', 'Dot Product', 'Cross Product', 'TSP', 'Vector Projection'] as const;
@@ -85,10 +87,10 @@
 </script>
 
 {#snippet MinusIcon()}
-  <svg viewBox="0 -12 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="currentColor" class="w-3 h-3"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"><g sketch:type="MSLayerGroup" transform="translate(-414.000000, -1049.000000)" fill="currentColor"><path d="M442,1049 L418,1049 C415.791,1049 414,1050.79 414,1053 C414,1055.21 415.791,1057 418,1057 L442,1057 C444.209,1057 446,1055.21 446,1053 C446,1050.79 444.209,1049 442,1049" sketch:type="MSShapeGroup"></path></g></g></g></svg>
+  <HugeiconsIcon icon={MinusIconGlyph} size={14} strokeWidth={2} aria-hidden="true" />
 {/snippet}
 {#snippet PlusIcon()}
-  <svg class="w-3 h-3" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="currentColor"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketcurrentch:type="MSPage"><g sketcurrentch:type="MSLayerGroup" transform="translate(-362.000000, -1037.000000)" fill="currentColor"><path d="M390,1049 L382,1049 L382,1041 C382,1038.79 380.209,1037 378,1037 C375.791,1037 374,1038.79 374,1041 L374,1049 L366,1049 C363.791,1049 362,1050.79 362,1053 C362,1055.21 363.791,1057 366,1057 L374,1057 L374,1065 C374,1067.21 375.791,1069 378,1069 C380.209,1069 382,1067.21 382,1065 L382,1057 L390,1057 C392.209,1057 394,1055.21 394,1053 C394,1050.79 392.209,1049 390,1049" sketcurrentch:type="MSShapeGroup"></path></g></g></g></svg>
+  <HugeiconsIcon icon={PlusIconGlyph} size={14} strokeWidth={2} aria-hidden="true" />
 {/snippet}
 {#snippet ResizeButton(delta: number, label: string)}
   <button type="button" class="inline-flex items-center justify-center w-8 h-8 bg-card border border-border rounded-full shadow-sm cursor-pointer hover:bg-muted focus-visible:ring-ring focus-visible:ring-2 focus-visible:outline-none active:bg-card" onclick={() => changeAddVectors(delta)} aria-label="{delta < 0 ? 'Decrease' : 'Increase'} {label.toLowerCase()}">{#if delta < 0}{@render MinusIcon()}{:else}{@render PlusIcon()}{/if}</button>
