@@ -17,7 +17,7 @@
   "scripts": {
     "build:ts": "bun run build.ts",
     "build:css": "bunx @tailwindcss/cli -i ./static/css/main.css -o ./public/dist/main.css --minify",
-    "build:assets": "rm -rf public/images && cp -r static/images public/images",
+    "build:assets": "rm -rf public/images && cp -r static/images public/images && cp static/_redirects public/_redirects && cp static/_routes.json public/_routes.json",
     "build:all": "bun run build:ts && bun run build:css && bun run build:assets",
     "watch": "vite",
     "dev": "vite",
