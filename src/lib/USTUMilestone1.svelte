@@ -1,5 +1,5 @@
 <script lang="ts">
-  import dataset from '../data/youtube-trending-deduplicated.json';
+  import dataset from '../data/youtube-trending-enriched.json';
 
   type MetricKey = 'views' | 'likes' | 'dislikes' | 'comment_count';
   type Video = {
@@ -9,6 +9,8 @@
     likes: number;
     dislikes: number;
     comment_count: number;
+    video_url: string;
+    channel_url: string;
   };
   type ChartMetric = { key: MetricKey; label: string; shortLabel: string; color: string; description: string };
   type Point = { rank: number; value: number; x: number; y: number };
@@ -248,7 +250,7 @@
   <section class="inspector" aria-label="Video inspector">
     <div class="inspector-kicker"><span class="eyebrow-dot"></span> INSPECTING RANK #{activeRank.toLocaleString('en-US')}</div>
     <div class="inspector-content">
-      <div class="inspector-title"><p class="selected-metric" style={`color: ${chartMetrics.find((metric) => metric.key === activeMetric)?.color}`}>{chartMetrics.find((metric) => metric.key === activeMetric)?.label}</p><h2 title={activeVideo.title}>{activeVideo.title}</h2><p class="channel">{activeVideo.channel_title}</p></div>
+      <div class="inspector-title"><p class="selected-metric" style={`color: ${chartMetrics.find((metric) => metric.key === activeMetric)?.color}`}>{chartMetrics.find((metric) => metric.key === activeMetric)?.label}</p><h2 title={activeVideo.title}><a href={activeVideo.video_url} target="_blank" rel="noopener noreferrer">{activeVideo.title}</a></h2><p class="channel"><a href={activeVideo.channel_url} target="_blank" rel="noopener noreferrer">{activeVideo.channel_title}</a></p></div>
       <div class="inspector-stats">
         {#each chartMetrics as metric}
           <button type="button" class:chosen={activeMetric === metric.key} style={`--stat-color: ${metric.color}`} onclick={() => chooseMetric(metric.key)}><span>{metric.label}</span><strong>{formatNumber(activeVideo[metric.key])}</strong></button>
@@ -256,12 +258,13 @@
       </div>
     </div>
   </section>
+
 </main>
 
 <style>
   .milestone-page { max-width: 1180px; margin: 0 auto; padding: 70px 32px 90px; color: var(--foreground); }
   .hero { max-width: 820px; margin: 0 auto 56px; text-align: center; }
-  .eyebrow, .inspector-kicker, .methodology > div { display: flex; align-items: center; gap: 9px; color: var(--muted-foreground); font-size: 11px; font-weight: 800; letter-spacing: .16em; }
+  .eyebrow, .inspector-kicker { display: flex; align-items: center; gap: 9px; color: var(--muted-foreground); font-size: 11px; font-weight: 800; letter-spacing: .16em; }
   .eyebrow { justify-content: center; margin-bottom: 22px; }
   .eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 15%, transparent); }
   h1 { margin: 0; font-size: clamp(42px, 7vw, 78px); letter-spacing: -.07em; line-height: .96; font-weight: 900; color: var(--foreground); }
@@ -300,7 +303,7 @@
   .chart-tooltip > * { min-width: 0; }
   .tooltip-rank { color: var(--chart-color); font-weight: 800; white-space: nowrap; }.tooltip-title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted-foreground); }.chart-tooltip strong { white-space: nowrap; font-size: 12px; }
   .chart-footer { display: flex; gap: 12px; padding: 10px 20px 17px; color: var(--muted-foreground); font-size: 10px; }.chart-footer span:nth-child(2) { margin-left: auto; }.chart-footer span:last-child { display: none; }.chart-footer strong { color: var(--foreground); }
-  .inspector { margin-top: 26px; padding: 24px 26px 26px; background: var(--muted); border: 1px solid var(--border); border-radius: 14px; }.inspector-kicker { margin-bottom: 21px; }.inspector-content { display: flex; gap: 30px; align-items: center; }.inspector-title { min-width: 0; flex: 1; }.selected-metric { margin: 0 0 7px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }.inspector h2 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 0; font-size: clamp(19px, 3vw, 28px); letter-spacing: -.04em; }.channel { margin: 7px 0 0; color: var(--muted-foreground); font-size: 13px; }.inspector-stats { display: grid; grid-template-columns: repeat(4, minmax(90px, 1fr)); flex: 1.2; gap: 8px; }.inspector-stats button { padding: 11px 12px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; text-align: left; }.inspector-stats button:hover, .inspector-stats button.chosen { border-color: var(--stat-color); }.inspector-stats span { display: block; color: var(--muted-foreground); font-size: 10px; }.inspector-stats strong { display: block; margin-top: 5px; font-size: 15px; }.methodology { display: grid; grid-template-columns: 190px 1fr; gap: 9px 28px; margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border); }.methodology > div { align-items: start; padding-top: 3px; }.methodology p { max-width: 720px; margin: 0; color: var(--muted-foreground); font-size: 12px; line-height: 1.7; }.methodology .source-note { grid-column: 2; opacity: .7; font-size: 11px; }
-  @media (max-width: 760px) { .milestone-page { padding: 45px 16px 65px; }.hero { margin-bottom: 38px; }.intro { font-size: 15px; }.hero-meta { flex-wrap: wrap; gap: 7px; font-size: 9px; }.control-panel { align-items: start; flex-direction: column; gap: 18px; }.scale-control { text-align: left; }.chart-grid { grid-template-columns: 1fr; }.inspector-content { align-items: stretch; flex-direction: column; gap: 18px; }.inspector-stats { flex: initial; }.methodology { display: block; }.methodology > div { margin-bottom: 13px; }.methodology p { margin-bottom: 10px; }.methodology .source-note { margin-left: 0; }.chart-footer span:last-child { display: block; margin-left: auto; }.chart-footer span:nth-child(2) { margin-left: 0; }.chart-footer { gap: 8px; } }
+  .inspector { margin-top: 26px; padding: 24px 26px 26px; background: var(--muted); border: 1px solid var(--border); border-radius: 14px; }.inspector-kicker { margin-bottom: 21px; }.inspector-content { display: flex; gap: 30px; align-items: center; }.inspector-title { min-width: 0; flex: 1; }.inspector-title a { color: inherit; text-decoration: none; }.inspector-title h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }.inspector-title .channel a { color: var(--accent); }.selected-metric { margin: 0 0 7px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }.inspector h2 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 0; font-size: clamp(19px, 3vw, 28px); letter-spacing: -.04em; }.channel { margin: 7px 0 0; color: var(--muted-foreground); font-size: 13px; }.inspector-stats { display: grid; grid-template-columns: repeat(4, minmax(90px, 1fr)); flex: 1.2; gap: 8px; }.inspector-stats button { padding: 11px 12px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; text-align: left; }.inspector-stats button:hover, .inspector-stats button.chosen { border-color: var(--stat-color); }.inspector-stats span { display: block; color: var(--muted-foreground); font-size: 10px; }.inspector-stats strong { display: block; margin-top: 5px; font-size: 15px; }
+  @media (max-width: 760px) { .milestone-page { padding: 45px 16px 65px; }.hero { margin-bottom: 38px; }.intro { font-size: 15px; }.hero-meta { flex-wrap: wrap; gap: 7px; font-size: 9px; }.control-panel { align-items: start; flex-direction: column; gap: 18px; }.scale-control { text-align: left; }.chart-grid { grid-template-columns: 1fr; }.inspector-content { align-items: stretch; flex-direction: column; gap: 18px; }.inspector-stats { flex: initial; }.chart-footer span:last-child { display: block; margin-left: auto; }.chart-footer span:nth-child(2) { margin-left: 0; }.chart-footer { gap: 8px; } }
   @media (max-width: 460px) { .inspector-stats { grid-template-columns: repeat(2, 1fr); }.chart-footer { flex-wrap: wrap; }.chart-footer span:last-child { width: 100%; margin-left: 0; }.meta-divider { display: none; } }
 </style>
