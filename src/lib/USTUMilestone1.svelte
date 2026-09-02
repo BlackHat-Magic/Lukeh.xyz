@@ -63,7 +63,21 @@
   }
 
   function xForRank(rank: number, scope = selectedScope): number {
-    return plot.left + ((rank - 1) / Math.max(scope - 1, 1)) * plotWidth;
+    const normalized = logScale
+      ? Math.log10(Math.max(rank, 1)) / Math.log10(Math.max(scope, 1))
+      : (rank - 1) / Math.max(scope - 1, 1);
+    return plot.left + normalized * plotWidth;
+  }
+
+  function xTicks(): { value: number; x: number; label: string }[] {
+    if (!logScale) {
+      return [1, selectedScope].map((value) => ({ value, x: xForRank(value), label: value.toLocaleString('en-US') }));
+    }
+
+    const values = [1];
+    for (let power = 10; power < selectedScope; power *= 10) values.push(power);
+    if (values.at(-1) !== selectedScope) values.push(selectedScope);
+    return values.map((value) => ({ value, x: xForRank(value), label: value.toLocaleString('en-US') }));
   }
 
   function positiveMinimum(metric: MetricKey): number {
@@ -123,7 +137,10 @@
     // plot area rather than the SVG's y-axis gutter.
     const viewBoxX = ((event.clientX - bounds.left) / bounds.width) * chartWidth;
     const ratio = Math.max(0, Math.min(1, (viewBoxX - plot.left) / plotWidth));
-    hoveredRank = Math.max(1, Math.min(selectedScope, Math.round(ratio * (selectedScope - 1)) + 1));
+    const rank = logScale
+      ? 10 ** (ratio * Math.log10(Math.max(selectedScope, 1)))
+      : ratio * (selectedScope - 1) + 1;
+    hoveredRank = Math.max(1, Math.min(selectedScope, Math.round(rank)));
     hoveredMetric = metric;
   }
 
@@ -174,10 +191,10 @@
       </div>
     </div>
     <div class="scale-control">
-      <p class="control-label">Y axis</p>
+      <p class="control-label">Scale</p>
       <button class="scale-toggle" class:active={logScale} type="button" onclick={() => logScale = !logScale} aria-pressed={logScale}>
         <span class="toggle-track"><span></span></span>
-        {logScale ? 'Logarithmic' : 'Linear'} scale
+        {logScale ? 'Log-log' : 'Linear'} scale
       </button>
     </div>
   </section>
@@ -201,14 +218,16 @@
             <line class="grid-line" x1={plot.left} x2={chartWidth - plot.right} y1={tick.y} y2={tick.y} />
             <text class="axis-label" x={plot.left - 9} y={tick.y + 4} text-anchor="end">{tick.label}</text>
           {/each}
+          {#each xTicks() as tick}
+            <line class="x-grid-line" x1={tick.x} x2={tick.x} y1={plot.top} y2={chartHeight - plot.bottom} />
+            <text class="axis-label" x={tick.x} y={chartHeight - 10} text-anchor={tick.value === 1 ? 'start' : 'end'}>{tick.label}</text>
+          {/each}
           <line class="axis-spine" x1={plot.left} x2={plot.left} y1={plot.top} y2={chartHeight - plot.bottom} />
           <line class="axis-line" x1={plot.left} x2={chartWidth - plot.right} y1={chartHeight - plot.bottom} y2={chartHeight - plot.bottom} />
           {#if logScale}
             <path class="axis-break" d={`M ${plot.left - 5} ${chartHeight - plot.bottom - 8} l 7 6 M ${plot.left - 5} ${chartHeight - plot.bottom - 1} l 7 6`} />
             <text class="break-label" x={plot.left - 9} y={chartHeight - plot.bottom + 27} text-anchor="end">0 / 1</text>
           {/if}
-          <text class="axis-label" x={plot.left} y={chartHeight - 10}>1</text>
-          <text class="axis-label" x={chartWidth - plot.right} y={chartHeight - 10} text-anchor="end">{selectedScope.toLocaleString('en-US')}</text>
           <polygon class="area-fill" fill={`url(#fill-${activeChartMetric.key})`} points={`${plot.left},${chartHeight - plot.bottom} ${sampledPoints(activeChartMetric.key).map((point) => `${point.x},${point.y}`).join(' ')} ${chartWidth - plot.right},${chartHeight - plot.bottom}`} />
           <polyline class="data-line" stroke={activeChartMetric.color} points={sampledPoints(activeChartMetric.key).map((point) => `${point.x},${point.y}`).join(' ')} />
           {#if selectedScope > 1}
